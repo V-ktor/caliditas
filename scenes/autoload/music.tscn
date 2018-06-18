@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/main/music.gd" type="Script" id=1]
+[ext_resource path="res://music/ambience.ogg" type="AudioStream" id=2]
+[ext_resource path="res://music/cold.ogg" type="AudioStream" id=3]
+[ext_resource path="res://music/chill.ogg" type="AudioStream" id=4]
+[ext_resource path="res://music/warm.ogg" type="AudioStream" id=5]
+[ext_resource path="res://music/hot.ogg" type="AudioStream" id=6]
+
+[node name="Music" type="Node" index="0"]
+
+script = ExtResource( 1 )
+
+[node name="Ambience" type="AudioStreamPlayer" parent="." index="0"]
+
+stream = ExtResource( 2 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = true
+mix_target = 0
+bus = "Master"
+
+[node name="Cold1" type="AudioStreamPlayer" parent="." index="1"]
+
+stream = ExtResource( 3 )
+volume_db = -80.0
+pitch_scale = 1.0
+autoplay = true
+mix_target = 0
+bus = "Master"
+
+[node name="Cold2" type="AudioStreamPlayer" parent="." index="2"]
+
+stream = ExtResource( 4 )
+volume_db = -80.0
+pitch_scale = 1.0
+autoplay = true
+mix_target = 0
+bus = "Master"
+
+[node name="Warm1" type="AudioStreamPlayer" parent="." index="3"]
+
+stream = ExtResource( 5 )
+volume_db = -80.0
+pitch_scale = 1.0
+autoplay = true
+mix_target = 0
+bus = "Master"
+
+[node name="Warm2" type="AudioStreamPlayer" parent="." index="4"]
+
+stream = ExtResource( 6 )
+volume_db = -80.0
+pitch_scale = 1.0
+autoplay = true
+mix_target = 0
+bus = "Master"
+
+

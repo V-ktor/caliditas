@@ -20,6 +20,7 @@ Cards="*res://scripts/autoload/cards.gd"
 Main="*res://scenes/autoload/main.tscn"
 UI="*res://scenes/autoload/ui.tscn"
 AI="*res://scripts/autoload/ai.gd"
+Music="*res://scenes/autoload/music.tscn"
 
 [importer_defaults]
 

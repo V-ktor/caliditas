@@ -51,6 +51,7 @@ func game_over(victory):
 		get_node("GameOver").set_title(tr("GAME_OVER"))
 		get_node("GameOver/Text").set_text(tr("YOU_LOST"))
 	get_node("GameOver").popup_centered()
+	Music.temperature = 0
 
 
 func _hide():

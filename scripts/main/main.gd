@@ -112,6 +112,7 @@ func reset():
 	UI.get_node("Player2/VBoxContainer/Health/Bar").set_max(20)
 	UI.get_node("Player1/VBoxContainer/ButtonC").show()
 	UI.get_node("Player1/VBoxContainer/ButtonE").show()
+	Music.temperature = 0
 	deselect()
 
 func start():
@@ -613,6 +614,7 @@ func update_stats():
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Bar").set_value(temp)
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Bar").set_modulate(Cards.COLOR_COLD.linear_interpolate(Cards.COLOR_HOT,temp/10.0+0.5))
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Deck").set_text(tr("DECK")+": "+str(deck[p].size()))
+	Music.temperature = get_player_temperature(player)+0.5*get_player_temperature((player+1)%2)
 
 
 
