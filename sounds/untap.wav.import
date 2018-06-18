@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/untap.wav-0c9655a1a7e0a40b3e384f7a02355f89.sample"
+
+[deps]
+
+source_file="res://sounds/untap.wav"
+dest_files=[ "res://.import/untap.wav-0c9655a1a7e0a40b3e384f7a02355f89.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

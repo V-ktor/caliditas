@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/qubodup-ccbysa3-elementalSpell-opengameart1.wav-d76c349b433fcd42f5ae203d6908105e.sample"
+
+[deps]
+
+source_file="res://sounds/qubodup-ccbysa3-elementalSpell-opengameart1.wav"
+dest_files=[ "res://.import/qubodup-ccbysa3-elementalSpell-opengameart1.wav-d76c349b433fcd42f5ae203d6908105e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

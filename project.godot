@@ -1,0 +1,43 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=3
+
+[application]
+
+config/name="Caliditas Extrema"
+run/main_scene="res://scenes/menu/menu.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+Cards="*res://scripts/autoload/cards.gd"
+Main="*res://scenes/autoload/main.tscn"
+UI="*res://scenes/autoload/ui.tscn"
+AI="*res://scripts/autoload/ai.gd"
+
+[importer_defaults]
+
+ogg_vorbis={
+"loop": false,
+"loop_offset": 0
+}
+
+[input]
+
+RMB=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+
+[locale]
+
+translations=PoolStringArray( "res://translations/cards.en.translation", "res://translations/menu.en.translation", "res://translations/ui.en.translation", "res://translations/effects.en.translation" )
+
+[rendering]
+
+environment/default_clear_color=Color( 0, 0, 0, 1 )
+environment/default_environment="res://default_env.tres"

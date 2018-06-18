@@ -1,0 +1,46 @@
+
+qubodup-ccbysa3-elementalSpell-opengameart1.wav, qubodup-ccbysa3-elementalSpell-opengameart4.wav:
+Copyright: 2012 Iwan 'qubodup' Gabovitch http://qubodup.net qubodup@gmail.com
+License: CC Attribution-ShareAlike 3.0 Unported http://creativecommons.org/licenses/by-sa/3.0/
+
+draw.wav, playcard.wav, shuffle.wav, tap.wav, untap.wav:
+Copyright: HaelDB
+License: CC0
+
+flaunch.wav:
+License: CC-BY 3.0
+Copyright: Michel Baradari (apollo-music.de)
+Hosted on opengameart.org
+
+freeze2.wav, water.wav:
+Copyright: p0ss
+License: CC-BY-SA 3.0
+
+foom_0.wav:
+Copyright: Bart K.
+License: CC-BY 3.0
+
+fire.wav:
+Copyright: artisticdude
+License: CC-BY 3.0
+
+rock_breaking.wav:
+Copyright: Blender Foundation
+License: CC-BY 3.0
+
+freeze.wav:
+Copyright: artisticdude
+License: CC0
+
+qubodupImpactWood.ogg:
+Copyright: Iwan 'qubodup' Gabovitch http://opengameart.org/users/qubodup
+License: CC0
+
+rain.ogg:
+Copyright: Ylmir
+License: CC0
+
+explosion04.wav:
+Copyright: Viktor Hahn
+License: CC-BY 3.0
+
