@@ -137,11 +137,18 @@ func get_spell():
 						t = tg
 			elif (e=="kill_all_hot"):
 				var v = value
+				var balance = 0
+				for ally in Main.field[player]:
+					if (ally.temperature<=0 || ally.temperature>a):
+						continue
+					balance -= 1
 				for tg in Main.field[enemy]:
 					if (tg.temperature<=0 || tg.temperature>a):
 						continue
-					
+					balance += 1
 					v += 2*tg.temperature
+				
+				v *= min(0.5*balance,2.0)
 				if (v>score):
 					c = card
 					t = null
@@ -175,7 +182,7 @@ func get_spell():
 			elif (e=="explosion"):
 				for ally in Main.field[player]:
 					var v = value-abs(ally.temperature)-0.5*ally.level
-					var balance = 0
+					var balance = -0.5
 					for t in Main.field[player]:
 						if (abs(t.temperature)<abs(ally.temperature)):
 							balance -= 1
@@ -184,7 +191,7 @@ func get_spell():
 							balance += 1
 							v += 0.25*t.temperature*sqrt(t.temperature)
 					v *= min(0.5*balance,2.0)
-					if (balance>1 && v>score):
+					if (v>score):
 						c = card
 						t = ally
 			elif (e=="draw"):
