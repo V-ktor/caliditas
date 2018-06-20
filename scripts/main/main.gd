@@ -83,6 +83,8 @@ class Card:
 		in_game = false
 		Main.graveyard[owner].push_back(self)
 		Main.field[owner].erase(self)
+		if (Cards.data[ID].has("on_removed")):
+			apply_effect(self,"on_removed")
 	
 
 class TemperatureSorter:
@@ -193,10 +195,10 @@ func play_card(card,player,target=null):
 	if (!card.node.get_node("Image").is_visible() || card.node.get_node("Animation").get_current_animation()=="hide"):
 		card.node.get_node("Animation").play("show")
 	if (card.type=="creature"):
-		var p = find_empty_position(player)
-		var pos = Vector2(225*p,200*(1-2*player))
-		used_positions[player].push_back(p)
-		card.pos = p
+		var pID = find_empty_position(player)
+		var pos = Vector2(225*pID,200*(1-2*player))
+		used_positions[player].push_back(pID)
+		card.pos = pID
 		field[player].push_back(card)
 		hand[player].erase(card)
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
@@ -208,6 +210,16 @@ func play_card(card,player,target=null):
 		card.node.pos = pos
 		if (Cards.data[card.ID].has("on_play")):
 			apply_effect(card,"on_play")
+		for p in range(2):
+			for c in field[p]:
+				if (Cards.data[c.ID].has("on_creature_spawn")):
+					apply_effect(c,"on_creature_spawn",card)
+		for c in field[player]:
+			if (Cards.data[c.ID].has("on_ally_creature_spawn")):
+				apply_effect(c,"on_ally_creature_spawn",card)
+		for c in field[(player+1)%2]:
+			if (Cards.data[c.ID].has("on_enemy_creature_spawn")):
+				apply_effect(c,"on_enemy_creature_spawn",card)
 	elif (card.type=="spell" && Cards.data[card.ID].has("on_play")):
 		var p = Vector2(card.node.get_global_position().x,0.5*card.node.get_global_position().y)
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
@@ -266,69 +278,182 @@ func use_effect(card,effect,player,target=null):
 	var s = type.split("-")
 	var ammount = 0
 	var enemy = (player+1)%2
+	var target_type
 	if (s.size()>1):
 		type = s[0]
 		ammount = int(s[1])
 	
-	if (data.has("target") && data["target"]=="creature"):
-		if (target==null):
-			select = "creature"
-			if (player==PLAYER1):
-				UI.get_node("Player1/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
-				UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(false)
-			print("Please select a "+select+" card.")
-			for c in field[player]:
-				c.node.get_node("Animation").play("blink")
-			if !("ally" in type):
-				for c in field[enemy]:
+	if (data.has("target")):
+		target_type = data["target"].split("-")
+		if ("creature" in target_type):
+			if (target==null):
+				select = "creature"
+				if (player==PLAYER1):
+					UI.get_node("Player1/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
+					UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(false)
+				print("Please select a "+select+" card.")
+				for c in field[player]:
 					c.node.get_node("Animation").play("blink")
-			yield(self,"target_selected")
-			target = selected_card
+				if !("ally" in target_type):
+					for c in field[enemy]:
+						c.node.get_node("Animation").play("blink")
+				yield(self,"target_selected")
+				target = selected_card
 		
+		if (target!=null):
+			if (("ally" in target_type) && target.owner!=player):
+				target = null
 		if (target==null):
 			state = {"used":false}
+			emit_signal("effect_used")
 			return
 	
-	if (type=="inc_temp"):
-		target.temperature += ammount
-	elif (type=="dec_temp"):
-		target.temperature -= ammount
-	elif (type=="neutralize_temp"):
-		if (target.temperature>0):
-			target.temperature -= ammount
-		elif (target.temperature<0):
-			target.temperature += ammount
-		else:
+#	if (type=="inc_temp"):
+#		target.temperature += ammount
+#	elif (type=="dec_temp"):
+#		target.temperature -= ammount
+	if (type=="neutralize_temp"):
+#		if (target.temperature>0):
+#			target.temperature -= ammount
+#		elif (target.temperature<0):
+#			target.temperature += ammount
+#		else:
+		if (target.temperature==0):
 			state = {"used":false}
 			emit_signal("effect_used")
 			return
-	elif (type=="inc_ally_temp"):
-		if (target.owner!=player):
-			state = {"used":false}
-			emit_signal("effect_used")
-			return
-		target.temperature += ammount
+#	elif (type=="inc_ally_temp"):
+#		if (target.owner!=player):
+#			state = {"used":false}
+#			emit_signal("effect_used")
+#			return
+#		target.temperature += ammount
 	elif (type=="kill_cold"):
 		if (target.temperature>=0 || -target.temperature>ammount):
 			state = {"used":false}
 			emit_signal("effect_used")
 			return
-		target.destroy()
+#		target.destroy()
 	elif (type=="kill_hot"):
 		if (target.temperature<=0 || target.temperature>ammount):
 			state = {"used":false}
 			emit_signal("effect_used")
 			return
-		target.destroy()
-	elif (type=="kill_all_hot"):
+#		target.destroy()
+#	elif (type=="kill_all_hot"):
+#		for card in field[PLAYER1]+field[PLAYER2]:
+#			if (card.temperature>0 && card.temperature<=ammount):
+#				card.destroy()
+#	elif (type=="kill_all_cold"):
+#		for card in field[PLAYER1]+field[PLAYER2]:
+#			if (card.temperature<0 && -card.temperature<=ammount):
+#				card.destroy()
+#	elif (type=="draw"):
+#		get_node("SoundShuffle").play()
+#		for i in range(ammount):
+#			draw_card(player)
+#			timer.set_wait_time(0.2)
+#			timer.start()
+#			yield(timer,"timeout")
+#		timer.set_wait_time(0.1)
+#		timer.start()
+#		yield(timer,"timeout")
+#		sort_hand(player)
+#	elif (type=="move_to_hand"):
+#		hand[target.owner].push_back(target)
+#		field[target.owner].erase(target)
+#		for c in target.equiped:
+#			c.destroy()
+#		target.equiped.clear()
+#		target.in_game = false
+#		target.node.type = "hand"
+#		target.temperature = Cards.data[target.ID]["temperature"]
+#		target.level = Cards.data[target.ID]["level"]
+#		if (target.owner!=player && !(ai && target.owner==PLAYER1)):
+#			target.node.get_node("Animation").play("hide")
+#		used_positions[enemy].erase(target.pos)
+#		sort_hand(enemy)
+#	elif (type=="invert_temp"):
+#		target.temperature *= -1
+#		target.update()
+	elif (type=="explosion"):
+		var dmg = abs(target.temperature)
+		if (dmg==0 || target.owner!=player):
+			state = {"used":false}
+			emit_signal("effect_used")
+			return
+#		target.destroy()
+#		for card in field[PLAYER1]+field[PLAYER2]:
+#			if (abs(card.temperature)<dmg):
+#				card.destroy()
+	
+	apply_effect(card,effect,target)
+#	if (target!=null):
+#		target.update()
+	
+	state = {"used":true,"target":target}
+	emit_signal("effect_used")
+	return
+
+func apply_effect(card,event,target=null):
+	printt("apply effect",event)
+	var effect = Cards.data[card.ID][event]
+	var enemy = (card.owner+1)%2
+	var array = effect.split("-")
+	var base = array[0]
+	var ammount
+	if (array.size()>1):
+		ammount = int(array[1])
+	
+	printt(base,ammount)
+	
+	if (base=="inc_temp"):
+		target.temperature += ammount
+		target.update()
+	elif (base=="dec_temp"):
+		target.temperature -= ammount
+		target.update()
+	elif (base=="neutralize_temp"):
+		if (target.temperature>0):
+			target.temperature -= ammount
+		elif (target.temperature<0):
+			target.temperature += ammount
+		target.update()
+	elif (base=="ice_armor"):
+		if (player==card.owner):
+			target.temperature += ammount
+		else:
+			target.temperature -= ammount
+		target.update()
+	elif (base=="fire_armor"):
+		if (player==target.owner):
+			target.temperature -= ammount
+		else:
+			target.temperature += ammount
+		target.update()
+	elif (base=="inc_ally_temp"):
+		for c in field[card.owner]:
+			c.temperature += ammount
+			c.update()
+	elif (base=="dec_ally_temp"):
+		for c in field[card.owner]:
+			c.temperature -= ammount
+			c.update()
+	elif (base=="kill_cold"):
+		if (target.temperature<0 && -target.temperature<=ammount):
+			target.destroy()
+	elif (base=="kill_hot"):
+		if (target.temperature>0 && target.temperature<=ammount):
+			target.destroy()
+	elif (base=="kill_all_hot"):
 		for card in field[PLAYER1]+field[PLAYER2]:
 			if (card.temperature>0 && card.temperature<=ammount):
 				card.destroy()
-	elif (type=="kill_all_cold"):
+	elif (base=="kill_all_cold"):
 		for card in field[PLAYER1]+field[PLAYER2]:
 			if (card.temperature<0 && -card.temperature<=ammount):
 				card.destroy()
-	elif (type=="draw"):
+	elif (base=="draw"):
 		get_node("SoundShuffle").play()
 		for i in range(ammount):
 			draw_card(player)
@@ -339,7 +464,7 @@ func use_effect(card,effect,player,target=null):
 		timer.start()
 		yield(timer,"timeout")
 		sort_hand(player)
-	elif (type=="move_to_hand"):
+	elif (base=="move_to_hand"):
 		hand[target.owner].push_back(target)
 		field[target.owner].erase(target)
 		for c in target.equiped:
@@ -349,61 +474,32 @@ func use_effect(card,effect,player,target=null):
 		target.node.type = "hand"
 		target.temperature = Cards.data[target.ID]["temperature"]
 		target.level = Cards.data[target.ID]["level"]
-		if (target.owner!=player || (ai && player!=PLAYER1)):
+		if (target.owner!=player && !(ai && target.owner==PLAYER1)):
 			target.node.get_node("Animation").play("hide")
 		used_positions[enemy].erase(target.pos)
 		sort_hand(enemy)
-	elif (type=="invert_temp"):
+	elif (base=="invert_temp"):
 		target.temperature *= -1
 		target.update()
-	elif (type=="explosion"):
+	elif (base=="explosion"):
 		var dmg = abs(target.temperature)
-		if (dmg==0 || target.owner!=player):
-			state = {"used":false}
-			emit_signal("effect_used")
-			return
 		target.destroy()
-		for card in field[PLAYER1]+field[PLAYER2]:
-			if (abs(card.temperature)<dmg):
-				card.destroy()
+		if (dmg>0):
+			for card in field[PLAYER1]+field[PLAYER2]:
+				if (abs(card.temperature)<dmg):
+					card.destroy()
 	
-	if (target!=null):
-		target.update()
 	
-	state = {"used":true,"target":target}
-	emit_signal("effect_used")
-	return
-
-func apply_effect(card,event):
-	var effect = Cards.data[card.ID][event]
-	var array = effect.split("-")
-	var base = array[0]
-	var ammount
-	if (array.size()>1):
-		ammount = int(array[1])
-	
-	if (base=="ice_armor"):
-		if (player==card.owner):
-			card.temperature += ammount
-		else:
-			card.temperature -= ammount
-		card.update()
-	elif (base=="fire_armor"):
-		if (player==card.owner):
-			card.temperature -= ammount
-		else:
-			card.temperature += ammount
-		card.update()
-	elif (base=="inc_ally_temp"):
-		for c in field[card.owner]:
-			c.temperature += ammount
-			c.update()
 
 func attack(attacker,target,no_counter=false):
 	var counterattack = !no_counter && abs(target.temperature)>=abs(attacker.temperature) && sign(attacker.temperature)!=sign(target.temperature)
 	if (abs(attacker.temperature)>=abs(target.temperature) && sign(attacker.temperature)!=sign(target.temperature)):
 		var pos_a = attacker.node.get_global_position()
 		var pos = 0.75*attacker.node.get_global_position()+0.25*target.node.get_global_position()
+		if (Cards.data[target.ID].has("on_attacked")):
+			apply_effect(target,"on_attacked",attacker)
+		if (Cards.data[attacker.ID].has("on_attack")):
+			apply_effect(attacker,"on_attack",target)
 		if (Cards.data[attacker.ID].has("animation")):
 			var pi = load("res://scenes/animations/"+Cards.data[attacker.ID]["animation"]+".tscn").instance()
 			attacker.node.add_child(pi)
@@ -527,7 +623,7 @@ func next_turn(draw=1):
 	
 	for card in field[PLAYER1]+field[PLAYER2]:
 		if (Cards.data[card.ID].has("on_new_turn")):
-			apply_effect(card,"on_new_turn")
+			apply_effect(card,"on_new_turn",card)
 	
 	selected_card = null
 	select = "hand"

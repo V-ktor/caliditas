@@ -33,6 +33,8 @@ const data = {
 		"level":6,
 		"rules":["heat_aura-1"],
 		"on_play":"inc_ally_temp-1",
+		"on_ally_creature_spawn":"inc_temp-1",
+		"on_removed":"dec_ally_temp-1",
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/DivineGuardian.jpg")
 	},
@@ -43,8 +45,8 @@ const data = {
 		"temperature":1,
 		"level":2,
 		"rules":["inc_ally_temp-1"],
-		"on_play":"inc_ally_temp-1",
-		"target":"creature",
+		"on_play":"inc_temp-1",
+		"target":"creature-ally",
 		"animation":"fire_circle",
 		"image":preload("res://images/cards/fire_blade.jpg")
 	},
@@ -74,7 +76,7 @@ const data = {
 		"level":4,
 		"rules":["explosion"],
 		"on_play":"explosion",
-		"target":"creature",
+		"target":"creature-ally",
 		"animation":"explosion",
 		"image":preload("res://images/cards/fire_blade.jpg")
 	},
