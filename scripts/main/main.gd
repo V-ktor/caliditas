@@ -340,8 +340,8 @@ func use_effect(card,effect,player,target=null):
 		yield(timer,"timeout")
 		sort_hand(player)
 	elif (type=="move_to_hand"):
-		hand[enemy].push_back(target)
-		field[enemy].erase(target)
+		hand[target.owner].push_back(target)
+		field[target.owner].erase(target)
 		for c in target.equiped:
 			c.destroy()
 		target.equiped.clear()
@@ -349,6 +349,8 @@ func use_effect(card,effect,player,target=null):
 		target.node.type = "hand"
 		target.temperature = Cards.data[target.ID]["temperature"]
 		target.level = Cards.data[target.ID]["level"]
+		if (target.owner!=player || (ai && player!=PLAYER1)):
+			target.node.get_node("Animation").play("hide")
 		used_positions[enemy].erase(target.pos)
 		sort_hand(enemy)
 	elif (type=="invert_temp"):
@@ -460,6 +462,8 @@ func sort_hand(player):
 		ID += 1
 
 func select(card,type):
+	if (ai && player!=PLAYER1):
+		return
 	if (type!=select):
 		deselect(false)
 		emit_signal("target_selected",null)
