@@ -105,7 +105,7 @@ func get_spell():
 			elif (e=="neutralize_temp"):
 				for tg in Main.field[enemy]:
 					var v = value+abs(tg.temperature)+2*a
-					if (v>score):
+					if (tg.temperature!=0 && v>score):
 						c = card
 						t = tg
 			elif (e=="inc_ally_temp"):
@@ -182,7 +182,7 @@ func get_spell():
 			elif (e=="explosion"):
 				for ally in Main.field[player]:
 					var v = value-abs(ally.temperature)-0.5*ally.level
-					var balance = -0.5
+					var balance = -0.75
 					for t in Main.field[player]:
 						if (abs(t.temperature)<abs(ally.temperature)):
 							balance -= 1
