@@ -259,7 +259,6 @@ func spawn_creature(card,player):
 	var pos = Vector2(225*pID,200*(1-2*player))
 	used_positions[player].push_back(pID)
 	card.pos = pID
-	field[player].push_back(card)
 	hand[player].erase(card)
 	card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	card.node.get_node("Tween").start()
@@ -280,6 +279,7 @@ func spawn_creature(card,player):
 	for c in field[(player+1)%2]:
 		if (Cards.data[c.ID].has("on_enemy_creature_spawn")):
 			apply_effect(c,"on_enemy_creature_spawn",card)
+	field[player].push_back(card)
 
 func create_creature(type,player,pos):
 	var node = Cards.create_card(type)
@@ -461,7 +461,11 @@ func apply_effect(card,event,target=null):
 				create_creature(array[2],card.owner,card.node.pos)
 	elif (base=="assemble"):
 		for c in field[card.owner]:
-			card.temperature  += c.temperature
+			card.temperature += c.temperature
+		# Weird work-around incomming.
+		for c in field[card.owner]:
+			c.destroy()
+		for c in field[card.owner]:
 			c.destroy()
 		card.update()
 	elif (base=="global_diffusion"):
@@ -497,6 +501,11 @@ func attack(attacker,target,no_counter=false):
 			var pi = load("res://scenes/animations/"+Cards.data[attacker.ID]["animation"]+".tscn").instance()
 			attacker.node.add_child(pi)
 			pi.look_at(target.node.get_global_position())
+		if (Cards.data[target.ID].has("on_dead")):
+			apply_effect(target,"on_dead",attacker)
+		for equiped in target.equiped:
+			if (Cards.data[equiped.ID].has("on_dead")):
+				apply_effect(equiped,"on_dead",attacker)
 		target.destroy()
 		attacker.node.get_node("Tween").interpolate_property(attacker.node,"global_position",pos_a,pos,0.4,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
 		attacker.node.get_node("Tween").interpolate_property(attacker.node,"global_position",pos,pos_a,0.6,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.4)

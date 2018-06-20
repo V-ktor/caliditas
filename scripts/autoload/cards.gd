@@ -11,6 +11,16 @@ const data = {
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/fire_creature.jpg")
 	},
+	"burning_wisp":{
+		"type":"creature",
+		"temperature":1,
+		"level":2,
+		"rules":["inc_player_temp-2"],
+		"on_play":"inc_player_temp-2",
+		"on_removed":"dec_player_temp-2",
+		"animation":"fire_blast",
+		"image":preload("res://images/cards/fire_creature.jpg")
+	},
 	"greater_fire_elemental":{
 		"type":"creature",
 		"temperature":3,
@@ -19,11 +29,29 @@ const data = {
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/fire_creature.jpg")
 	},
+	"explosive_wisp":{
+		"type":"creature",
+		"temperature":1,
+		"level":4,
+		"rules":["dead_kill_all_cold-2"],
+		"on_dead":"kill_all_cold-2",
+		"animation":"fire_blast",
+		"image":preload("res://images/cards/fire_creature.jpg")
+	},
 	"lava_elemental":{
 		"type":"creature",
 		"temperature":4,
 		"level":5,
 		"rules":[],
+		"animation":"fire_blast",
+		"image":preload("res://images/cards/Magma_Spawn_by_Katarzyna_Zalecka_and_Gabriel_Verdon.jpg")
+	},
+	"lava_golem":{
+		"type":"creature",
+		"temperature":3,
+		"level":5,
+		"rules":["spawn_dead-2-fire_elemental"],
+		"on_dead":"spawn-2-fire_elemental",
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/Magma_Spawn_by_Katarzyna_Zalecka_and_Gabriel_Verdon.jpg")
 	},
@@ -90,6 +118,15 @@ const data = {
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/welcome_to_air_OMGWTF_by_shiroikuro.jpg")
 	},
+	"freezing_wisp":{
+		"type":"creature",
+		"temperature":-1,
+		"level":2,
+		"rules":["dec_attacker_temp-1"],
+		"on_attacked":"dec_temp-1",
+		"animation":"ice_blast",
+		"image":preload("res://images/cards/ice_creature.jpg")
+	},
 	"greater_water_elemental":{
 		"type":"creature",
 		"temperature":-3,
@@ -130,7 +167,7 @@ const data = {
 	},
 	"hailstorm":{
 		"type":"spell",
-		"temperature":-2,
+		"temperature":0,
 		"level":4,
 		"rules":["kill_all_hot-2"],
 		"on_play":"kill_all_hot-2",
@@ -157,6 +194,46 @@ const data = {
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
+	"ice_armor":{
+		"type":"spell",
+		"temperature":-2,
+		"level":2,
+		"rules":["ice_armor-2"],
+		"on_play":"",
+		"on_new_turn":"ice_armor-2",
+		"target":"creature-ally",
+		"animation":"ice_circle",
+		"image":preload("res://images/cards/ice_spell.jpg")
+	},
+	
+	# neutral creatures
+	"wind_elemental":{
+		"type":"creature",
+		"temperature":0,
+		"level":2,
+		"rules":["kill_attacker_level-3"],
+		"on_attacked":"kill_level-3",
+		"animation":"",
+		"image":preload("res://images/cards/back.png")
+	},
+	"lightning_elemental":{
+		"type":"creature",
+		"temperature":0,
+		"level":4,
+		"rules":["kill_attacker_level-5"],
+		"on_attacked":"kill_level-5",
+		"animation":"",
+		"image":preload("res://images/cards/back.png")
+	},
+	"assembled_golem":{
+		"type":"creature",
+		"temperature":0,
+		"level":6,
+		"rules":["assemble"],
+		"on_play":"assemble",
+		"animation":"",
+		"image":preload("res://images/cards/back.png")
+	},
 	
 	# neutral spells
 	"draw":{
@@ -174,6 +251,16 @@ const data = {
 		"level":3,
 		"rules":["invert_temp"],
 		"on_play":"invert_temp",
+		"target":"creature",
+		"animation":"neutralize",
+		"image":preload("res://images/cards/spell_neutral.jpg")
+	},
+	"average":{
+		"type":"spell",
+		"temperature":0,
+		"level":5,
+		"rules":["global_diffusion_all-1"],
+		"on_play":"global_diffusion_all-1",
 		"target":"creature",
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")

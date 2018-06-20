@@ -1,13 +1,16 @@
 extends Node
 
 const DEFAULT = {
-	"fire_elemental":4,"greater_fire_elemental":3,"lava_elemental":2,"fire_avatar":2,
+	"fire_elemental":3,"greater_fire_elemental":2,"burning_wisp":1,
+	"lava_elemental":2,"fire_avatar":2,
 	"fire_blade":2,"blaze":1,"fire_ball":2,"explosion":2,
-	"water_elemental":4,"greater_water_elemental":3,"ice_elemental":2,"ice_avatar":2,
+	"water_elemental":3,"greater_water_elemental":2,"freezing_wisp":1,
+	"ice_elemental":2,"ice_avatar":2,
 	"chill":2,"equalize":2,"hailstorm":1,"flash_flood":2,
+	"wind_elemental":1,"lightning_elemental":1,
 	"draw":2,"inversion":2
 }
-const MAX_MULT = 4
+const MAX_MULT = 3
 const MAX_CARDS = 40
 
 var deck = DEFAULT.duplicate()
