@@ -63,7 +63,7 @@ class Card:
 			var offset = min(75,200/equiped.size())
 			var pos = node.get_global_position()+Vector2(0,offset*(i+1))*(1-2*owner)
 			card.node._z = -i-1
-			card.node.z_index = -i-1
+			card.node.set_z_index(-i-1)
 			card.node.pos = pos
 			card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 			card.node.get_node("Tween").start()
@@ -204,7 +204,7 @@ func play_card(card,player,target=null):
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		card.node.get_node("Tween").start()
 		card.node._z = 0
-		card.node.z_index = 0
+		card.node.set_z_index(0)
 		card.in_game = true
 		card.node.type = "creature"
 		card.node.pos = pos
@@ -238,7 +238,7 @@ func play_card(card,player,target=null):
 			card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 			card.node.get_node("Tween").start()
 			card.node._z = -state["target"].equiped.size()-1
-			card.node.z_index = -state["target"].equiped.size()-1
+			card.node.set_z_index(-state["target"].equiped.size()-1)
 			card.node.type = "equiped"
 			card.node.pos = pos
 			state["target"].equiped.push_back(card)
@@ -271,6 +271,7 @@ func play_card(card,player,target=null):
 	deselect(false)
 	update_stats()
 	sort_hand(player)
+	sort_cards()
 
 func use_effect(card,effect,player,target=null):
 	var data = Cards.data[card.ID]
@@ -527,7 +528,7 @@ func draw_card(pl):
 	hand[pl].push_back(card)
 	node.card = card
 	node._z = 1
-	node.z_index = 1
+	node.set_z_index(1)
 	node.set_position(OS.get_window_size()/2.0*Vector2(-1+2*pl,1-2*pl)*zoom)
 	get_node("Cards").add_child(node)
 	node.get_node("Tween").interpolate_property(node,"global_position",node.get_global_position(),pos1,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
@@ -545,6 +546,7 @@ func draw_card(pl):
 			node.get_node("Animation").play("hide",-1,10.0)
 
 func sort_hand(player):
+	# Shift the cards in hand to their right positions with offset depending on their number. Therefore they all fit onto the screen.
 	if (player<PLAYER1):
 		return
 	
@@ -556,6 +558,18 @@ func sort_hand(player):
 		card.node.get_node("Tween").start()
 		card.node.pos = pos
 		ID += 1
+
+func sort_cards():
+	# Sort the ordering of card nodes in the tree depending on z index. That will ensure the Control nodes of the cards used for input overlap corresponding to the z index.
+	var z_min = 0
+	for card in get_node("Cards").get_children():
+		if (card.get_z_index()<z_min):
+			z_min = card.get_z_index()
+	
+	for z in range(z_min,1):
+		for card in get_node("Cards").get_children():
+			if (card.get_z_index()==z):
+				card.raise()
 
 func select(card,type):
 	if (ai && player!=PLAYER1):
