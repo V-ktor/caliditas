@@ -283,7 +283,11 @@ func create_card(type):
 	ci.get_node("Name").set_text(tr(type.to_upper()))
 	ci.get_node("Tags").set_text(tr(data[type]["type"].to_upper()))
 	for s in data[type]["rules"]:
-		text += tr(s.to_upper()+"_DESC")+"\n"
+		var array = s.split("-")
+		var line = tr(array[0].to_upper()+"_DESC")+"\n"
+		for i in range(1,array.size()):
+			line = line.replace("%"+str(i),tr(array[i].to_upper()))
+		text += line
 	ci.get_node("Desc").set_text(text)
 	ci.get_node("Level").set_text(str(data[type]["level"]))
 	ci.get_node("Temp").set_text(str(data[type]["temperature"]))
