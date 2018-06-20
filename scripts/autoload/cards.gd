@@ -213,7 +213,7 @@ const data = {
 		"level":2,
 		"rules":["kill_attacker_level-3"],
 		"on_attacked":"kill_level-3",
-		"animation":"",
+		"animation":"ice_blast",
 		"image":preload("res://images/cards/back.png")
 	},
 	"lightning_elemental":{
@@ -222,7 +222,7 @@ const data = {
 		"level":4,
 		"rules":["kill_attacker_level-5"],
 		"on_attacked":"kill_level-5",
-		"animation":"",
+		"animation":"ice_blast",
 		"image":preload("res://images/cards/back.png")
 	},
 	"assembled_golem":{
@@ -231,7 +231,7 @@ const data = {
 		"level":6,
 		"rules":["assemble"],
 		"on_play":"assemble",
-		"animation":"",
+		"animation":"ice_blast",
 		"image":preload("res://images/cards/back.png")
 	},
 	
@@ -261,7 +261,6 @@ const data = {
 		"level":5,
 		"rules":["global_diffusion_all-1"],
 		"on_play":"global_diffusion_all-1",
-		"target":"creature",
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	}

@@ -208,7 +208,7 @@ func play_card(card,player,target=null):
 		call_deferred("use_effect",card,"on_play",player,target)
 		yield(self,"effect_used")
 		if (state==null || !state["used"]):
-			printt("Invalid selection, break spell casting.")
+			print("Invalid selection, break spell casting.")
 			deselect(false)
 			if (ai && player==PLAYER2):
 				card.node.get_node("Animation").play("hide")
@@ -360,7 +360,6 @@ func use_effect(card,effect,player,target=null):
 	return
 
 func apply_effect(card,event,target=null):
-	printt("apply effect",event)
 	var effect = Cards.data[card.ID][event]
 	var enemy = (card.owner+1)%2
 	var array = effect.split("-")
@@ -368,8 +367,6 @@ func apply_effect(card,event,target=null):
 	var ammount
 	if (array.size()>1):
 		ammount = int(array[1])
-	
-	printt(base,ammount)
 	
 	if (base=="inc_temp"):
 		target.temperature += ammount
@@ -460,12 +457,8 @@ func apply_effect(card,event,target=null):
 			for i in range(ammount):
 				create_creature(array[2],card.owner,card.node.pos)
 	elif (base=="assemble"):
-		for c in field[card.owner]:
+		for c in []+field[card.owner]:
 			card.temperature += c.temperature
-		# Weird work-around incomming.
-		for c in field[card.owner]:
-			c.destroy()
-		for c in field[card.owner]:
 			c.destroy()
 		card.update()
 	elif (base=="global_diffusion"):
