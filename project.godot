@@ -10,7 +10,7 @@ config_version=3
 
 [application]
 
-config/name="Caliditas Extrema"
+config/name="Caliditas"
 run/main_scene="res://scenes/menu/menu.tscn"
 config/icon="res://icon.png"
 
