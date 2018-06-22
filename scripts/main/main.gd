@@ -431,7 +431,7 @@ func apply_effect(card,event,target=null):
 	elif (base=="move_to_hand"):
 		hand[target.owner].push_back(target)
 		field[target.owner].erase(target)
-		for c in target.equiped:
+		for c in []+target.equiped:
 			c.destroy()
 		target.equiped.clear()
 		target.in_game = false
@@ -462,10 +462,10 @@ func apply_effect(card,event,target=null):
 			c.destroy()
 		card.update()
 	elif (base=="global_diffusion"):
-		var global_temp = get_player_temperature(PLAYER1)+get_player_temperature(PLAYER2)
+		var global_temp = (get_player_temperature(PLAYER1)+get_player_temperature(PLAYER2))/2
 		target.temperature += ammount*sign(global_temp-target.temperature)
 	elif (base=="global_diffusion_all"):
-		var global_temp = get_player_temperature(PLAYER1)+get_player_temperature(PLAYER2)
+		var global_temp = (get_player_temperature(PLAYER1)+get_player_temperature(PLAYER2))/2
 		for c in field[PLAYER1]+field[PLAYER2]:
 			c.temperature += ammount*sign(global_temp-c.temperature)
 	elif (base=="inc_player_temp"):

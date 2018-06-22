@@ -22,4 +22,9 @@ HELP_3,"Your _creatures_ attack right after you end your turn. They chose to att
 HELP_4,"If a player is hurt he draws an additional card next turn. If his _health_ drops below 50% for the first time he draws 4 cards instead. Otherwise the player draws one card at the start of his turn."
 HELP_5,"Cards require _mana_ in order to be played. Each player starts with 3 mana points and gets one more point for each turn passed."
 HELP_6,"Left mouse button to select cards, right mouse button for zoom."
+CREDITS,Credits
+PROGRAMMING,Programming
+GRAPHICS,Graphics
+MUSIC,Music
+SOUNDS,Sounds
 

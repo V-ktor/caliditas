@@ -1,24 +1,14 @@
 extends Node
 
-#const DEFAULT = {
-#	"fire_elemental":3,"greater_fire_elemental":2,"burning_wisp":1,
-#	"lava_elemental":2,"fire_avatar":2,
-#	"fire_blade":2,"blaze":1,"fire_ball":2,"explosion":2,
-#	"water_elemental":3,"greater_water_elemental":2,"freezing_wisp":1,
-#	"ice_elemental":2,"ice_avatar":2,
-#	"chill":2,"equalize":2,"hailstorm":1,"flash_flood":2,
-#	"wind_elemental":1,"lightning_elemental":1,
-#	"draw":2,"inversion":2
-#}
 const DEFAULT = {
-	"greater_fire_elemental":3,"explosive_wisp":3,
-	"lava_golem":3,"fire_avatar":2,
-	"fire_blade":1,"blaze":1,"fire_ball":2,"explosion":2,
-	"water_elemental":3,"greater_water_elemental":2,
-	"ice_elemental":1,"ice_avatar":2,
-	"chill":1,"equalize":2,"hailstorm":1,"flash_flood":2,"ice_armor":3,
-	"wind_elemental":1,"lightning_elemental":1,"assembled_golem":3,
-	"draw":2,"inversion":2,"average":3
+	"fire_elemental":3,"greater_fire_elemental":2,"burning_wisp":1,
+	"lava_elemental":2,"fire_avatar":2,
+	"fire_blade":2,"blaze":1,"fire_ball":2,"explosion":2,
+	"water_elemental":3,"greater_water_elemental":2,"freezing_wisp":1,
+	"ice_elemental":2,"ice_avatar":2,
+	"chill":2,"equalize":2,"hailstorm":1,"flash_flood":2,
+	"wind_elemental":1,"lightning_elemental":1,
+	"draw":2,"inversion":2
 }
 const MAX_MULT = 3
 const MAX_CARDS = 40
@@ -219,6 +209,7 @@ func _ready():
 	get_node("Panel/VBoxContainer/Button2").connect("pressed",self,"_show_deck")
 	get_node("Panel/VBoxContainer/Button5").connect("pressed",self,"_hide")
 	get_node("Panel/VBoxContainer/Button6").connect("pressed",get_node("Info"),"popup_centered")
+	get_node("Panel/VBoxContainer/Button8").connect("pressed",get_node("Credits"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button4").connect("pressed",self,"quit")
 	get_node("Quit").connect("confirmed",get_tree(),"quit")
 	get_node("Deck/HBoxContainer/ButtonA").connect("pressed",self,"_change_deck")
@@ -244,3 +235,19 @@ func _ready():
 			get_node("Info/Text").push_color(Color(1.0,1.0,1.0))
 		get_node("Info/Text").add_text("\n\n")
 	get_node("Info/Text").add_text(tr("CONTROLS")+":\n"+tr("HELP_6"))
+	
+	get_node("Credits/Text").add_text(tr("PROGRAMMING")+":\n - Viktor Hahn\n\n")
+	get_node("Credits/Text").add_text(tr("GRAPHICS")+":\n - Justin Nichol\n - Katarzyna Zalecka (")
+	get_node("Credits/Text").append_bbcode("[url=http://kasia88.deviantart.com]kasia88.deviantart.com[/url]")
+	get_node("Credits/Text").add_text("), Gabriel Verdon (")
+	get_node("Credits/Text").append_bbcode("[url=http://www.gabrielverdon.com]www.gabrielverdon.com[/url]")
+	get_node("Credits/Text").add_text(") ")
+	get_node("Credits/Text").append_bbcode("[url=http://www.AncientBeast.com]www.AncientBeast.com[/url]\n")
+	get_node("Credits/Text").add_text(" - Viktor Hahn\n\n")
+	get_node("Credits/Text").add_text(tr("MUSIC")+":\n - Viktor Hahn\n\n")
+	get_node("Credits/Text").add_text(tr("SOUNDS")+":\n - Iwan 'qubodup' Gabovitch ")
+	get_node("Credits/Text").append_bbcode("[url=http://qubodup.net]qubodup.net[/url]\n")
+	get_node("Credits/Text").add_text(" - Michel Baradari ")
+	get_node("Credits/Text").append_bbcode("[url=http://apollo-music.de]apollo-music.de[/url]\n")
+	get_node("Credits/Text").add_text(" - p0ss\n - Bart K.\n - artisticdude\n - Blender Foundation\n - artisticdude\n - HaelDB\n - Ylmir\n")
+	get_node("Credits/Text").connect("meta_clicked",OS,"shell_open")
