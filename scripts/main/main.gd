@@ -200,7 +200,14 @@ func play_card(card,player,target=null):
 	if (!card.node.get_node("Image").is_visible() || card.node.get_node("Animation").get_current_animation()=="hide"):
 		card.node.get_node("Animation").play("show")
 	if (card.type=="creature"):
+		var p2
+		var p1 = Vector2(card.node.get_global_position().x,0.5*card.node.get_global_position().y)
 		spawn_creature(card,player)
+		card.node.get_node("Tween").remove_all()
+		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p1,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		p2 = Vector2(225*card.pos,200*(1-2*player))
+		card.node.get_node("Tween").interpolate_property(card.node,"global_position",p1,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
+		card.node.get_node("Tween").start()
 	elif (card.type=="spell" && Cards.data[card.ID].has("on_play")):
 		var p = Vector2(card.node.get_global_position().x,0.5*card.node.get_global_position().y)
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
@@ -216,7 +223,10 @@ func play_card(card,player,target=null):
 		
 		if (state.has("target") && state["target"]!=null && (state["target"] in field[PLAYER1]+field[PLAYER2])):
 			var pos = state["target"].node.get_global_position()+Vector2(0,(100*(state["target"].equiped.size()+3)-225*int(player==PLAYER2))*(1-2*state["target"].owner))
-			card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+			if (card.node.get_global_position()==p):
+				card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+			else:
+				card.node.get_node("Tween").interpolate_property(card.node,"global_position",p,pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
 			card.node.get_node("Tween").start()
 			card.node._z = -state["target"].equiped.size()-1
 			card.node.set_z_index(-state["target"].equiped.size()-1)
