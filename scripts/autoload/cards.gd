@@ -19,7 +19,7 @@ const data = {
 		"on_play":"inc_player_temp-2",
 		"on_removed":"dec_player_temp-2",
 		"animation":"fire_blast",
-		"image":preload("res://images/cards/fire_creature.jpg")
+		"image":preload("res://images/cards/wisp_fire.jpg")
 	},
 	"greater_fire_elemental":{
 		"type":"creature",
@@ -36,7 +36,7 @@ const data = {
 		"rules":["dead_kill_all_cold-2"],
 		"on_dead":"kill_all_cold-2",
 		"animation":"fire_blast",
-		"image":preload("res://images/cards/fire_creature.jpg")
+		"image":preload("res://images/cards/wisp_fire.jpg")
 	},
 	"lava_elemental":{
 		"type":"creature",
@@ -106,7 +106,7 @@ const data = {
 		"on_play":"explosion",
 		"target":"creature-ally",
 		"animation":"explosion",
-		"image":preload("res://images/cards/fire_blade.jpg")
+		"image":preload("res://images/cards/explosion.jpg")
 	},
 	
 	# ice creatures
@@ -228,7 +228,7 @@ const data = {
 	"assembled_golem":{
 		"type":"creature",
 		"temperature":0,
-		"level":6,
+		"level":5,
 		"rules":["assemble"],
 		"on_play":"assemble",
 		"animation":"ice_blast",
