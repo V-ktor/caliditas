@@ -23,6 +23,7 @@ HELP_4,"If a player is hurt he draws an additional card next turn. If his _healt
 HELP_5,"Cards require _mana_ in order to be played. Each player starts with 3 mana points and gets one more point for each turn passed."
 HELP_6,"Left mouse button to select cards, right mouse button for zoom."
 CREDITS,Credits
+ENGINE,Engine
 PROGRAMMING,Programming
 GRAPHICS,Graphics
 MUSIC,Music
