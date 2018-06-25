@@ -182,13 +182,13 @@ func get_spell():
 			elif (e=="invert_temp"):
 				for ally in Main.field[player]:
 					var v = value+0.5*ally.level+randi()%6
-					if (v>score):
+					if (ally.temperature!=0 && v>score):
 						c = card
 						t = ally
 						score = v
 				for tg in Main.field[enemy]:
 					var v = value+0.5*tg.level+randi()%6
-					if (v>score):
+					if (enemy.temperature!=0 && v>score):
 						c = card
 						t = tg
 						score = v
