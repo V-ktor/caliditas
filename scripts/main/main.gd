@@ -25,6 +25,8 @@ var state
 var using_card = false
 var ai = true
 
+signal card_played(player,card,target)
+signal turn_started(player)
 signal target_selected(target)
 signal effect_used()
 
@@ -263,6 +265,7 @@ func play_card(card,player,target=null):
 	update_stats()
 	sort_hand(player)
 	sort_cards()
+	emit_signal("card_played",player,card,target)
 
 func spawn_creature(card,player):
 	var pID = find_empty_position(player)
@@ -517,12 +520,13 @@ func attack(attacker,target,no_counter=false):
 		attack(target,attacker,true)
 
 
-func draw_card(pl):
+func draw_card(pl,ID=-1):
 	if (deck[pl].size()==0):
 		print("Player "+str(pl)+" has no cards left!")
 		return
 	
-	var ID = randi()%deck[pl].size()
+	if (ID<0):
+		ID = randi()%deck[pl].size()
 	var node = Cards.create_card(deck[pl][ID])
 	var p = hand[pl].size()
 	var card = Card.new(deck[pl][ID],pl,node)
@@ -670,6 +674,8 @@ func next_turn(draw=1):
 	
 	if (ai && player==PLAYER2):
 		ai_turn(player)
+	
+	emit_signal("turn_started",player)
 
 func attack_phase():
 	var enemy = (player+1)%2

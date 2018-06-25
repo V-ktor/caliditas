@@ -49,7 +49,31 @@ size_flags_vertical = 1
 alignment = 0
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Button5" type="Button" parent="Panel/VBoxContainer" index="0"]
+[node name="Button9" type="Button" parent="Panel/VBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 192.0
+margin_bottom = 45.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "TUTORIAL"
+flat = false
+align = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Button5" type="Button" parent="Panel/VBoxContainer" index="1"]
 
 visible = false
 anchor_left = 0.0
@@ -74,14 +98,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button1" type="Button" parent="Panel/VBoxContainer" index="1"]
+[node name="Button1" type="Button" parent="Panel/VBoxContainer" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_top = 49.0
 margin_right = 192.0
-margin_bottom = 52.0
+margin_bottom = 94.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -98,15 +123,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button7" type="Button" parent="Panel/VBoxContainer" index="2"]
+[node name="Button7" type="Button" parent="Panel/VBoxContainer" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 56.0
+margin_top = 98.0
 margin_right = 192.0
-margin_bottom = 108.0
+margin_bottom = 143.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -123,15 +148,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button2" type="Button" parent="Panel/VBoxContainer" index="3"]
+[node name="Button2" type="Button" parent="Panel/VBoxContainer" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 112.0
+margin_top = 147.0
 margin_right = 192.0
-margin_bottom = 164.0
+margin_bottom = 192.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -148,15 +173,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button6" type="Button" parent="Panel/VBoxContainer" index="4"]
+[node name="Button6" type="Button" parent="Panel/VBoxContainer" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 168.0
+margin_top = 196.0
 margin_right = 192.0
-margin_bottom = 220.0
+margin_bottom = 241.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -173,15 +198,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button3" type="Button" parent="Panel/VBoxContainer" index="5"]
+[node name="Button3" type="Button" parent="Panel/VBoxContainer" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 224.0
+margin_top = 245.0
 margin_right = 192.0
-margin_bottom = 276.0
+margin_bottom = 290.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -199,15 +224,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button8" type="Button" parent="Panel/VBoxContainer" index="6"]
+[node name="Button8" type="Button" parent="Panel/VBoxContainer" index="7"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 280.0
+margin_top = 294.0
 margin_right = 192.0
-margin_bottom = 332.0
+margin_bottom = 339.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -224,13 +249,13 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button4" type="Button" parent="Panel/VBoxContainer" index="7"]
+[node name="Button4" type="Button" parent="Panel/VBoxContainer" index="8"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 336.0
+margin_top = 343.0
 margin_right = 192.0
 margin_bottom = 392.0
 rect_pivot_offset = Vector2( 0, 0 )

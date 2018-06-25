@@ -17,6 +17,8 @@ var deck = DEFAULT.duplicate()
 var _deck
 var active = false
 
+var tut_scene = preload("res://scenes/main/tutorial.tscn")
+
 
 func _skirmish():
 	# Start a match vs the AI.
@@ -29,6 +31,8 @@ func _skirmish():
 	_hide()
 	active = true
 	get_node("Panel/VBoxContainer/Button5").show()
+	if (has_node("/root/Tutorial")):
+		get_node("/root/Tutorial").queue_free()
 
 func _local():
 	# Start a match without AI.
@@ -41,6 +45,25 @@ func _local():
 	_hide()
 	active = true
 	get_node("Panel/VBoxContainer/Button5").show()
+	if (has_node("/root/Tutorial")):
+		get_node("/root/Tutorial").queue_free()
+
+func _tutorial():
+	# Start a match vs the AI and show the tutorial.
+	var ti = tut_scene.instance()
+	Main.reset()
+	Main.deck[0] = get_deck(DEFAULT)
+	Main.deck[1] = get_deck(DEFAULT)
+	Main.ai = true
+	UI._show()
+	_hide()
+	active = true
+	get_node("Panel/VBoxContainer/Button5").show()
+	if (has_node("/root/Tutorial")):
+		get_node("/root/Tutorial").queue_free()
+		get_node("/root/Tutorial").set_name("deleted")
+	ti.set_name("Tutorial")
+	get_tree().get_root().add_child(ti)
 
 
 func game_over(victory):
@@ -55,6 +78,8 @@ func game_over(victory):
 		get_node("GameOver/Text").set_text(tr("YOU_LOST"))
 	get_node("GameOver").popup_centered()
 	Music.temperature = 0
+	if (has_node("/root/Tutorial")):
+		get_node("/root/Tutorial").queue_free()
 
 
 func _hide():
@@ -206,6 +231,7 @@ func _ready():
 	# connect buttons
 	get_node("Panel/VBoxContainer/Button1").connect("pressed",self,"_skirmish")
 	get_node("Panel/VBoxContainer/Button7").connect("pressed",self,"_local")
+	get_node("Panel/VBoxContainer/Button9").connect("pressed",self,"_tutorial")
 	get_node("Panel/VBoxContainer/Button2").connect("pressed",self,"_show_deck")
 	get_node("Panel/VBoxContainer/Button5").connect("pressed",self,"_hide")
 	get_node("Panel/VBoxContainer/Button6").connect("pressed",get_node("Info"),"popup_centered")
