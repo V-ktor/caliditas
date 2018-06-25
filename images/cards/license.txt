@@ -8,7 +8,7 @@ Katarzyna Zalecka (concept) http://kasia88.deviantart.com;
 Gabriel Verdon (artwork) http://www.gabrielverdon.com
 License: CC-BY-SA 3.0
 
-fire_blade.jpg, fire_creature.jpg, ice_creature.jpg, ice_spell.jpg, spell_neutral.jpg:
+explosion.jpg, fire_blade.jpg, fire_creature.jpg, ice_creature.jpg, ice_spell.jpg, spell_neutral.jpg, wisp_fire.jpg:
 Copyright: Viktor Hahn
 License: CC-BY-SA 3.0
 
