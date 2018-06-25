@@ -50,7 +50,7 @@ _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="DynamicFont" id=4]
 
-size = 96
+size = 80
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 7 )
@@ -623,7 +623,7 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = -687.0
-margin_top = 516.0
+margin_top = 502.0
 margin_right = 688.0
 margin_bottom = 988.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -637,13 +637,14 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "1
 2
 3
-4"
+4
+5"
 autowrap = true
 clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Rect", "Visibility", "custom_colors", "custom_fonts" ]
+_sections_unfolded = [ "Margin", "Rect", "Visibility", "custom_colors", "custom_fonts" ]
 
 [node name="Tags" type="Label" parent="." index="7"]
 
@@ -654,7 +655,7 @@ anchor_bottom = 0.0
 margin_left = -687.0
 margin_top = 406.0
 margin_right = 688.0
-margin_bottom = 516.0
+margin_bottom = 502.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -669,7 +670,7 @@ clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Rect", "Visibility", "custom_colors", "custom_fonts" ]
+_sections_unfolded = [ "Margin", "Rect", "Visibility", "custom_colors", "custom_fonts" ]
 
 [node name="Name" type="Label" parent="." index="8"]
 

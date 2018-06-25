@@ -8,6 +8,7 @@ const data = {
 		"temperature":2,
 		"level":2,
 		"rules":[],
+		"tags":["fire","elemental"],
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/fire_creature.jpg")
 	},
@@ -18,6 +19,7 @@ const data = {
 		"rules":["inc_player_temp-2"],
 		"on_play":"inc_player_temp-2",
 		"on_removed":"dec_player_temp-2",
+		"tags":["fire","elemental"],
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/wisp_fire.jpg")
 	},
@@ -26,6 +28,7 @@ const data = {
 		"temperature":3,
 		"level":3,
 		"rules":[],
+		"tags":["fire","elemental"],
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/fire_creature.jpg")
 	},
@@ -35,6 +38,7 @@ const data = {
 		"level":4,
 		"rules":["dead_kill_all_cold-2"],
 		"on_dead":"kill_all_cold-2",
+		"tags":["fire","elemental","area","trap"],
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/wisp_fire.jpg")
 	},
@@ -43,6 +47,7 @@ const data = {
 		"temperature":4,
 		"level":5,
 		"rules":[],
+		"tags":["fire","elemental"],
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/Magma_Spawn_by_Katarzyna_Zalecka_and_Gabriel_Verdon.jpg")
 	},
@@ -52,6 +57,7 @@ const data = {
 		"level":5,
 		"rules":["spawn_dead-2-fire_elemental"],
 		"on_dead":"spawn-2-fire_elemental",
+		"tags":["fire","golem"],
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/Magma_Spawn_by_Katarzyna_Zalecka_and_Gabriel_Verdon.jpg")
 	},
@@ -63,6 +69,7 @@ const data = {
 		"on_play":"inc_ally_temp-1",
 		"on_ally_creature_spawn":"inc_temp-1",
 		"on_removed":"dec_ally_temp-1",
+		"tags":["fire","elemental","area","support"],
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/DivineGuardian.jpg")
 	},
@@ -75,6 +82,7 @@ const data = {
 		"rules":["inc_ally_temp-1"],
 		"on_play":"inc_temp-1",
 		"target":"creature-ally",
+		"tags":["fire","equipment"],
 		"animation":"fire_circle",
 		"image":preload("res://images/cards/fire_blade.jpg")
 	},
@@ -85,6 +93,7 @@ const data = {
 		"rules":["kill_cold-3"],
 		"on_play":"kill_cold-3",
 		"target":"creature",
+		"tags":["fire","attack"],
 		"animation":"fire_ball",
 		"image":preload("res://images/cards/fire_blade.jpg")
 	},
@@ -95,6 +104,7 @@ const data = {
 		"rules":["inc_temp-2"],
 		"on_play":"inc_temp-2",
 		"target":"creature",
+		"tags":["fire"],
 		"animation":"fire_circle",
 		"image":preload("res://images/cards/fire_blade.jpg")
 	},
@@ -105,6 +115,7 @@ const data = {
 		"rules":["explosion"],
 		"on_play":"explosion",
 		"target":"creature-ally",
+		"tags":["fire","area","attack"],
 		"animation":"explosion",
 		"image":preload("res://images/cards/explosion.jpg")
 	},
@@ -115,6 +126,7 @@ const data = {
 		"temperature":-2,
 		"level":2,
 		"rules":[],
+		"tags":["ice","elemental"],
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/welcome_to_air_OMGWTF_by_shiroikuro.jpg")
 	},
@@ -124,6 +136,7 @@ const data = {
 		"level":2,
 		"rules":["dec_attacker_temp-1"],
 		"on_attacked":"dec_temp-1",
+		"tags":["ice","elemental","trap"],
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/ice_creature.jpg")
 	},
@@ -132,6 +145,7 @@ const data = {
 		"temperature":-3,
 		"level":3,
 		"rules":[],
+		"tags":["ice","elemental"],
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/ice_creature.jpg")
 	},
@@ -141,6 +155,7 @@ const data = {
 		"level":4,
 		"rules":["fire_armor-2"],
 		"on_new_turn":"fire_armor-2",
+		"tags":["ice","elemental"],
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/ice_creature.jpg")
 	},
@@ -150,6 +165,7 @@ const data = {
 		"level":6,
 		"rules":["ice_armor-2"],
 		"on_new_turn":"ice_armor-2",
+		"tags":["ice","elemental"],
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/ice_creature.jpg")
 	},
@@ -162,6 +178,7 @@ const data = {
 		"rules":["dec_temp-1"],
 		"on_play":"dec_temp-1",
 		"target":"creature",
+		"tags":["ice"],
 		"animation":"ice_circle",
 		"image":preload("res://images/cards/ice_spell.jpg")
 	},
@@ -171,6 +188,7 @@ const data = {
 		"level":4,
 		"rules":["kill_all_hot-2"],
 		"on_play":"kill_all_hot-2",
+		"tags":["ice","area","attack"],
 		"animation":"hailstorm",
 		"image":preload("res://images/cards/ice_spell.jpg")
 	},
@@ -181,6 +199,7 @@ const data = {
 		"rules":["move_to_hand"],
 		"on_play":"move_to_hand",
 		"target":"creature",
+		"tags":["ice"],
 		"animation":"ice_circle",
 		"image":preload("res://images/cards/ice_spell.jpg")
 	},
@@ -191,6 +210,7 @@ const data = {
 		"rules":["neutralize_temp-2"],
 		"on_play":"neutralize_temp-2",
 		"target":"creature",
+		"tags":["ice"],
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
@@ -202,6 +222,7 @@ const data = {
 		"on_play":"",
 		"on_new_turn":"ice_armor-2",
 		"target":"creature-ally",
+		"tags":["ice","equipment"],
 		"animation":"ice_circle",
 		"image":preload("res://images/cards/ice_spell.jpg")
 	},
@@ -213,6 +234,7 @@ const data = {
 		"level":2,
 		"rules":["kill_attacker_level-3"],
 		"on_attacked":"kill_level-3",
+		"tags":["neutral","elemental"],
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/back.png")
 	},
@@ -222,6 +244,7 @@ const data = {
 		"level":4,
 		"rules":["kill_attacker_level-5"],
 		"on_attacked":"kill_level-5",
+		"tags":["neutral","elemental"],
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/back.png")
 	},
@@ -231,6 +254,7 @@ const data = {
 		"level":5,
 		"rules":["assemble"],
 		"on_play":"assemble",
+		"tags":["neutral","golem"],
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/back.png")
 	},
@@ -242,6 +266,7 @@ const data = {
 		"level":3,
 		"rules":["draw-3"],
 		"on_play":"draw-3",
+		"tags":[],
 		"animation":"ice_circle",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
@@ -252,6 +277,7 @@ const data = {
 		"rules":["invert_temp"],
 		"on_play":"invert_temp",
 		"target":"creature",
+		"tags":[],
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
@@ -261,6 +287,7 @@ const data = {
 		"level":5,
 		"rules":["global_diffusion_all-1"],
 		"on_play":"global_diffusion_all-1",
+		"tags":["area"],
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	}
@@ -278,9 +305,12 @@ var base = preload("res://scenes/main/card_base.tscn")
 func create_card(type):
 	var ci = base.instance()
 	var text = ""
+	var tag_text = tr(data[type]["type"].to_upper())+" - "
 	ci.get_node("Image").set_texture(data[type]["image"])
 	ci.get_node("Name").set_text(tr(type.to_upper()))
-	ci.get_node("Tags").set_text(tr(data[type]["type"].to_upper()))
+	for t in data[type]["tags"]:
+		tag_text += tr(t.to_upper())+" "
+	ci.get_node("Tags").set_text(tag_text)
 	for s in data[type]["rules"]:
 		var array = s.split("-")
 		var line = tr(array[0].to_upper()+"_DESC")+"\n"

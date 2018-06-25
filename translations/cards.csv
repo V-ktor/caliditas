@@ -1,4 +1,14 @@
 ,en
+NEUTRAL,Neutral
+FIRE,Fire
+ICE,Ice
+ELEMENTAL,Elemental
+GOLEM,Golem
+AREA,Area
+SUPPORT,Support
+EQUIPMENT,Equipment
+ATTACK,Attack
+TRAP,Trap
 FIRE_ELEMENTAL,Fire Elemental
 GREATER_FIRE_ELEMENTAL,Greater Fire Elemental
 LAVA_ELEMENTAL,Lava Elemental
