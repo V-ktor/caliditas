@@ -188,7 +188,7 @@ func get_spell():
 						score = v
 				for tg in Main.field[enemy]:
 					var v = value+0.5*tg.level+randi()%6
-					if (enemy.temperature!=0 && v>score):
+					if (tg.temperature!=0 && v>score):
 						c = card
 						t = tg
 						score = v
