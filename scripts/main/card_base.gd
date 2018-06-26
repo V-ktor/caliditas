@@ -47,7 +47,7 @@ func selected():
 	Main.select(card,type)
 
 func _ready():
-	
+	get_node("White").set_material(get_node("White").get_material().duplicate())
 	get_node("Button").connect("pressed",self,"selected")
 	get_node("Button").connect("gui_input",self,"_gui_input")
 #	get_node("Button").connect("mouse_entered",self,"zoom")

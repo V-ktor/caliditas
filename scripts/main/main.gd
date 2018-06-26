@@ -255,7 +255,7 @@ func play_card(card,player,target=null):
 			timer.set_wait_time(0.5)
 			timer.start()
 			yield(timer,"timeout")
-			card.node.get_node("AnimationPlayer").play("delayed_fade_out")
+			card.node.get_node("AnimationPlayer").play("fizzle")
 		card.in_game = true
 		hand[player].erase(card)
 	
@@ -571,12 +571,13 @@ func sort_hand(player):
 func sort_cards():
 	# Sort the ordering of card nodes in the tree depending on z index.
 	# That will ensure the Control nodes of the cards used for input overlap corresponding to the z index.
+	# Does not work though.
 	var z_min = 0
 	for card in get_node("Cards").get_children():
 		if (card.get_z_index()<z_min):
 			z_min = card.get_z_index()
 	
-	for z in range(z_min,1):
+	for z in range(z_min,2):
 		for card in get_node("Cards").get_children():
 			if (card.get_z_index()==z):
 				card.raise()

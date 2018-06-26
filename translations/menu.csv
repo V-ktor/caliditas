@@ -8,6 +8,8 @@ OPTIONS,Options
 QUIT,Quit
 QUIT?,Quit?
 RESET,Reset
+OK,OK
+APPLY,Apply
 CANCEL,Cancel
 GAME_OVER,Game Over
 VICTORY,Victory
@@ -15,6 +17,14 @@ YOU_LOST,You lost!
 YOU_WIN,You win!
 HELP,Help
 INFO,Info
+VIDEO,Video
+AUDIO,Audio
+LANGUAGE,Language
+FULLSCREEN,Fullscreen
+MUSIC,Music
+SOUND,Sound
+MUSIC_VOLUME,Music Volume
+SOUND_VOLUME,Sound Volume
 CONTROLS,Controls
 HELP_INTRO,"In this card game the key attribute is the _temperature_ of the cards. Every _creature_ has a _temperature_ and can only attack and destroy weaker _creatures_ of the opposite element (both of them are destroyed when absolute _temperature_ values are equal). Therefore the _temperature_ attribute serves as combined attack and defense value."
 HELP_1,"In addition to creatures there are also _spell_ cards. Many of them can alter the _temperature_ of your or your enemy's creatures."
@@ -58,4 +68,8 @@ TUTORIAL_SPELLS5,"There are many spell cards that can influence the temperature 
 TUTORIAL_END,"You learned enough to play your first match."
 WELL_DONE,"Well done!"
 GOOD_LUCK,"Good luck!"
+SKIRMISH_DESC,"Play a local game versus the AI."
+LOCAL_DESC,"Play a local multiplayer game with both players controled by human."
+TUTORIAL_DESC,"Display the game manual while playing a local game versus the AI."
+DECK_DESC,"Customize your deck."
 

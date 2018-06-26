@@ -12,10 +12,20 @@ const DEFAULT = {
 }
 const MAX_MULT = 3
 const MAX_CARDS = 40
+const locales = ["en"]
 
 var deck = DEFAULT.duplicate()
 var _deck
 var active = false
+
+var fullscreen
+var maximized
+var screen_size
+var music
+var music_volume
+var sound
+var sound_volume
+var locale
 
 var tut_scene = preload("res://scenes/main/tutorial.tscn")
 
@@ -130,6 +140,31 @@ func _show_deck():
 	get_node("Deck/Label").set_text(str(get_num_cards(_deck))+" / "+str(MAX_CARDS))
 	get_node("Deck").show()
 
+func _show_options():
+	var idx = 0
+	fullscreen = OS.is_window_fullscreen()
+	maximized = OS.is_window_maximized()
+	screen_size = OS.get_window_size()
+	music = !AudioServer.is_bus_mute(1)
+	music_volume = 100*db2linear(AudioServer.get_bus_volume_db(1))
+	sound = !AudioServer.is_bus_mute(2)
+	sound_volume = 100*db2linear(AudioServer.get_bus_volume_db(2))
+	locale = TranslationServer.get_locale()
+	for i in range(get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").get_item_count()):
+		if (get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").get_item_text(i)==locale):
+			idx = i
+			break
+	
+	get_node("Options/ScrollContainer/VBoxContainer/Fullscreen").set_pressed(fullscreen)
+	get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxX").set_value(screen_size.x)
+	get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxY").set_value(screen_size.y)
+	get_node("Options/ScrollContainer/VBoxContainer/Audio/Music").set_pressed(music)
+	get_node("Options/ScrollContainer/VBoxContainer/Volume/SpinBoxM").set_value(music_volume)
+	get_node("Options/ScrollContainer/VBoxContainer/Audio/Sound").set_pressed(sound)
+	get_node("Options/ScrollContainer/VBoxContainer/Volume/SpinBoxS").set_value(sound_volume)
+	get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").select(idx)
+	get_node("Options").show()
+
 func add_card(ID):
 	var type = Cards.data.keys()[ID]
 	if (get_num_cards(_deck)>=MAX_CARDS || (_deck.has(type) && _deck[type]>=MAX_MULT)):
@@ -205,6 +240,79 @@ func save_deck():
 	file.close()
 
 
+# config stuff
+
+func save_config():
+	var file = ConfigFile.new()
+	file.set_value("video","fullscreen",fullscreen)
+	file.set_value("video","maximized",OS.is_window_maximized())
+	file.set_value("video","screenw",screen_size.x)
+	file.set_value("video","screenh",screen_size.y)
+	file.set_value("audio","music",music)
+	file.set_value("audio","music_volume",int(music_volume))
+	file.set_value("audio","sound",music)
+	file.set_value("audio","sound_volume",int(sound_volume))
+	file.set_value("locale","locale",locale)
+	file.save("user://config.cfg")
+
+func load_config():
+	var file = ConfigFile.new()
+	var default_locale = OS.get_locale()
+	if !(default_locale in locales):
+		default_locale = default_locale.split("_")[0]
+		if !(default_locale in locales):
+			default_locale = "en"
+	file.load("user://config.cfg")
+	fullscreen = file.get_value("video","fullscreen",false)
+	maximized = file.get_value("video","maximized",true)
+	screen_size = Vector2(file.get_value("video","screenw",1024),file.get_value("video","screenh",768))
+	music = file.get_value("audio","music",true)
+	music_volume = file.get_value("audio","music_volume",100)
+	sound = file.get_value("audio","sound",true)
+	sound_volume = file.get_value("audio","sound_volume",100)
+	locale = file.get_value("locale","locale",default_locale)
+	_options_apply()
+
+func _options_accept():
+	_options_apply()
+	get_node("Options").hide()
+
+func _options_apply():
+	OS.set_window_size(screen_size)
+	OS.set_window_maximized(maximized)
+	OS.set_window_fullscreen(fullscreen)
+	AudioServer.set_bus_mute(1,!music)
+	AudioServer.set_bus_volume_db(1,linear2db(music_volume/100.0))
+	AudioServer.set_bus_mute(2,!sound)
+	AudioServer.set_bus_volume_db(2,linear2db(sound_volume/100.0))
+	TranslationServer.set_locale(locale)
+	save_config()
+
+func _set_fullscreen(enabled):
+	fullscreen = enabled
+
+func _set_screenw(value):
+	screen_size.x = value
+
+func _set_screenh(value):
+	screen_size.y = value
+
+func _set_music(enabled):
+	music = enabled
+
+func _set_music_volume(value):
+	music_volume = value
+
+func _set_sound(enabled):
+	sound = enabled
+
+func _set_sound_volume(value):
+	sound_volume = value
+
+func _set_locale(idx):
+	locale = get_node("Options/ScrollContainer/VBoxContainer/Language/OptionButton").get_item_text(idx)
+
+
 func _resize():
 	get_node("Deck").show()
 	yield(get_tree(),"idle_frame")
@@ -225,7 +333,7 @@ func _ready():
 	randomize()
 	get_tree().connect("screen_resized",self,"_resize")
 	set_process_input(true)
-	OS.set_window_maximized(true)
+	load_config()
 	load_deck()
 	
 	# connect buttons
@@ -234,6 +342,7 @@ func _ready():
 	get_node("Panel/VBoxContainer/Button9").connect("pressed",self,"_tutorial")
 	get_node("Panel/VBoxContainer/Button2").connect("pressed",self,"_show_deck")
 	get_node("Panel/VBoxContainer/Button5").connect("pressed",self,"_hide")
+	get_node("Panel/VBoxContainer/Button3").connect("pressed",self,"_show_options")
 	get_node("Panel/VBoxContainer/Button6").connect("pressed",get_node("Info"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button8").connect("pressed",get_node("Credits"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button4").connect("pressed",self,"quit")
@@ -241,6 +350,24 @@ func _ready():
 	get_node("Deck/HBoxContainer/ButtonA").connect("pressed",self,"_change_deck")
 	get_node("Deck/HBoxContainer/ButtonR").connect("pressed",self,"_reset_deck")
 	get_node("Deck/HBoxContainer/ButtonC").connect("pressed",get_node("Deck"),"hide")
+	get_node("Options/HBoxContainer/Button1").connect("pressed",self,"_options_accept")
+	get_node("Options/HBoxContainer/Button2").connect("pressed",self,"_options_apply")
+	get_node("Options/HBoxContainer/Button3").connect("pressed",get_node("Options"),"hide")
+	get_node("Options/ScrollContainer/VBoxContainer/Fullscreen").connect("toggled",self,"_set_fullscreen")
+	get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxX").connect("value_changed",self,"_set_screenw")
+	get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxY").connect("value_changed",self,"_set_screenh")
+	get_node("Options/ScrollContainer/VBoxContainer/Audio/Music").connect("toggled",self,"_set_music")
+	get_node("Options/ScrollContainer/VBoxContainer/Volume/SpinBoxM").connect("value_changed",self,"_set_music_volume")
+	get_node("Options/ScrollContainer/VBoxContainer/Audio/Sound").connect("toggled",self,"_set_sound")
+	get_node("Options/ScrollContainer/VBoxContainer/Volume/SpinBoxS").connect("value_changed",self,"_set_sound_volume")
+	get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").connect("item_selected",self,"_set_locale")
+	
+	for i in range(locales.size()):
+		get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").add_item(locales[i],i)
+	get_node("Panel/VBoxContainer/Button1").set_tooltip(tr("SKIRMISH_DESC"))
+	get_node("Panel/VBoxContainer/Button2").set_tooltip(tr("DECK_DESC"))
+	get_node("Panel/VBoxContainer/Button7").set_tooltip(tr("LOCAL_DESC"))
+	get_node("Panel/VBoxContainer/Button9").set_tooltip(tr("TUTORIAL_DESC"))
 	
 	# set up info text
 #	get_node("Info/Text").push_align(RichTextLabel.ALIGN_FILL)		# extreme stretching with half-filled lines
