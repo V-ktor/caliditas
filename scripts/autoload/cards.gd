@@ -95,7 +95,7 @@ const data = {
 		"target":"creature",
 		"tags":["fire","attack"],
 		"animation":"fire_ball",
-		"image":preload("res://images/cards/fire_blade.jpg")
+		"image":preload("res://images/cards/fire_ball.jpg")
 	},
 	"blaze":{
 		"type":"spell",
@@ -106,7 +106,7 @@ const data = {
 		"target":"creature",
 		"tags":["fire"],
 		"animation":"fire_circle",
-		"image":preload("res://images/cards/fire_blade.jpg")
+		"image":preload("res://images/cards/blaze.jpg")
 	},
 	"explosion":{
 		"type":"spell",
@@ -147,7 +147,7 @@ const data = {
 		"rules":[],
 		"tags":["ice","elemental"],
 		"animation":"ice_blast",
-		"image":preload("res://images/cards/ice_creature.jpg")
+		"image":preload("res://images/cards/welcome_to_air_OMGWTF_by_shiroikuro.jpg")
 	},
 	"ice_elemental":{
 		"type":"creature",
@@ -199,7 +199,7 @@ const data = {
 		"rules":["move_to_hand"],
 		"on_play":"move_to_hand",
 		"target":"creature",
-		"tags":["ice"],
+		"tags":["ice","attack"],
 		"animation":"ice_circle",
 		"image":preload("res://images/cards/ice_spell.jpg")
 	},
@@ -224,7 +224,7 @@ const data = {
 		"target":"creature-ally",
 		"tags":["ice","equipment"],
 		"animation":"ice_circle",
-		"image":preload("res://images/cards/ice_spell.jpg")
+		"image":preload("res://images/cards/ice_shield.jpg")
 	},
 	
 	# neutral creatures
