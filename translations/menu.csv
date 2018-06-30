@@ -3,6 +3,7 @@ CONTINUE,Continue
 TUTORIAL,Tutorial
 SKIRMISH,Skirmish
 PLAYER_VS_PLAYER,Player vs player
+MULTIPLAYER,Multiplayer
 DECK,Deck
 OPTIONS,Options
 QUIT,Quit
@@ -13,8 +14,9 @@ APPLY,Apply
 CANCEL,Cancel
 GAME_OVER,Game Over
 VICTORY,Victory
-YOU_LOST,You lost!
-YOU_WIN,You win!
+YOU_LOST,"You lost!"
+YOU_WIN,"You win!"
+REWARD_GAINED,"Gained %s gold!"
 HELP,Help
 INFO,Info
 VIDEO,Video
@@ -25,6 +27,21 @@ MUSIC,Music
 SOUND,Sound
 MUSIC_VOLUME,Music Volume
 SOUND_VOLUME,Sound Volume
+LOBBY,Lobby
+ADRESS,Adress
+PORT,Port
+HOST,Host
+JOIN,Join
+WAITING_FOR_PLAYER,"Waiting for player"
+CONNECTING,Connecting
+CONNECTED,"Connected."
+IP_INVALID,"IP address is invalid."
+ADRESS_IN_USE,"Can't host, address in use."
+DISCONNECTED,Disconnected
+PLAYER_DISCONNECTED,"Player disconnected!"
+SERVER_DISCONNECTED,"Server disconnected!"
+PLAYER,Player
+AI_SKIRMISH,Skirmish AI
 CONTROLS,Controls
 HELP_INTRO,"In this card game the key attribute is the _temperature_ of the cards. Every _creature_ has a _temperature_ and can only attack and destroy weaker _creatures_ of the opposite element (both of them are destroyed when absolute _temperature_ values are equal). Therefore the _temperature_ attribute serves as combined attack and defense value."
 HELP_1,"In addition to creatures there are also _spell_ cards. Many of them can alter the _temperature_ of your or your enemy's creatures."
@@ -71,5 +88,6 @@ GOOD_LUCK,"Good luck!"
 SKIRMISH_DESC,"Play a local game versus the AI."
 LOCAL_DESC,"Play a local multiplayer game with both players controled by human."
 TUTORIAL_DESC,"Display the game manual while playing a local game versus the AI."
+MULTIPLAYER_DESC,"Play a game via network."
 DECK_DESC,"Customize your deck."
 

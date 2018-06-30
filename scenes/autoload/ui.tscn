@@ -370,7 +370,7 @@ anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 0.0
 anchor_bottom = 1.0
-margin_top = -200.0
+margin_top = -225.0
 margin_right = 150.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -396,15 +396,40 @@ size_flags_vertical = 1
 alignment = 0
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Health" type="Label" parent="Player1/VBoxContainer" index="0"]
+[node name="Name" type="Label" parent="Player1/VBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 150.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 0, 24 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "PLAYER"
+autowrap = true
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "Size Flags", "custom_fonts" ]
+
+[node name="Health" type="Label" parent="Player1/VBoxContainer" index="1"]
 
 light_mask = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_top = 28.0
 margin_right = 150.0
-margin_bottom = 21.0
+margin_bottom = 49.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -447,16 +472,16 @@ rounded = false
 percent_visible = false
 _sections_unfolded = [ "Anchor", "Margin", "Percent", "Visibility", "custom_styles" ]
 
-[node name="Mana" type="Label" parent="Player1/VBoxContainer" index="1"]
+[node name="Mana" type="Label" parent="Player1/VBoxContainer" index="2"]
 
 light_mask = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 25.0
+margin_top = 53.0
 margin_right = 150.0
-margin_bottom = 46.0
+margin_bottom = 74.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -499,16 +524,16 @@ rounded = false
 percent_visible = false
 _sections_unfolded = [ "Anchor", "Margin", "Percent", "Visibility", "custom_styles" ]
 
-[node name="Temp" type="Label" parent="Player1/VBoxContainer" index="2"]
+[node name="Temp" type="Label" parent="Player1/VBoxContainer" index="3"]
 
 light_mask = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 50.0
+margin_top = 78.0
 margin_right = 150.0
-margin_bottom = 71.0
+margin_bottom = 99.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -551,16 +576,16 @@ rounded = false
 percent_visible = false
 _sections_unfolded = [ "Anchor", "Margin", "Percent", "Visibility", "custom_styles" ]
 
-[node name="Deck" type="Label" parent="Player1/VBoxContainer" index="3"]
+[node name="Deck" type="Label" parent="Player1/VBoxContainer" index="4"]
 
 light_mask = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 75.0
+margin_top = 103.0
 margin_right = 150.0
-margin_bottom = 96.0
+margin_bottom = 124.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -576,15 +601,15 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_fonts" ]
 
-[node name="ButtonC" type="Button" parent="Player1/VBoxContainer" index="4"]
+[node name="ButtonC" type="Button" parent="Player1/VBoxContainer" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 100.0
+margin_top = 128.0
 margin_right = 150.0
-margin_bottom = 148.0
+margin_bottom = 174.0
 rect_min_size = Vector2( 0, 32 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -603,15 +628,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Rect" ]
 
-[node name="ButtonE" type="Button" parent="Player1/VBoxContainer" index="5"]
+[node name="ButtonE" type="Button" parent="Player1/VBoxContainer" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 152.0
+margin_top = 178.0
 margin_right = 150.0
-margin_bottom = 200.0
+margin_bottom = 225.0
 rect_min_size = Vector2( 0, 32 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -660,7 +685,7 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.0
 margin_left = -150.0
-margin_bottom = 200.0
+margin_bottom = 225.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -685,15 +710,40 @@ size_flags_vertical = 1
 alignment = 0
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Health" type="Label" parent="Player2/VBoxContainer" index="0"]
+[node name="Name" type="Label" parent="Player2/VBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 150.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 0, 24 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "PLAYER"
+autowrap = true
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "Size Flags", "custom_fonts" ]
+
+[node name="Health" type="Label" parent="Player2/VBoxContainer" index="1"]
 
 light_mask = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_top = 28.0
 margin_right = 150.0
-margin_bottom = 21.0
+margin_bottom = 49.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -736,16 +786,16 @@ rounded = false
 percent_visible = false
 _sections_unfolded = [ "Anchor", "Margin", "Percent", "Visibility", "custom_styles" ]
 
-[node name="Mana" type="Label" parent="Player2/VBoxContainer" index="1"]
+[node name="Mana" type="Label" parent="Player2/VBoxContainer" index="2"]
 
 light_mask = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 25.0
+margin_top = 53.0
 margin_right = 150.0
-margin_bottom = 46.0
+margin_bottom = 74.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -788,16 +838,16 @@ rounded = false
 percent_visible = false
 _sections_unfolded = [ "Anchor", "Margin", "Percent", "Visibility", "custom_styles" ]
 
-[node name="Temp" type="Label" parent="Player2/VBoxContainer" index="2"]
+[node name="Temp" type="Label" parent="Player2/VBoxContainer" index="3"]
 
 light_mask = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 50.0
+margin_top = 78.0
 margin_right = 150.0
-margin_bottom = 71.0
+margin_bottom = 99.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -840,16 +890,16 @@ rounded = false
 percent_visible = false
 _sections_unfolded = [ "Anchor", "Margin", "Percent", "Visibility", "custom_styles" ]
 
-[node name="Deck" type="Label" parent="Player2/VBoxContainer" index="3"]
+[node name="Deck" type="Label" parent="Player2/VBoxContainer" index="4"]
 
 light_mask = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 75.0
+margin_top = 103.0
 margin_right = 150.0
-margin_bottom = 96.0
+margin_bottom = 124.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -865,7 +915,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_fonts" ]
 
-[node name="ButtonC" type="Button" parent="Player2/VBoxContainer" index="4"]
+[node name="ButtonC" type="Button" parent="Player2/VBoxContainer" index="5"]
 
 visible = false
 anchor_left = 0.0
@@ -893,7 +943,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="ButtonE" type="Button" parent="Player2/VBoxContainer" index="5"]
+[node name="ButtonE" type="Button" parent="Player2/VBoxContainer" index="6"]
 
 visible = false
 anchor_left = 0.0

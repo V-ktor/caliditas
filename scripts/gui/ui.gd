@@ -1,17 +1,17 @@
 extends CanvasLayer
 
 
-func _hide():
+func hide():
 	for c in get_children():
 		if (c.has_method("hide")):
 			c.hide()
 
-func _show():
+func show():
 	get_node("Player1").show()
 	get_node("Player2").show()
 
 func _ready():
-	_hide()
+	hide()
 	
 	# connect buttons
 	for i in range(1,3):

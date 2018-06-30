@@ -16,8 +16,17 @@ const locales = ["en"]
 
 var deck = DEFAULT.duplicate()
 var _deck
+var gold = 100
 var active = false
+var status_text = ""
+var waiting = false
+var dots = 0
+var player_deck = {}
+var player_name = {}
+var player_self
+var reward = 0
 
+var _name = tr("PLAYER")
 var fullscreen
 var maximized
 var screen_size
@@ -35,10 +44,13 @@ func _skirmish():
 	Main.reset()
 	Main.deck[0] = get_deck()
 	Main.deck[1] = get_deck(DEFAULT)
+	Main.player_name[0] = _name
+	Main.player_name[1] = tr("AI_SKIRMISH")
 	Main.ai = true
 	Main.start()
-	UI._show()
-	_hide()
+	reward = 100
+	UI.show()
+	hide()
 	active = true
 	get_node("Panel/VBoxContainer/Button5").show()
 	if (has_node("/root/Tutorial")):
@@ -49,10 +61,12 @@ func _local():
 	Main.reset()
 	Main.deck[0] = get_deck()
 	Main.deck[1] = get_deck()
-	Main.ai = false
+	Main.player_name[0] = _name
+	Main.player_name[1] = _name
 	Main.start()
-	UI._show()
-	_hide()
+	reward = 0
+	UI.show()
+	hide()
 	active = true
 	get_node("Panel/VBoxContainer/Button5").show()
 	if (has_node("/root/Tutorial")):
@@ -64,9 +78,12 @@ func _tutorial():
 	Main.reset()
 	Main.deck[0] = get_deck(DEFAULT)
 	Main.deck[1] = get_deck(DEFAULT)
+	Main.player_name[0] = _name
+	Main.player_name[1] = tr("AI_SKIRMISH")
 	Main.ai = true
-	UI._show()
-	_hide()
+	reward = 50
+	UI.show()
+	hide()
 	active = true
 	get_node("Panel/VBoxContainer/Button5").show()
 	if (has_node("/root/Tutorial")):
@@ -75,32 +92,78 @@ func _tutorial():
 	ti.set_name("Tutorial")
 	get_tree().get_root().add_child(ti)
 
+sync func _multiplayer():
+	# Start a multiplayer match.
+	if (player_name.size()<2):
+		return
+	var other = player_name.keys()[0]
+	if (other==1):
+		other = player_name.keys()[1]
+	Main.reset()
+	Main.deck[0] = player_deck[1]
+	Main.deck[1] = player_deck[other]
+	Main.player_name[0] = player_name[1]
+	Main.player_name[1] = player_name[other]
+	Main.multiplayer = true
+	Main.server = player_self==0
+	if (player_self!=0):
+		Main.turn = 0
+		Main.mana = [3,2]
+		Main.mana_max = [3,2]
+	Main.start()
+	reward = 250
+	UI.show()
+	hide()
+	active = true
+	get_node("Panel/VBoxContainer/Button5").show()
+	if (has_node("/root/Tutorial")):
+		get_node("/root/Tutorial").queue_free()
+	get_node("Lobby/VBoxContainer/Buttons/ButtonJ").set_disabled(false)
+	get_node("Lobby/VBoxContainer/Buttons/ButtonH").set_disabled(false)
+	get_node("Lobby/VBoxContainer/Status/ButtonC").hide()
+	set_status("CONNECTED",false,false)
+#	get_node("Lobby/VBoxContainer/Status").hide()
 
-func game_over(victory):
+
+func game_over(victory,error=""):
 	# Show victory/game over message.
 	get_node("Panel/VBoxContainer/Button5").hide()
 	active = false
-	if (victory):
+	if (error=="player_dc"):
+		get_node("GameOver").set_title(tr("DISCONNECTED"))
+		get_node("GameOver/Text").set_text(tr("PLAYER_DISCONNECTED"))
+	elif (error=="server_dc"):
+		get_node("GameOver").set_title(tr("DISCONNECTED"))
+		get_node("GameOver/Text").set_text(tr("SERVER_DISCONNECTED"))
+	elif (victory):
 		get_node("GameOver").set_title(tr("VICTORY"))
-		get_node("GameOver/Text").set_text(tr("YOU_WIN"))
+		get_node("GameOver/Text").set_text(tr("YOU_WIN")+"\n"+tr("REWARD_GAINED")%reward)
+		gold += reward
 	else:
+		reward = int(reward/2)
 		get_node("GameOver").set_title(tr("GAME_OVER"))
-		get_node("GameOver/Text").set_text(tr("YOU_LOST"))
+		get_node("GameOver/Text").set_text(tr("YOU_LOST")+"\n"+tr("REWARD_GAINED")%reward)
+		gold += reward
 	get_node("GameOver").popup_centered()
+	UI.hide()
+	Main.hide()
+	show()
 	Music.temperature = 0
 	if (has_node("/root/Tutorial")):
 		get_node("/root/Tutorial").queue_free()
 
 
-func _hide():
+func hide():
 	for c in get_children():
-		c.hide()
+		if (c.has_method("hide")):
+			c.hide()
 
-func _show():
+func show():
 	get_node("Panel").show()
 
 func quit():
 	if (get_node("Quit").is_visible()):
+		save_config()
 		get_tree().quit()
 	else:
 		yield(get_tree(),"idle_frame")
@@ -163,6 +226,8 @@ func _show_options():
 	get_node("Options/ScrollContainer/VBoxContainer/Audio/Sound").set_pressed(sound)
 	get_node("Options/ScrollContainer/VBoxContainer/Volume/SpinBoxS").set_value(sound_volume)
 	get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").select(idx)
+	if (_name!="" && _name!=tr("PLAYER")):
+		get_node("Options/ScrollContainer/VBoxContainer/Name/Name").set_text(_name)
 	get_node("Options").show()
 
 func add_card(ID):
@@ -253,6 +318,7 @@ func save_config():
 	file.set_value("audio","sound",music)
 	file.set_value("audio","sound_volume",int(sound_volume))
 	file.set_value("locale","locale",locale)
+	file.set_value("player","name",_name)
 	file.save("user://config.cfg")
 
 func load_config():
@@ -271,6 +337,9 @@ func load_config():
 	sound = file.get_value("audio","sound",true)
 	sound_volume = file.get_value("audio","sound_volume",100)
 	locale = file.get_value("locale","locale",default_locale)
+	_name = file.get_value("player","name",tr("PLAYER"))
+	if (_name!="" && _name!=tr("PLAYER")):
+		get_node("Options/ScrollContainer/VBoxContainer/Name/Name").set_text(_name)
 	_options_apply()
 
 func _options_accept():
@@ -286,6 +355,9 @@ func _options_apply():
 	AudioServer.set_bus_mute(2,!sound)
 	AudioServer.set_bus_volume_db(2,linear2db(sound_volume/100.0))
 	TranslationServer.set_locale(locale)
+	_name = get_node("Options/ScrollContainer/VBoxContainer/Name/Name").get_text()
+	if (_name==""):
+		_name = tr("PLAYER")
 	save_config()
 
 func _set_fullscreen(enabled):
@@ -313,6 +385,109 @@ func _set_locale(idx):
 	locale = get_node("Options/ScrollContainer/VBoxContainer/Language/OptionButton").get_item_text(idx)
 
 
+# network callbacks #
+
+func _player_disconnected(id):
+	# Someone disconnected, stop the game.
+	game_over(false,"player_dc")
+	cancel_mp()
+
+func _server_disconnected():
+	# Server disconnected, stop the game.
+	game_over(false,"player_dc")
+	cancel_mp()
+
+func _connected_ok():
+	# Only called on clients, not server. Send my ID and info to all other peers.
+	var _deck = get_deck(deck)
+	player_name[get_tree().get_network_unique_id()] = _name
+	player_deck[get_tree().get_network_unique_id()] = _deck
+	rpc("register_player",get_tree().get_network_unique_id(),_name,_deck)
+
+func _connected_fail():
+	cancel_mp()
+
+remote func register_player(ID,nm,_deck):
+	player_name[ID] = nm
+	player_deck[ID] = _deck
+	rpc_id(ID,"register_player",1,_name,get_deck(deck)) # Send myself to the other dude.
+	
+	if (player_name.size()>1):
+		if (player_self==0):
+			rpc("_multiplayer")
+
+# game creation #
+
+func _host():
+	var host = NetworkedMultiplayerENet.new()
+	var port = int(get_node("Lobby/VBoxContainer/Adress/Port").get_text())
+	host.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+	var err = host.create_server(port,1) # Max 1 peer, since it's a 2 players game.
+	if (err!=OK):
+		# Is another server running?
+		set_status("ADRESS_IN_USE",true,false)
+		return
+	
+	player_name.clear()
+	player_deck.clear()
+	player_self = 0
+	get_tree().set_network_peer(host)
+	get_tree().set_meta("network_peer",host)
+	get_node("Lobby/VBoxContainer/Buttons/ButtonJ").set_disabled(true)
+	get_node("Lobby/VBoxContainer/Buttons/ButtonH").set_disabled(true)
+	get_node("Lobby/VBoxContainer/Status/ButtonC").show()
+	set_status("WAITING_FOR_PLAYER",false,true)
+
+func _join():
+	var ip = get_node("Lobby/VBoxContainer/Adress/Adress").get_text()
+	var port = int(get_node("Lobby/VBoxContainer/Adress/Port").get_text())
+	if (!ip.is_valid_ip_address()):
+		set_status("IP_INVALID",true,false)
+		return
+	
+	var host = NetworkedMultiplayerENet.new()
+	player_name.clear()
+	player_deck.clear()
+	player_self = 1
+	host.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER)
+	host.create_client(ip,port)
+	get_tree().set_network_peer(host)
+	get_tree().set_meta("network_peer",host)
+	get_node("Lobby/VBoxContainer/Buttons/ButtonJ").set_disabled(true)
+	get_node("Lobby/VBoxContainer/Buttons/ButtonH").set_disabled(true)
+	get_node("Lobby/VBoxContainer/Status/ButtonC").show()
+	set_status("CONNECTING",false,true)
+
+func cancel_mp():
+	get_tree().set_network_peer(null) # remove peer
+	get_tree().set_meta("network_peer",null)
+	get_node("Lobby/VBoxContainer/Buttons/ButtonJ").set_disabled(false)
+	get_node("Lobby/VBoxContainer/Buttons/ButtonH").set_disabled(false)
+	get_node("Lobby/VBoxContainer/Status/ButtonC").hide()
+	get_node("Lobby/VBoxContainer/Status").hide()
+
+# display multiplayer stuff #
+
+func set_status(text,error,wt):
+	status_text = tr(text)
+	waiting = wt
+	dots = 0
+	get_node("Lobby/VBoxContainer/Status/Label").set_text(status_text)
+	if (error):
+		get_node("Lobby/VBoxContainer/Status/Label").add_color_override("font_color",Color(1.0,0.1,0.1))
+	else:
+		get_node("Lobby/VBoxContainer/Status/Label").add_color_override("font_color",Color(0.1,1.0,0.1))
+	get_node("Lobby/VBoxContainer/Status").show()
+
+func _display_status():
+	var text = ""+status_text
+	if (waiting):
+		for i in range(dots):
+			text += "."
+	get_node("Lobby/VBoxContainer/Status/Label").set_text(text)
+	dots = (dots+1)%4
+
+
 func _resize():
 	get_node("Deck").show()
 	yield(get_tree(),"idle_frame")
@@ -323,11 +498,11 @@ func _input(event):
 	if (event.is_action_pressed("ui_cancel")):
 		if (get_node("Panel").is_visible()):
 			if (active):
-				_hide()
+				hide()
 			else:
 				quit()
 		else:
-			_show()
+			show()
 
 func _ready():
 	randomize()
@@ -340,8 +515,9 @@ func _ready():
 	get_node("Panel/VBoxContainer/Button1").connect("pressed",self,"_skirmish")
 	get_node("Panel/VBoxContainer/Button7").connect("pressed",self,"_local")
 	get_node("Panel/VBoxContainer/Button9").connect("pressed",self,"_tutorial")
+	get_node("Panel/VBoxContainer/Button10").connect("pressed",get_node("Lobby"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button2").connect("pressed",self,"_show_deck")
-	get_node("Panel/VBoxContainer/Button5").connect("pressed",self,"_hide")
+	get_node("Panel/VBoxContainer/Button5").connect("pressed",self,"hide")
 	get_node("Panel/VBoxContainer/Button3").connect("pressed",self,"_show_options")
 	get_node("Panel/VBoxContainer/Button6").connect("pressed",get_node("Info"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button8").connect("pressed",get_node("Credits"),"popup_centered")
@@ -361,6 +537,9 @@ func _ready():
 	get_node("Options/ScrollContainer/VBoxContainer/Audio/Sound").connect("toggled",self,"_set_sound")
 	get_node("Options/ScrollContainer/VBoxContainer/Volume/SpinBoxS").connect("value_changed",self,"_set_sound_volume")
 	get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").connect("item_selected",self,"_set_locale")
+	get_node("Lobby/VBoxContainer/Buttons/ButtonH").connect("pressed",self,"_host")
+	get_node("Lobby/VBoxContainer/Buttons/ButtonJ").connect("pressed",self,"_join")
+	get_node("Lobby/VBoxContainer/Status/ButtonC").connect("pressed",self,"cancel_mp")
 	
 	for i in range(locales.size()):
 		get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").add_item(locales[i],i)
@@ -368,6 +547,19 @@ func _ready():
 	get_node("Panel/VBoxContainer/Button2").set_tooltip(tr("DECK_DESC"))
 	get_node("Panel/VBoxContainer/Button7").set_tooltip(tr("LOCAL_DESC"))
 	get_node("Panel/VBoxContainer/Button9").set_tooltip(tr("TUTORIAL_DESC"))
+	get_node("Panel/VBoxContainer/Button10").set_tooltip(tr("MULTIPLAYER_DESC"))
+	
+	# connect the callbacks related to networking
+	get_tree().connect("network_peer_disconnected",self,"_player_disconnected")
+	get_tree().connect("server_disconnected",self,"_server_disconnected")
+	get_tree().connect("connected_to_server",self,"_connected_ok")
+	get_tree().connect("connection_failed",self,"_connected_fail")
+	
+	var timer = Timer.new()
+	timer.set_wait_time(0.5)
+	add_child(timer)
+	timer.connect("timeout",self,"_display_status")
+	timer.start()
 	
 	# set up info text
 #	get_node("Info/Text").push_align(RichTextLabel.ALIGN_FILL)		# extreme stretching with half-filled lines
