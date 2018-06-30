@@ -200,7 +200,7 @@ func _show_deck():
 		bi.get_node("Label").set_text(str(ammount)+" / "+str(MAX_MULT))
 		bi.show()
 	
-	get_node("Deck/Label").set_text(str(get_num_cards(_deck))+" / "+str(MAX_CARDS))
+	get_node("Deck/Label").set_text(tr("CARDS")+": "+str(get_num_cards(_deck))+" / "+str(MAX_CARDS))
 	get_node("Deck").show()
 
 func _show_options():

@@ -19,7 +19,7 @@ const data = {
 		"rules":["inc_player_temp-2"],
 		"on_play":"inc_player_temp-2",
 		"on_removed":"dec_player_temp-2",
-		"tags":["fire","elemental"],
+		"tags":["fire","elemental","support"],
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/wisp_fire.jpg")
 	},
@@ -190,7 +190,7 @@ const data = {
 		"on_play":"kill_all_hot-2",
 		"tags":["ice","area","attack"],
 		"animation":"hailstorm",
-		"image":preload("res://images/cards/ice_spell.jpg")
+		"image":preload("res://images/cards/hailstorm.jpg")
 	},
 	"flash_flood":{
 		"type":"spell",
@@ -201,7 +201,7 @@ const data = {
 		"target":"creature",
 		"tags":["ice","attack"],
 		"animation":"ice_circle",
-		"image":preload("res://images/cards/ice_spell.jpg")
+		"image":preload("res://images/cards/flash_flood.jpg")
 	},
 	"equalize":{
 		"type":"spell",
