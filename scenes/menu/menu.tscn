@@ -477,7 +477,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="ButtonAdd" type="Button" parent="Deck/Card" index="1"]
+[node name="ButtonSub" type="Button" parent="Deck/Card" index="1"]
 
 anchor_left = 0.0
 anchor_top = 1.0
@@ -496,12 +496,12 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "+"
+text = "-"
 flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="ButtonSub" type="Button" parent="Deck/Card" index="2"]
+[node name="ButtonAdd" type="Button" parent="Deck/Card" index="2"]
 
 anchor_left = 1.0
 anchor_top = 1.0
@@ -520,7 +520,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "-"
+text = "+"
 flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin" ]
@@ -593,7 +593,7 @@ scroll_vertical = 0
 scroll_deadzone = 0
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Options/ScrollContainer" index="2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Options/ScrollContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0

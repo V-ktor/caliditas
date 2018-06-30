@@ -57,7 +57,7 @@ const data = {
 		"level":5,
 		"rules":["spawn_dead-2-fire_elemental"],
 		"on_dead":"spawn-2-fire_elemental",
-		"tags":["fire","golem"],
+		"tags":["fire","golem","trap"],
 		"animation":"fire_blast",
 		"image":preload("res://images/cards/Magma_Spawn_by_Katarzyna_Zalecka_and_Gabriel_Verdon.jpg")
 	},
@@ -138,7 +138,7 @@ const data = {
 		"on_attacked":"dec_temp-1",
 		"tags":["ice","elemental","trap"],
 		"animation":"ice_blast",
-		"image":preload("res://images/cards/ice_creature.jpg")
+		"image":preload("res://images/cards/wisp_ice.jpg")
 	},
 	"greater_water_elemental":{
 		"type":"creature",
