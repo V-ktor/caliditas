@@ -199,7 +199,7 @@ const data = {
 		"rules":["move_to_hand"],
 		"on_play":"move_to_hand",
 		"target":"creature",
-		"tags":["ice","attack"],
+		"tags":["attack"],
 		"animation":"ice_circle",
 		"image":preload("res://images/cards/flash_flood.jpg")
 	},

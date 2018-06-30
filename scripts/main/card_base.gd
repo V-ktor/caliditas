@@ -32,8 +32,6 @@ func unzoom():
 
 func _gui_input(event):
 	if (type=="dead"):
-		if (get_node("Animation").get_current_animation()!="fade_out"):
-			get_node("Animation").play("fade_out")
 		return
 	
 	if (event.is_action_pressed("RMB")):
