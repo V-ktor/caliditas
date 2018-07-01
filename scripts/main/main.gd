@@ -210,6 +210,8 @@ remote func _play_card(c,p,t):
 			target = field[(t["player"]+1)%2][t["ID"]]
 		elif (t["type"]=="equiped"):
 			target = field[(t["player"]+1)%2][t["ID"]].equiped[t["index"]]
+		elif (t["type"]=="hand"):
+			target = hand[(t["player"]+1)%2][t["ID"]]
 	play_card(card,player,target)
 
 func play_card(card,player,target=null):
@@ -399,6 +401,11 @@ func use_effect(card,effect,player,target=null):
 							t["type"] = "equipment"
 							t["index"] = j
 							break
+				for i in range(hand[p].size()):
+					if (hand[p][i]==target):
+						t["ID"] = i
+						t["player"] = p
+						t["type"] = "hand"
 			if (t.size()>0):
 				state["_target"] = t
 	
