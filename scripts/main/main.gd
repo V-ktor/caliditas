@@ -78,7 +78,7 @@ class Card:
 				text = "-"
 				ti.get_node("Label").add_color_override("font_color",Cards.COLOR_COLD)
 			ti.get_node("Label").set_text(text+str(abs(temperature-last_temp)))
-			ti.set_global_position(node.get_node("Temp").get_global_position())
+			ti.set_global_position(node.get_node("Temp").get_global_position()-Vector2(16,0))
 			Main.add_child(ti)
 			last_temp = temperature
 		for i in range(equiped.size()):
@@ -536,6 +536,7 @@ func apply_effect(card,event,target=null):
 		target.node.type = "hand"
 		target.temperature = Cards.data[target.ID]["temperature"]
 		target.level = Cards.data[target.ID]["level"]
+		target.update()
 		if (target.owner!=player && !((ai || multiplayer) && target.owner==PLAYER1)):
 			target.node.get_node("Animation").play("hide")
 		used_positions[enemy].erase(target.pos)

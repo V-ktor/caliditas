@@ -573,7 +573,7 @@ tracks/1/keys = {
 [sub_resource type="Animation" id=19]
 
 resource_name = "fizzle"
-length = 1.5
+length = 1.0
 loop = false
 step = 0.1
 tracks/0/type = "value"
@@ -607,7 +607,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.4, 1.5 ),
+"times": PoolRealArray( 0, 0.4, 1 ),
 "transitions": PoolRealArray( 1, 0.25, 1 ),
 "update": 0,
 "values": [ 100.0, 100.0, 0.0 ]
@@ -619,7 +619,7 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.4, 1.5 ),
+"times": PoolRealArray( 0, 0.4, 1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ 0, 0, 7 ]
