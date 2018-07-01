@@ -28,6 +28,8 @@ var ai = true
 var multiplayer = false
 var server = true
 
+var text_temp = preload("res://scenes/main/text_temp.tscn")
+
 signal card_played(player,card,target)
 signal turn_started(player)
 signal target_selected(target)
@@ -40,6 +42,7 @@ class Card:
 	var type
 	var level
 	var temperature
+	var last_temp
 	var node
 	var pos
 	var in_game
@@ -51,6 +54,7 @@ class Card:
 		type = Cards.data[ID]["type"]
 		level = Cards.data[ID]["level"]
 		temperature = Cards.data[ID]["temperature"]
+		last_temp = temperature
 		node = n
 		in_game = a
 		equiped = []
@@ -64,6 +68,19 @@ class Card:
 			node.get_node("OverlayTemp").set_modulate(Cards.COLOR_COLD)
 		else:
 			node.get_node("OverlayTemp").set_modulate(Color(0.5,0.5,0.5))
+		if (temperature!=last_temp):
+			var text
+			var ti = Main.text_temp.instance()
+			if (temperature>last_temp):
+				text = "+"
+				ti.get_node("Label").add_color_override("font_color",Cards.COLOR_HOT)
+			else:
+				text = "-"
+				ti.get_node("Label").add_color_override("font_color",Cards.COLOR_COLD)
+			ti.get_node("Label").set_text(text+str(abs(temperature-last_temp)))
+			ti.set_global_position(node.get_node("Temp").get_global_position())
+			Main.add_child(ti)
+			last_temp = temperature
 		for i in range(equiped.size()):
 			var card = equiped[i]
 			var offset = min(75,200/equiped.size())
@@ -94,8 +111,8 @@ class Card:
 		for card in equiped:
 			if (Cards.data[card.ID].has("on_removed")):
 				Main.apply_effect(card,"on_removed",self)
-	
 
+# Used for sorting arrays descending by absolute value of temperature.
 class TemperatureSorter:
 	static func sort_ascending(a,b):
 		return abs(a.temperature)>abs(b.temperature)
