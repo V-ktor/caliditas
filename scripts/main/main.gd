@@ -513,6 +513,8 @@ func apply_effect(card,event,target=null):
 		for c in []+target.equiped:
 			c.destroy()
 		target.equiped.clear()
+		if (Cards.data[target.ID].has("on_removed")):
+			apply_effect(target,"on_removed")
 		target.in_game = false
 		target.node.type = "hand"
 		target.temperature = Cards.data[target.ID]["temperature"]
