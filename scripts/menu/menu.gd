@@ -135,7 +135,6 @@ sync func _multiplayer():
 	get_node("Lobby/VBoxContainer/Buttons/ButtonH").set_disabled(false)
 	get_node("Lobby/VBoxContainer/Status/ButtonC").hide()
 	set_status("CONNECTED",false,false)
-#	get_node("Lobby/VBoxContainer/Status").hide()
 
 
 func game_over(victory,error=""):
@@ -178,6 +177,24 @@ func quit():
 	if (get_node("Quit").is_visible()):
 		save_config()
 		get_tree().quit()
+	elif (get_node("Deck/Decks").is_visible()):
+		get_node("Deck/Decks").hide()
+	elif (get_node("Deck").is_visible()):
+		get_node("Deck").hide()
+	elif (get_node("Shop").is_visible()):
+		get_node("Shop").hide()
+	elif (get_node("Acquired").is_visible()):
+		get_node("Acquired").hide()
+	elif (get_node("Options").is_visible()):
+		get_node("Options").hide()
+	elif (get_node("Lobby").is_visible()):
+		get_node("Lobby").hide()
+	elif (get_node("Info").is_visible()):
+		get_node("Info").hide()
+	elif (get_node("Credits").is_visible()):
+		get_node("Credits").hide()
+	elif (get_node("GameOver").is_visible()):
+		get_node("GameOver").hide()
 	else:
 		yield(get_tree(),"idle_frame")
 		get_node("Quit").popup_centered()
@@ -207,12 +224,12 @@ func _show_deck(t=false):
 			get_node("Deck/ScrollContainer/GridContainer").add_child(bi)
 		else:
 			bi = get_node("Deck/ScrollContainer/GridContainer/Card"+str(i))
-		if (deck.has(type)):
+		if (_deck.has(type)):
 			ammount = _deck[type]
 			bi.get_node("ButtonAdd").set_disabled(ammount>=max_ammount || num_cards>=MAX_CARDS)
 			bi.get_node("ButtonSub").set_disabled(false)
 		else:
-			bi.get_node("ButtonAdd").set_disabled(num_cards>=MAX_CARDS)
+			bi.get_node("ButtonAdd").set_disabled(max_ammount==0 || num_cards>=MAX_CARDS)
 			bi.get_node("ButtonSub").set_disabled(true)
 		bi.get_node("Label").set_text(str(ammount)+" / "+str(max_ammount))
 		if (show_all || max_ammount>0):
@@ -223,6 +240,47 @@ func _show_deck(t=false):
 	get_node("Deck/Header/Label").set_text(tr("CARDS")+": "+str(get_num_cards(_deck))+" / "+str(MAX_CARDS))
 	get_node("Deck/Header/Name").set_text(deck_name)
 	get_node("Deck").popup_centered()
+	get_node("Deck/Decks").hide()
+
+func _show_decks():
+	var file = File.new()
+	var dir = Directory.new()
+	var error = dir.open("user://decks")
+	var decks = {tr("DEFAULT"):DEFAULT}
+	if (error==OK):
+		var filename
+		dir.list_dir_begin(true)
+		filename = dir.get_next()
+		while (filename!=""):
+			if (!dir.current_is_dir()):
+				var nm = filename.split(".")[0]
+				var err = file.open("user://decks/"+filename,File.READ)
+				if (err!=OK):
+					continue
+				var currentline = JSON.parse(file.get_line()).result
+				if (currentline!=null):
+					decks[nm] = currentline
+				file.close()
+			filename = dir.get_next()
+		dir.list_dir_end()
+	
+	for c in get_node("Deck/Decks/ScrollContainer/VBoxContainer").get_children():
+		c.hide()
+	for i in range(decks.size()):
+		var bi
+		if (!has_node("Deck/Decks/ScrollContainer/VBoxContainer/Button"+str(i))):
+			bi = get_node("Deck/Decks/Button").duplicate()
+			bi.set_name("Button"+str(i))
+			get_node("Deck/Decks/ScrollContainer/VBoxContainer").add_child(bi)
+		else:
+			bi = get_node("Deck/Decks/ScrollContainer/VBoxContainer/Button"+str(i))
+		bi.get_node("Label").set_text(decks.keys()[i])
+		if (bi.is_connected("pressed",self,"_load_deck")):
+			bi.disconnect("pressed",self,"_load_deck")
+		bi.connect("pressed",self,"_load_deck",[decks.values()[i],decks.keys()[i]])
+		bi.show()
+	
+	get_node("Deck/Decks").popup_centered()
 
 func _show_shop():
 	get_node("Shop/VBoxContainer/Gold/Label").set_text(tr("GOLD")+": "+str(gold))
@@ -258,7 +316,7 @@ func _show_options():
 
 func add_card(ID):
 	var type = Cards.data.keys()[ID]
-	if (get_num_cards(_deck)>=MAX_CARDS || (_deck.has(type) && _deck[type]>=MAX_MULT)):
+	if (!inventory.has(type) || get_num_cards(_deck)>=MAX_CARDS || (_deck.has(type) && _deck[type]>=min(MAX_MULT,inventory[type]))):
 		return
 	
 	if (_deck.has(type)):
@@ -308,7 +366,6 @@ func _buy_pack(grade,type):
 		if (t=="random"):
 			t = ["fire","ice","neutral"][randi()%3]
 		card = get_pack_card(grade,t)
-		printt(card,grade,t)
 		if (card!=null):
 			add_inventory(card)
 			cards.push_back(card)
@@ -354,32 +411,56 @@ func get_num_cards(d=deck):
 	return num
 
 
-func _change_deck():
-	deck = _deck
+func _new_deck():
+	deck.clear()
+	deck_name = tr("NEW_DECK")
 	_deck = null
-	save_deck()
+	_show_deck()
+
+func _change_deck():
+	if (_deck!=null):
+		deck = _deck
+		save_deck()
+		_deck = null
 	get_node("Deck").hide()
 
-func load_deck():
-	var currentline
-	var file = File.new()
-	var error = file.open("user://deck.cfg",File.READ)
-	if (error!=OK):
-		return
-	currentline = JSON.parse(file.get_line()).get_result()
-	file.close()
-	if (currentline==null):
-		return
-	
-	deck = currentline
+func _set_deck_name(dname):
+	deck_name = dname
+
+func _load_deck(d,n):
+	deck = d.duplicate()
+	_deck = null
+	deck_name = n
+	_show_deck()
+
+func load_deck(dname):
+	deck_name = dname
+	if (dname==tr("DEFAULT")):
+		deck = DEFAULT.duplicate()
+	else:
+		var currentline
+		var file = File.new()
+		var error = file.open("user://decks/"+dname+".cfg",File.READ)
+		if (error!=OK):
+			return
+		currentline = JSON.parse(file.get_line()).get_result()
+		file.close()
+		if (currentline==null):
+			return
+		
+		deck = currentline
+	_show_deck()
 
 func save_deck():
+	deck = _deck
+	if (deck_name==tr("DEFAULT")):
+		return
 	var file = File.new()
 	var dir = Directory.new()
-	if (!dir.dir_exists("user://")):
-		dir.make_dir_recursive("user://")
+	if (!dir.dir_exists("user://decks")):
+		dir.make_dir_recursive("user://decks")
 	
-	file.open("user://deck.cfg",File.WRITE)
+	file.open("user://decks/"+deck_name+".cfg",File.WRITE)
 	file.store_line(JSON.print(deck))
 	file.close()
 
@@ -424,6 +505,7 @@ func save_config():
 	file.set_value("audio","sound_volume",int(sound_volume))
 	file.set_value("locale","locale",locale)
 	file.set_value("player","name",_name)
+	file.set_value("player","deck",deck_name)
 	file.save("user://config.cfg")
 
 func load_config():
@@ -445,6 +527,8 @@ func load_config():
 	_name = file.get_value("player","name",tr("PLAYER"))
 	if (_name!="" && _name!=tr("PLAYER")):
 		get_node("Options/ScrollContainer/VBoxContainer/Name/Name").set_text(_name)
+	deck_name = file.get_value("player","deck",tr("DEFAULT"))
+	load_deck(deck_name)
 	_options_apply()
 
 func _options_accept():
@@ -594,7 +678,7 @@ func _display_status():
 
 
 func _resize():
-	get_node("Deck").show()
+	get_node("Deck").popup_centered(OS.get_window_size()-Vector2(50,60))
 	yield(get_tree(),"idle_frame")
 	get_node("Deck/ScrollContainer/GridContainer").set_columns(floor(get_node("Deck/ScrollContainer/GridContainer").get_size().x/212))
 	get_node("Deck").hide()
@@ -614,7 +698,6 @@ func _ready():
 	get_tree().connect("screen_resized",self,"_resize")
 	set_process_input(true)
 	load_config()
-	load_deck()
 	load_inventory()
 	
 	# Connect buttons.
@@ -632,7 +715,11 @@ func _ready():
 	get_node("Quit").connect("confirmed",get_tree(),"quit")
 	get_node("Deck/HBoxContainer/ButtonA").connect("pressed",self,"_change_deck")
 	get_node("Deck/HBoxContainer/ButtonC").connect("pressed",get_node("Deck"),"hide")
+	get_node("Deck/HBoxContainer/ButtonL").connect("pressed",self,"_show_decks")
+	get_node("Deck/HBoxContainer/ButtonS").connect("pressed",self,"save_deck")
+	get_node("Deck/HBoxContainer/ButtonN").connect("pressed",self,"_new_deck")
 	get_node("Deck/Header/CheckBox").connect("toggled",self,"_show_deck")
+	get_node("Deck/Header/Name").connect("text_changed",self,"_set_deck_name")
 	get_node("Options/HBoxContainer/Button1").connect("pressed",self,"_options_accept")
 	get_node("Options/HBoxContainer/Button2").connect("pressed",self,"_options_apply")
 	get_node("Options/HBoxContainer/Button3").connect("pressed",get_node("Options"),"hide")

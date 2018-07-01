@@ -610,7 +610,9 @@ func attack(attacker,target,no_counter=false):
 				apply_effect(equiped,"on_attacked",target)
 		if (Cards.data[attacker.ID].has("animation")):
 			var pi = load("res://scenes/animations/"+Cards.data[attacker.ID]["animation"]+".tscn").instance()
-			attacker.node.add_child(pi)
+			pi.set_global_position(attacker.node.get_global_position())
+			pi.scale *= 0.15
+			add_child(pi)
 			pi.look_at(target.node.get_global_position())
 		if (Cards.data[target.ID].has("on_dead")):
 			apply_effect(target,"on_dead",attacker)
@@ -628,7 +630,8 @@ func attack(attacker,target,no_counter=false):
 func _draw_card(pl,ID=-1):
 	if (server):
 		ID = draw_card(pl,ID)
-		rpc("draw_card",(pl+1)%2,ID)
+		if (multiplayer):
+			rpc("draw_card",(pl+1)%2,ID)
 
 remote func draw_card(pl,ID=-1):
 	if (deck[pl].size()==0):
@@ -824,9 +827,15 @@ remote func attack_phase():
 		timer.set_wait_time(1.0)
 		timer.start()
 		yield(timer,"timeout")
-		rpc("update_stats")
+		if (multiplayer):
+			rpc("update_stats")
+		else:
+			update_stats()
 	
-	rpc("attack_phase_end")
+	if (multiplayer):
+		rpc("attack_phase_end")
+	else:
+		attack_phase_end()
 
 sync func attack_phase_end():
 	var enemy = (player+1)%2

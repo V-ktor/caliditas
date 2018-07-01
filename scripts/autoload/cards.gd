@@ -70,7 +70,7 @@ const data = {
 		"on_ally_creature_spawn":"inc_temp-1",
 		"on_removed":"dec_ally_temp-1",
 		"tags":["fire","elemental","area","support"],
-		"animation":"fire_blast",
+		"animation":"fire_strike",
 		"image":preload("res://images/cards/DivineGuardian.jpg")
 	},
 	
@@ -83,7 +83,7 @@ const data = {
 		"on_play":"inc_temp-1",
 		"target":"creature-ally",
 		"tags":["fire","equipment"],
-		"animation":"fire_circle",
+		"animation":"fire_blade",
 		"image":preload("res://images/cards/fire_blade.jpg")
 	},
 	"fire_ball":{
@@ -127,7 +127,7 @@ const data = {
 		"level":2,
 		"rules":[],
 		"tags":["ice","elemental"],
-		"animation":"ice_blast",
+		"animation":"water_blast",
 		"image":preload("res://images/cards/welcome_to_air_OMGWTF_by_shiroikuro.jpg")
 	},
 	"freezing_wisp":{
@@ -146,7 +146,7 @@ const data = {
 		"level":3,
 		"rules":[],
 		"tags":["ice","elemental"],
-		"animation":"ice_blast",
+		"animation":"water_blast",
 		"image":preload("res://images/cards/welcome_to_air_OMGWTF_by_shiroikuro.jpg")
 	},
 	"ice_elemental":{
@@ -166,7 +166,7 @@ const data = {
 		"rules":["ice_armor-2"],
 		"on_new_turn":"ice_armor-2",
 		"tags":["ice","elemental"],
-		"animation":"ice_blast",
+		"animation":"spike_blast",
 		"image":preload("res://images/cards/ice_creature.jpg")
 	},
 	
@@ -200,7 +200,7 @@ const data = {
 		"on_play":"move_to_hand",
 		"target":"creature",
 		"tags":["attack"],
-		"animation":"ice_circle",
+		"animation":"flash_flood",
 		"image":preload("res://images/cards/flash_flood.jpg")
 	},
 	"equalize":{
@@ -223,7 +223,7 @@ const data = {
 		"on_new_turn":"ice_armor-2",
 		"target":"creature-ally",
 		"tags":["ice","equipment"],
-		"animation":"ice_circle",
+		"animation":"ice_shield",
 		"image":preload("res://images/cards/ice_shield.jpg")
 	},
 	
@@ -235,7 +235,7 @@ const data = {
 		"rules":["kill_attacker_level-3"],
 		"on_attacked":"kill_level-3",
 		"tags":["neutral","elemental"],
-		"animation":"ice_blast",
+		"animation":"wind_blast",
 		"image":preload("res://images/cards/back.png")
 	},
 	"lightning_elemental":{
@@ -245,7 +245,7 @@ const data = {
 		"rules":["kill_attacker_level-5"],
 		"on_attacked":"kill_level-5",
 		"tags":["neutral","elemental"],
-		"animation":"ice_blast",
+		"animation":"wind_blast",
 		"image":preload("res://images/cards/back.png")
 	},
 	"assembled_golem":{
@@ -255,7 +255,7 @@ const data = {
 		"rules":["assemble"],
 		"on_play":"assemble",
 		"tags":["neutral","golem"],
-		"animation":"ice_blast",
+		"animation":"wind_blast",
 		"image":preload("res://images/cards/back.png")
 	},
 	
@@ -267,7 +267,7 @@ const data = {
 		"rules":["draw-3"],
 		"on_play":"draw-3",
 		"tags":[],
-		"animation":"ice_circle",
+		"animation":"sparks",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
 	"inversion":{

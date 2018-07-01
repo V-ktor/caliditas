@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://images/particles/fire_ball.png" type="Texture" id=1]
+[ext_resource path="res://images/particles/fire_blade.png" type="Texture" id=1]
 [ext_resource path="res://images/particles/explosion02.png" type="Texture" id=2]
 [ext_resource path="res://sounds/foom_0.wav" type="AudioStream" id=3]
-[ext_resource path="res://sounds/explosion04.wav" type="AudioStream" id=4]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -11,68 +10,62 @@ render_priority = 0
 blend_mode = 1
 light_mode = 0
 
-[sub_resource type="CanvasItemMaterial" id=2]
+[sub_resource type="Gradient" id=2]
 
-render_priority = 0
-blend_mode = 1
-light_mode = 0
+offsets = PoolRealArray( 0, 0.16568, 0.538462, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="Gradient" id=3]
-
-offsets = PoolRealArray( 0, 0.118343, 0.532544, 1 )
-colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 )
-
-[sub_resource type="GradientTexture" id=4]
+[sub_resource type="GradientTexture" id=3]
 
 flags = 4
-gradient = SubResource( 3 )
+gradient = SubResource( 2 )
 width = 2048
 
-[sub_resource type="Curve" id=5]
+[sub_resource type="Curve" id=4]
 
-min_value = 0.75
-max_value = 2.5
+min_value = 1.0
+max_value = 2.0
 bake_resolution = 100
-_data = [ Vector2( 0, 0.75 ), 0.0, 0.0, 0, 0, Vector2( 1, 2.5 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 2 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=6]
+[sub_resource type="CurveTexture" id=5]
 
 flags = 4
 width = 2048
-curve = SubResource( 5 )
+curve = SubResource( 4 )
 
-[sub_resource type="ParticlesMaterial" id=7]
+[sub_resource type="ParticlesMaterial" id=9]
 
 render_priority = 0
 trail_divisor = 1
-emission_shape = 1
-emission_sphere_radius = 16.0
+emission_shape = 2
+emission_box_extents = Vector3( 256, 0, 0 )
 flag_align_y = false
 flag_rotate_y = false
 flag_disable_z = true
 spread = 180.0
 flatness = 0.0
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 256.0
+initial_velocity = 32.0
 initial_velocity_random = 0.5
-angular_velocity = 90.0
+angular_velocity = 270.0
 angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-linear_accel = 0.0
+linear_accel = 100.0
 linear_accel_random = 0.0
-radial_accel = 0.0
+radial_accel = 100.0
 radial_accel_random = 0.0
-tangential_accel = 0.0
+tangential_accel = 100.0
 tangential_accel_random = 0.0
-damping = 32.0
+damping = 64.0
 damping_random = 0.0
 angle = 360.0
 angle_random = 1.0
-scale = 3.0
-scale_random = 0.5
-scale_curve = SubResource( 6 )
-color_ramp = SubResource( 4 )
+scale = 0.15
+scale_random = 0.25
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
 hue_variation = 0.0
 hue_variation_random = 0.0
 anim_speed = 0.0
@@ -80,13 +73,13 @@ anim_speed_random = 0.0
 anim_offset = 0.0
 anim_offset_random = 0.0
 anim_loop = false
-_sections_unfolded = [ "Angle", "Angular Velocity", "Color", "Damping", "Emission Shape", "Initial Velocity", "Scale" ]
+_sections_unfolded = [ "Angle", "Angular Velocity", "Color", "Damping", "Emission Shape", "Initial Velocity", "Linear Accel", "Radial Accel", "Scale", "Tangential Accel" ]
 
 [sub_resource type="Animation" id=8]
 
 length = 2.0
 loop = false
-step = 0.05
+step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sound:playing")
 tracks/0/interp = 1
@@ -100,64 +93,64 @@ tracks/0/keys = {
 "values": [ true ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SoundExplosion:playing")
+tracks/1/path = NodePath("Blade:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.3 ),
-"transitions": PoolRealArray( 1 ),
-"update": 2,
-"values": [ true ]
+"times": PoolRealArray( 0, 0.1, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("FireBall:modulate")
+tracks/2/path = NodePath("Blade:rotation_degrees")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.1, 0.35, 0.45 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ -160.0, 45.0 ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("FireBall:position")
+tracks/3/path = NodePath("Particles:emitting")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.4 ),
+"times": PoolRealArray( 0, 0.9 ),
 "transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( -2048, 0 ), Vector2( 0, 0 ) ]
+"update": 1,
+"values": [ true, false ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Particles:emitting")
+tracks/4/path = NodePath("Particles:rotation_degrees")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5 ),
+"times": PoolRealArray( 0, 0.9, 1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
+"update": 0,
+"values": [ -10.0, 170.0, 170.0 ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Particles:scale")
+tracks/5/path = NodePath("Particles:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.3, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.4, 0.6, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 2, 2 ) ]
+"values": [ Vector2( -256, 128 ), Vector2( -128, -96 ), Vector2( -16, -192 ), Vector2( 384, -96 ) ]
 }
 tracks/6/type = "method"
 tracks/6/path = NodePath(".")
@@ -174,45 +167,49 @@ tracks/6/keys = {
 } ]
 }
 
-[node name="FireBall" type="Node2D" index="0"]
+[node name="FireBlade" type="Node2D" index="0"]
 
+scale = Vector2( 1.25, 1.25 )
 z_index = 1
-_sections_unfolded = [ "Z Index" ]
+_sections_unfolded = [ "Transform", "Z Index" ]
 
-[node name="FireBall" type="Sprite" parent="." index="0"]
+[node name="Blade" type="Sprite" parent="." index="0"]
 
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 1 )
+rotation = 0.785398
 scale = Vector2( 3, 3 )
 texture = ExtResource( 1 )
-offset = Vector2( -128, 0 )
+offset = Vector2( 32, -32 )
+flip_h = true
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 
 [node name="Particles" type="Particles2D" parent="." index="1"]
 
-self_modulate = Color( 1, 1, 1, 0.501961 )
+self_modulate = Color( 1, 1, 1, 0.25098 )
 light_mask = 0
-material = SubResource( 2 )
+material = SubResource( 1 )
+position = Vector2( 384, -96 )
+rotation = 2.96706
 scale = Vector2( 2, 2 )
 emitting = false
-amount = 32
-lifetime = 0.5
+amount = 128
+lifetime = 1.0
 one_shot = false
 preprocess = 0.0
-speed_scale = 1.0
+speed_scale = 1.5
 explosiveness = 0.0
 randomness = 0.0
 fixed_fps = 0
 fract_delta = true
 visibility_rect = Rect2( -100, -100, 200, 200 )
-local_coords = true
+local_coords = false
 draw_order = 0
-process_material = SubResource( 7 )
+process_material = SubResource( 9 )
 texture = ExtResource( 2 )
 normal_map = null
 h_frames = 1
 v_frames = 1
-_sections_unfolded = [ "Drawing", "Material", "Process Material", "Textures", "Time", "Transform", "Visibility" ]
+_sections_unfolded = [ "Material", "Process Material", "Textures", "Time", "Transform", "Visibility", "Z Index" ]
 
 [node name="Sound" type="AudioStreamPlayer" parent="." index="2"]
 
@@ -223,16 +220,7 @@ autoplay = false
 mix_target = 0
 bus = "Sound"
 
-[node name="SoundExplosion" type="AudioStreamPlayer" parent="." index="3"]
-
-stream = ExtResource( 4 )
-volume_db = -4.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
-bus = "Sound"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
 
 root_node = NodePath("..")
 autoplay = "animation"

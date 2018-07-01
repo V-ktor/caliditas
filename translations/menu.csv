@@ -5,6 +5,7 @@ SKIRMISH,Skirmish
 PLAYER_VS_PLAYER,Player vs player
 MULTIPLAYER,Multiplayer
 DECK,Deck
+DECKS,Decks
 CARDS,Cards
 SHOP,Shop
 GOLD,Gold
@@ -19,6 +20,9 @@ OK,OK
 APPLY,Apply
 CANCEL,Cancel
 DEFAULT,Default
+NEW_DECK,New Deck
+SAVE_DECK,Save Deck
+LOAD_DECK,Load Deck
 GAME_OVER,Game Over
 VICTORY,Victory
 YOU_LOST,"You lost!"
@@ -103,7 +107,7 @@ BUY_GRADE1_RANDOM,"Buy a random grade 1 card pack."
 BUY_GRADE1_FIRE,"Buy a grade 1 fire card pack."
 BUY_GRADE1_ICE,"Buy a grade 1 ice card pack."
 BUY_GRADE1_NEUTRAL,"Buy a grade 1 card pack of neutral cards."
-BUY_GRADE2_RANDOM,"Buy a random grade 1 card pack."
+BUY_GRADE2_RANDOM,"Buy a random grade 2 card pack."
 BUY_GRADE2_FIRE,"Buy a grade 2 fire card pack."
 BUY_GRADE2_ICE,"Buy a grade 2 ice card pack."
 BUY_GRADE2_NEUTRAL,"Buy a grade 2 card pack of neutral cards."
