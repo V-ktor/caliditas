@@ -10,13 +10,26 @@ const DEFAULT = {
 	"wind_elemental":1,"lightning_elemental":1,
 	"draw":2,"inversion":2
 }
+const INVENTORY_DEFAULT = {
+	"fire_elemental":3,"greater_fire_elemental":2,"burning_wisp":2,
+	"lava_elemental":2,"fire_avatar":2,
+	"fire_blade":3,"blaze":1,"fire_ball":2,"explosion":2,
+	"water_elemental":3,"greater_water_elemental":2,"freezing_wisp":2,
+	"ice_elemental":2,"ice_avatar":2,
+	"chill":3,"equalize":2,"hailstorm":2,"flash_flood":2,
+	"wind_elemental":2,"lightning_elemental":1,
+	"draw":2,"inversion":2
+}
 const MAX_MULT = 3
 const MAX_CARDS = 40
-const locales = ["en"]
+const CARD_PACK_SIZE = 3
+const LOCALES = ["en"]
 
 var deck = DEFAULT.duplicate()
 var _deck
+var deck_name = tr("DEFAULT")
 var gold = 100
+var inventory = {}
 var active = false
 var status_text = ""
 var waiting = false
@@ -169,8 +182,9 @@ func quit():
 		yield(get_tree(),"idle_frame")
 		get_node("Quit").popup_centered()
 
-func _show_deck():
+func _show_deck(t=false):
 	var num_cards
+	var show_all = get_node("Deck/Header/CheckBox").is_pressed() || true
 	if (_deck==null):
 		_deck = deck.duplicate()
 	num_cards = get_num_cards(_deck)
@@ -178,6 +192,9 @@ func _show_deck():
 		var bi
 		var type = Cards.data.keys()[i]
 		var ammount = 0
+		var max_ammount = 0
+		if (inventory.has(type)):
+			max_ammount = min(MAX_MULT,inventory[type])
 		if (!has_node("Deck/ScrollContainer/GridContainer/Card"+str(i))):
 			var ni = Cards.create_card(type)
 			bi = get_node("Deck/Card").duplicate()
@@ -192,16 +209,25 @@ func _show_deck():
 			bi = get_node("Deck/ScrollContainer/GridContainer/Card"+str(i))
 		if (deck.has(type)):
 			ammount = _deck[type]
-			bi.get_node("ButtonAdd").set_disabled(ammount>=MAX_MULT || num_cards>=MAX_CARDS)
+			bi.get_node("ButtonAdd").set_disabled(ammount>=max_ammount || num_cards>=MAX_CARDS)
 			bi.get_node("ButtonSub").set_disabled(false)
 		else:
 			bi.get_node("ButtonAdd").set_disabled(num_cards>=MAX_CARDS)
 			bi.get_node("ButtonSub").set_disabled(true)
-		bi.get_node("Label").set_text(str(ammount)+" / "+str(MAX_MULT))
-		bi.show()
+		bi.get_node("Label").set_text(str(ammount)+" / "+str(max_ammount))
+		if (show_all || max_ammount>0):
+			bi.show()
+		else:
+			bi.hide()
 	
-	get_node("Deck/Label").set_text(tr("CARDS")+": "+str(get_num_cards(_deck))+" / "+str(MAX_CARDS))
-	get_node("Deck").show()
+	get_node("Deck/Header/Label").set_text(tr("CARDS")+": "+str(get_num_cards(_deck))+" / "+str(MAX_CARDS))
+	get_node("Deck/Header/Name").set_text(deck_name)
+	get_node("Deck").popup_centered()
+
+func _show_shop():
+	get_node("Shop/VBoxContainer/Gold/Label").set_text(tr("GOLD")+": "+str(gold))
+	get_node("Acquired").hide()
+	get_node("Shop").popup_centered()
 
 func _show_options():
 	var idx = 0
@@ -228,7 +254,7 @@ func _show_options():
 	get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").select(idx)
 	if (_name!="" && _name!=tr("PLAYER")):
 		get_node("Options/ScrollContainer/VBoxContainer/Name/Name").set_text(_name)
-	get_node("Options").show()
+	get_node("Options").popup_centered()
 
 func add_card(ID):
 	var type = Cards.data.keys()[ID]
@@ -254,6 +280,63 @@ func rm_card(ID):
 	
 	_show_deck()
 
+func add_inventory(ID):
+	if (inventory.has(ID)):
+		inventory[ID] += 1
+	else:
+		inventory[ID] = 1
+
+func get_pack_card(grade,type):
+	if (!Cards.grade_cards[grade].has(type)):
+		return
+	var cards = Cards.grade_cards[grade][type]
+	if (cards.size()==0):
+		return
+	return cards[randi()%cards.size()]
+
+func _buy_pack(grade,type):
+	var price = Cards.CARD_PACK_PRICE[grade][type]
+	if (gold<price):
+		print("Not enough gold!")
+		return
+	
+	var cards = []
+	gold -= price
+	for i in range(CARD_PACK_SIZE):
+		var t = type
+		var card
+		if (t=="random"):
+			t = ["fire","ice","neutral"][randi()%3]
+		card = get_pack_card(grade,t)
+		printt(card,grade,t)
+		if (card!=null):
+			add_inventory(card)
+			cards.push_back(card)
+	
+	show_new_cards(cards)
+	save_inventory()
+	get_node("Shop").hide()
+
+func show_new_cards(cards):
+	for c in get_node("Acquired/ScrollContainer/HBoxContainer").get_children():
+		c.hide()
+	
+	for i in range(cards.size()):
+		var ci
+		var ni
+		if (!has_node("Acquired/ScrollContainer/HBoxContainer/Card"+str(i))):
+			ci = get_node("Acquired/ScrollContainer/HBoxContainer/Card0").duplicate()
+			ci.set_name("Card"+str(i))
+			get_node("Acquired/ScrollContainer/HBoxContainer").add_child(ci)
+		else:
+			ci = get_node("Acquired/ScrollContainer/HBoxContainer/Card"+str(i))
+		ni = Cards.create_card(cards[i])
+		ni.type = "preview"
+		ni.set_position(Vector2(105,150))
+		ci.add_child(ni)
+		ci.show()
+	get_node("Acquired").popup_centered()
+
 
 func get_deck(d=deck):
 	# Convert deck dictionary to array.
@@ -277,16 +360,12 @@ func _change_deck():
 	save_deck()
 	get_node("Deck").hide()
 
-func _reset_deck():
-	deck = DEFAULT
-	_deck = null
-	save_deck()
-	_show_deck()
-
 func load_deck():
-	var file = File.new()
 	var currentline
-	file.open("user://deck.cfg",File.READ)
+	var file = File.new()
+	var error = file.open("user://deck.cfg",File.READ)
+	if (error!=OK):
+		return
 	currentline = JSON.parse(file.get_line()).get_result()
 	file.close()
 	if (currentline==null):
@@ -302,6 +381,32 @@ func save_deck():
 	
 	file.open("user://deck.cfg",File.WRITE)
 	file.store_line(JSON.print(deck))
+	file.close()
+
+func load_inventory():
+	var currentline
+	var file = File.new()
+	var error = file.open("user://inventory.cfg",File.READ)
+	if (error!=OK):
+		inventory = INVENTORY_DEFAULT.duplicate()
+		return
+	currentline = JSON.parse(file.get_line()).get_result()
+	if (currentline!=null):
+		gold = int(currentline)
+	currentline = JSON.parse(file.get_line()).get_result()
+	if (currentline!=null):
+		inventory = currentline
+	file.close()
+
+func save_inventory():
+	var file = File.new()
+	var dir = Directory.new()
+	if (!dir.dir_exists("user://")):
+		dir.make_dir_recursive("user://")
+	
+	file.open("user://inventory.cfg",File.WRITE)
+	file.store_line(str(gold))
+	file.store_line(JSON.print(inventory))
 	file.close()
 
 
@@ -324,9 +429,9 @@ func save_config():
 func load_config():
 	var file = ConfigFile.new()
 	var default_locale = OS.get_locale()
-	if !(default_locale in locales):
+	if !(default_locale in LOCALES):
 		default_locale = default_locale.split("_")[0]
-		if !(default_locale in locales):
+		if !(default_locale in LOCALES):
 			default_locale = "en"
 	file.load("user://config.cfg")
 	fullscreen = file.get_value("video","fullscreen",false)
@@ -510,22 +615,24 @@ func _ready():
 	set_process_input(true)
 	load_config()
 	load_deck()
+	load_inventory()
 	
-	# connect buttons
+	# Connect buttons.
+	get_node("Panel/VBoxContainer/Button5").connect("pressed",self,"hide")
 	get_node("Panel/VBoxContainer/Button1").connect("pressed",self,"_skirmish")
 	get_node("Panel/VBoxContainer/Button7").connect("pressed",self,"_local")
 	get_node("Panel/VBoxContainer/Button9").connect("pressed",self,"_tutorial")
 	get_node("Panel/VBoxContainer/Button10").connect("pressed",get_node("Lobby"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button2").connect("pressed",self,"_show_deck")
-	get_node("Panel/VBoxContainer/Button5").connect("pressed",self,"hide")
+	get_node("Panel/VBoxContainer/Button11").connect("pressed",self,"_show_shop")
 	get_node("Panel/VBoxContainer/Button3").connect("pressed",self,"_show_options")
 	get_node("Panel/VBoxContainer/Button6").connect("pressed",get_node("Info"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button8").connect("pressed",get_node("Credits"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button4").connect("pressed",self,"quit")
 	get_node("Quit").connect("confirmed",get_tree(),"quit")
 	get_node("Deck/HBoxContainer/ButtonA").connect("pressed",self,"_change_deck")
-	get_node("Deck/HBoxContainer/ButtonR").connect("pressed",self,"_reset_deck")
 	get_node("Deck/HBoxContainer/ButtonC").connect("pressed",get_node("Deck"),"hide")
+	get_node("Deck/Header/CheckBox").connect("toggled",self,"_show_deck")
 	get_node("Options/HBoxContainer/Button1").connect("pressed",self,"_options_accept")
 	get_node("Options/HBoxContainer/Button2").connect("pressed",self,"_options_apply")
 	get_node("Options/HBoxContainer/Button3").connect("pressed",get_node("Options"),"hide")
@@ -540,16 +647,28 @@ func _ready():
 	get_node("Lobby/VBoxContainer/Buttons/ButtonH").connect("pressed",self,"_host")
 	get_node("Lobby/VBoxContainer/Buttons/ButtonJ").connect("pressed",self,"_join")
 	get_node("Lobby/VBoxContainer/Status/ButtonC").connect("pressed",self,"cancel_mp")
+	get_node("Acquired/HBoxContainer/Button1").connect("pressed",self,"_show_shop")
+	get_node("Acquired/HBoxContainer/Button2").connect("pressed",get_node("Acquired"),"hide")
 	
-	for i in range(locales.size()):
-		get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").add_item(locales[i],i)
+	# Set up card pack buttons.
+	for grade in range(3):
+		for type in range(4):
+			get_node("Shop/VBoxContainer/Grade"+str(grade+1)+"/Button"+str(type+1)).connect("pressed",self,"_buy_pack",[grade,Cards.CARD_PACK_PRICE[grade].keys()[type]])
+			get_node("Shop/VBoxContainer/Grade"+str(grade+1)+"/Button"+str(type+1)+"/Cost").set_text(tr("PRICE")+": "+str(Cards.CARD_PACK_PRICE[grade].values()[type])+" "+tr("GOLD"))
+	
+	# Add available options to the language option button.
+	for i in range(LOCALES.size()):
+		get_node("Options/ScrollContainer/VBoxContainer/Locale/OptionButton").add_item(LOCALES[i],i)
+	
+	# Add tooltips.
 	get_node("Panel/VBoxContainer/Button1").set_tooltip(tr("SKIRMISH_DESC"))
-	get_node("Panel/VBoxContainer/Button2").set_tooltip(tr("DECK_DESC"))
 	get_node("Panel/VBoxContainer/Button7").set_tooltip(tr("LOCAL_DESC"))
 	get_node("Panel/VBoxContainer/Button9").set_tooltip(tr("TUTORIAL_DESC"))
 	get_node("Panel/VBoxContainer/Button10").set_tooltip(tr("MULTIPLAYER_DESC"))
+	get_node("Panel/VBoxContainer/Button2").set_tooltip(tr("DECK_DESC"))
+	get_node("Panel/VBoxContainer/Button11").set_tooltip(tr("SHOP_DESC"))
 	
-	# connect the callbacks related to networking
+	# Connect the callbacks related to networking.
 	get_tree().connect("network_peer_disconnected",self,"_player_disconnected")
 	get_tree().connect("server_disconnected",self,"_server_disconnected")
 	get_tree().connect("connected_to_server",self,"_connected_ok")
@@ -561,7 +680,7 @@ func _ready():
 	timer.connect("timeout",self,"_display_status")
 	timer.start()
 	
-	# set up info text
+	# Set up info text.
 #	get_node("Info/Text").push_align(RichTextLabel.ALIGN_FILL)		# extreme stretching with half-filled lines
 	for s in ["HELP_INTRO","HELP_1","HELP_2","HELP_3","HELP_4","HELP_5"]:
 		var array = tr(s).split("_")
@@ -581,6 +700,7 @@ func _ready():
 		get_node("Info/Text").add_text("\n\n")
 	get_node("Info/Text").add_text(tr("CONTROLS")+":\n"+tr("HELP_6"))
 	
+	# Set up credit text.
 	get_node("Credits/Text").add_text(tr("ENGINE")+":\n Godot (")
 	get_node("Credits/Text").append_bbcode("[url=https://godotengine.org/]godotengine.org/[/url]")
 	get_node("Credits/Text").add_text(")\n\n"+tr("PROGRAMMING")+":\n - Viktor Hahn\n\n")

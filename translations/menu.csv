@@ -6,13 +6,19 @@ PLAYER_VS_PLAYER,Player vs player
 MULTIPLAYER,Multiplayer
 DECK,Deck
 CARDS,Cards
+SHOP,Shop
+GOLD,Gold
+PRICE,Price
+CARDS_ACQUIRED,New Cards Acquired
 OPTIONS,Options
 QUIT,Quit
 QUIT?,Quit?
+BACK,Back
 RESET,Reset
 OK,OK
 APPLY,Apply
 CANCEL,Cancel
+DEFAULT,Default
 GAME_OVER,Game Over
 VICTORY,Victory
 YOU_LOST,"You lost!"
@@ -28,6 +34,7 @@ MUSIC,Music
 SOUND,Sound
 MUSIC_VOLUME,Music Volume
 SOUND_VOLUME,Sound Volume
+SHOW_UNAVAILABLE,Show All Cards
 LOBBY,Lobby
 ADRESS,Adress
 PORT,Port
@@ -91,4 +98,17 @@ LOCAL_DESC,"Play a local multiplayer game with both players controled by human."
 TUTORIAL_DESC,"Display the game manual while playing a local game versus the AI."
 MULTIPLAYER_DESC,"Play a game via network."
 DECK_DESC,"Customize your deck."
+SHOP_DESC,"Buy new cards."
+BUY_GRADE1_RANDOM,"Buy a random grade 1 card pack."
+BUY_GRADE1_FIRE,"Buy a grade 1 fire card pack."
+BUY_GRADE1_ICE,"Buy a grade 1 ice card pack."
+BUY_GRADE1_NEUTRAL,"Buy a grade 1 card pack of neutral cards."
+BUY_GRADE2_RANDOM,"Buy a random grade 1 card pack."
+BUY_GRADE2_FIRE,"Buy a grade 2 fire card pack."
+BUY_GRADE2_ICE,"Buy a grade 2 ice card pack."
+BUY_GRADE2_NEUTRAL,"Buy a grade 2 card pack of neutral cards."
+BUY_GRADE3_RANDOM,"Buy a random grade 3 card pack."
+BUY_GRADE3_FIRE,"Buy a grade 3 fire card pack."
+BUY_GRADE3_ICE,"Buy a grade 3 ice card pack."
+BUY_GRADE3_NEUTRAL,"Buy a grade 3 card pack of neutral cards."
 

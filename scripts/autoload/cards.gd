@@ -298,6 +298,13 @@ const COLOR_CREATURE = Color(0.3,0.8,0.2)
 const COLOR_SPELL = Color(0.8,0.7,0.1)
 const COLOR_HEALTH = Color(1.0,0.25,0.225)
 const COLOR_MANA = Color(0.9,0.7,0.2)
+const CARD_PACK_PRICE = [
+	{"fire":110,"ice":110,"neutral":120,"random":100},
+	{"fire":220,"ice":220,"neutral":240,"random":200},
+	{"fire":440,"ice":440,"neutral":480,"random":400}
+]
+
+var grade_cards = [{"fire":[],"ice":[],"neutral":[]},{"fire":[],"ice":[],"neutral":[]},{"fire":[],"ice":[],"neutral":[]}]
 
 var base = preload("res://scenes/main/card_base.tscn")
 
@@ -334,3 +341,16 @@ func create_card(type):
 	return ci
 
 
+func _ready():
+	for card in data.keys():
+		var grade = clamp(int(data[card]["level"]/2)-1,0,2)
+		var type = "neutral"
+		if ("fire" in data[card]["tags"]):
+			grade_cards[grade]["fire"].push_back(card)
+			type = "fire"
+		if ("ice" in data[card]["tags"]):
+			grade_cards[grade]["ice"].push_back(card)
+			type = "ice"
+		if (type=="neutral" || ("neutral" in data[card]["tags"])):
+			grade_cards[grade]["neutral"].push_back(card)
+			type = "neutral"
