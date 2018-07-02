@@ -511,7 +511,7 @@ func apply_effect(card,event,target=null):
 		if (target.temperature>0 && target.temperature<=ammount):
 			target.destroy()
 	elif (base=="kill_level"):
-		if (target.temperature<=ammount):
+		if (target.level<=ammount):
 			target.destroy()
 	elif (base=="kill_all_hot"):
 		for c in field[PLAYER1]+field[PLAYER2]:
