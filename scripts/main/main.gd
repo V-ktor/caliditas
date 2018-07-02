@@ -157,6 +157,9 @@ func start():
 	timer.set_wait_time(0.2)
 	UI.get_node("Player1/VBoxContainer/Name").set_text(player_name[PLAYER1])
 	UI.get_node("Player2/VBoxContainer/Name").set_text(player_name[PLAYER2])
+	if (ai):
+		UI.get_node("Player2/VBoxContainer/ButtonC").hide()
+		UI.get_node("Player2/VBoxContainer/ButtonE").hide()
 	for i in range(START_CARDS):
 		_draw_card(PLAYER1)
 		_draw_card(PLAYER2)
