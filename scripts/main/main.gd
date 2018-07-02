@@ -91,6 +91,11 @@ class Card:
 			card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 			card.node.get_node("Tween").start()
 	
+	func remove_equipment():
+		for c in []+equiped:
+			c.destroy()
+		equiped.clear()
+	
 	func destroy():
 		for c in equiped:
 			c.node.get_node("AnimationPlayer").play("fade_out")
@@ -527,9 +532,7 @@ func apply_effect(card,event,target=null):
 	elif (base=="move_to_hand"):
 		hand[target.owner].push_back(target)
 		field[target.owner].erase(target)
-		for c in []+target.equiped:
-			c.destroy()
-		target.equiped.clear()
+		target.remove_equipment()
 		if (Cards.data[target.ID].has("on_removed")):
 			apply_effect(target,"on_removed")
 		target.in_game = false
@@ -543,6 +546,9 @@ func apply_effect(card,event,target=null):
 		sort_hand(enemy)
 	elif (base=="invert_temp"):
 		target.temperature *= -1
+		target.update()
+	elif (base=="cleanse"):
+		target.remove_equipment()
 		target.update()
 	elif (base=="explosion"):
 		var dmg = abs(target.temperature)
@@ -645,7 +651,7 @@ remote func draw_card(pl,ID=-1):
 	var card = Card.new(deck[pl][ID],pl,node)
 	var offset = min(200,(OS.get_window_size().x-100)/max(hand[pl].size(),1))
 	var pos1 = Vector2(-250+500*pl,250-500*pl)
-	var pos2 = Vector2((225+p*offset/zoom-OS.get_window_size().x/2.0)*(1-2*pl),OS.get_window_size().y/2.0*(1-2*pl))*zoom
+	var pos2 = Vector2((275+p*offset/zoom-OS.get_window_size().x/2.0)*(1-2*pl),OS.get_window_size().y/2.0*(1-2*pl))*zoom
 	hand[pl].push_back(card)
 	node.card = card
 	node._z = 1
@@ -676,7 +682,7 @@ func sort_hand(player):
 	var ID = 0
 	var offset = min(200,(OS.get_window_size().x-100)/max(hand[player].size(),1))
 	for card in hand[player]:
-		var pos = Vector2((225+ID*offset/zoom-OS.get_window_size().x/2.0)*(1-2*player),OS.get_window_size().y/2.0*(1-2*player))*zoom
+		var pos = Vector2((275+ID*offset/zoom-OS.get_window_size().x/2.0)*(1-2*player),OS.get_window_size().y/2.0*(1-2*player))*zoom
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		card.node.get_node("Tween").start()
 		card.node.pos = pos
@@ -865,14 +871,16 @@ sync func update_stats():
 	# Update GUI.
 	for p in range(2):
 		var temp = get_player_temperature(p)
-		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Health").set_text(tr("HEALTH")+": "+str(health[p]))
+		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Health/Label").set_text(tr("HEALTH")+": "+str(health[p]))
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Health/Bar").set_value(health[p])
-		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Mana").set_text(tr("MANA")+": "+str(mana[p]))
+		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Mana/Label").set_text(tr("MANA")+": "+str(mana[p]))
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Mana/Bar").set_value(mana[p])
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Mana/Bar").set_max(mana_max[p])
-		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp").set_text(tr("TEMPERATURE")+": "+str(temp))
+		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Label").set_text(tr("TEMPERATURE")+": "+str(temp))
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Bar").set_value(temp)
-		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Bar").set_modulate(Cards.COLOR_COLD.linear_interpolate(Cards.COLOR_HOT,temp/10.0+0.5))
+		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Bar").get_material().set_shader_param("color",Cards.COLOR_COLD.linear_interpolate(Cards.COLOR_HOT,temp/10.0+0.5))
+		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Bar").get_material().set_shader_param("hot",max(temp/10.0,0.0))
+		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Top").get_material().set_shader_param("cold",max(-temp/10.0,0.0))
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Deck").set_text(tr("DECK")+": "+str(deck[p].size()))
 	Music.temperature = get_player_temperature(player)+0.5*get_player_temperature((player+1)%2)
 

@@ -7,11 +7,6 @@ draw.wav, playcard.wav, shuffle.wav, tap.wav, untap.wav:
 Copyright: HaelDB
 License: CC0
 
-flaunch.wav:
-License: CC-BY 3.0
-Copyright: Michel Baradari (apollo-music.de)
-Hosted on opengameart.org
-
 freeze2.wav, water.wav:
 Copyright: p0ss
 License: CC-BY-SA 3.0

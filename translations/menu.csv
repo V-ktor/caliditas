@@ -13,7 +13,7 @@ PRICE,Price
 CARDS_ACQUIRED,New Cards Acquired
 OPTIONS,Options
 QUIT,Quit
-QUIT?,Quit?
+QUIT?,"      Quit?"
 BACK,Back
 RESET,Reset
 OK,OK
@@ -23,7 +23,7 @@ DEFAULT,Default
 NEW_DECK,New Deck
 SAVE_DECK,Save Deck
 LOAD_DECK,Load Deck
-GAME_OVER,Game Over
+GAME_OVER,"          Game Over"
 VICTORY,Victory
 YOU_LOST,"You lost!"
 YOU_WIN,"You win!"
@@ -68,6 +68,7 @@ PROGRAMMING,Programming
 GRAPHICS,Graphics
 MUSIC,Music
 SOUNDS,Sounds
+FONT,Font
 TUTORIAL_INTRO1,"Welcome to Caliditas!"
 TUTORIAL_INTRO2,"You find yourself on a battle field opposed by a hostile summoner and for some reason the two of you only know how to summon fire and ice elementals."
 TUTORIAL_INTRO3,"Press the '>>>' button at the lower right corner to continue."

@@ -1,0 +1,18 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+
+code = "shader_type canvas_item;
+
+uniform float cold = 0.0;
+uniform sampler2D frost;
+uniform sampler2D mask;
+
+void fragment()
+{
+	vec4 frost_color = texture(frost,UV);
+	float alpha = texture(mask,UV).a;
+	COLOR = texture(TEXTURE,UV);
+	COLOR += 1.5*frost_color*alpha*cold;
+}"
+

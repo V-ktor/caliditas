@@ -281,7 +281,18 @@ const data = {
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
-	"average":{
+	"cleanse":{
+		"type":"spell",
+		"temperature":0,
+		"level":4,
+		"rules":["cleanse"],
+		"on_play":"cleanse",
+		"target":"creature",
+		"tags":[],
+		"animation":"neutralize",
+		"image":preload("res://images/cards/spell_neutral.jpg")
+	},
+	"mass_calibration":{
 		"type":"spell",
 		"temperature":0,
 		"level":5,

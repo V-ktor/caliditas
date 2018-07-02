@@ -736,6 +736,20 @@ func _ready():
 	get_node("Lobby/VBoxContainer/Status/ButtonC").connect("pressed",self,"cancel_mp")
 	get_node("Acquired/HBoxContainer/Button1").connect("pressed",self,"_show_shop")
 	get_node("Acquired/HBoxContainer/Button2").connect("pressed",get_node("Acquired"),"hide")
+	get_node("Deck/ButtonClose").connect("pressed",get_node("Deck"),"hide")
+	get_node("Deck/Decks/ButtonClose").connect("pressed",get_node("Deck/Decks"),"hide")
+	get_node("Shop/ButtonClose").connect("pressed",get_node("Shop"),"hide")
+	get_node("Acquired/ButtonClose").connect("pressed",get_node("Acquired"),"hide")
+	get_node("Options/ButtonClose").connect("pressed",get_node("Options"),"hide")
+	get_node("Lobby/ButtonClose").connect("pressed",get_node("Lobby"),"hide")
+	get_node("Info/ButtonClose").connect("pressed",get_node("Info"),"hide")
+	get_node("Credits/ButtonClose").connect("pressed",get_node("Credits"),"hide")
+	get_node("GameOver/ButtonClose").connect("pressed",get_node("GameOver"),"hide")
+	get_node("Quit/ButtonClose").connect("pressed",get_node("Quit"),"hide")
+	get_node("Quit/ButtonClose").set_position(Vector2(28,-48))
+	get_node("Quit/ButtonClose").set_size(Vector2(48,48))
+	get_node("GameOver/ButtonClose").set_position(Vector2(28,-48))
+	get_node("GameOver/ButtonClose").set_size(Vector2(48,48))
 	
 	# Set up card pack buttons.
 	for grade in range(3):
@@ -769,6 +783,7 @@ func _ready():
 	
 	# Set up info text.
 #	get_node("Info/Text").push_align(RichTextLabel.ALIGN_FILL)		# extreme stretching with half-filled lines
+	get_node("Info/Text").push_color(Color(0.0,0.0,0.0))
 	for s in ["HELP_INTRO","HELP_1","HELP_2","HELP_3","HELP_4","HELP_5"]:
 		var array = tr(s).split("_")
 		for st in array:
@@ -783,11 +798,12 @@ func _ready():
 			elif (st=="temperature"):
 				get_node("Info/Text").push_color(Cards.COLOR_COLD.linear_interpolate(Cards.COLOR_HOT,0.5))
 			get_node("Info/Text").add_text(st)
-			get_node("Info/Text").push_color(Color(1.0,1.0,1.0))
+			get_node("Info/Text").push_color(Color(0.0,0.0,0.0))
 		get_node("Info/Text").add_text("\n\n")
 	get_node("Info/Text").add_text(tr("CONTROLS")+":\n"+tr("HELP_6"))
 	
 	# Set up credit text.
+	get_node("Credits/Text").push_color(Color(0.0,0.0,0.0))
 	get_node("Credits/Text").add_text(tr("ENGINE")+":\n Godot (")
 	get_node("Credits/Text").append_bbcode("[url=https://godotengine.org/]godotengine.org/[/url]")
 	get_node("Credits/Text").add_text(")\n\n"+tr("PROGRAMMING")+":\n - Viktor Hahn\n\n")
@@ -801,7 +817,6 @@ func _ready():
 	get_node("Credits/Text").add_text(tr("MUSIC")+":\n - Viktor Hahn\n\n")
 	get_node("Credits/Text").add_text(tr("SOUNDS")+":\n - Iwan 'qubodup' Gabovitch (")
 	get_node("Credits/Text").append_bbcode("[url=http://qubodup.net]qubodup.net[/url])\n")
-	get_node("Credits/Text").add_text(" - Michel Baradari (")
-	get_node("Credits/Text").append_bbcode("[url=http://apollo-music.de]apollo-music.de[/url])\n")
-	get_node("Credits/Text").add_text(" - p0ss\n - Bart K.\n - artisticdude\n - Blender Foundation\n - artisticdude\n - HaelDB\n - Ylmir\n")
+	get_node("Credits/Text").add_text(" - p0ss\n - Bart K.\n - artisticdude\n - Blender Foundation\n - artisticdude\n - HaelDB\n - Ylmir\n\n")
+	get_node("Credits/Text").add_text(tr("FONT")+":\n - Jonas Hecksher")
 	get_node("Credits/Text").connect("meta_clicked",OS,"shell_open")
