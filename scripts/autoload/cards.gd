@@ -289,7 +289,7 @@ const data = {
 		"on_play":"cleanse",
 		"target":"creature",
 		"tags":[],
-		"animation":"neutralize",
+		"animation":"sparks",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
 	"mass_calibration":{
