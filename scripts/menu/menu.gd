@@ -417,9 +417,11 @@ func _new_deck():
 func _change_deck():
 	if (_deck!=null):
 		deck = _deck
-		save_deck()
+		if (deck_name!=tr("DEFAULT")):
+			save_deck()
 		_deck = null
 	get_node("Deck").hide()
+	save_config()
 
 func _set_deck_name(dname):
 	deck_name = dname
