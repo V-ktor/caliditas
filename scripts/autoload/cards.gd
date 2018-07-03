@@ -7,6 +7,7 @@ const data = {
 		"type":"creature",
 		"temperature":2,
 		"level":2,
+		"rarity":0,
 		"rules":[],
 		"tags":["fire","elemental"],
 		"animation":"fire_blast",
@@ -16,6 +17,7 @@ const data = {
 		"type":"creature",
 		"temperature":1,
 		"level":2,
+		"rarity":1,
 		"rules":["inc_player_temp-2"],
 		"on_play":"inc_player_temp-2",
 		"on_removed":"dec_player_temp-2",
@@ -27,6 +29,7 @@ const data = {
 		"type":"creature",
 		"temperature":3,
 		"level":3,
+		"rarity":0,
 		"rules":[],
 		"tags":["fire","elemental"],
 		"animation":"fire_blast",
@@ -36,6 +39,7 @@ const data = {
 		"type":"creature",
 		"temperature":1,
 		"level":4,
+		"rarity":2,
 		"rules":["dead_kill_all_cold-2"],
 		"on_dead":"kill_all_cold-2",
 		"tags":["fire","elemental","area","trap"],
@@ -46,6 +50,7 @@ const data = {
 		"type":"creature",
 		"temperature":4,
 		"level":5,
+		"rarity":0,
 		"rules":[],
 		"tags":["fire","elemental"],
 		"animation":"fire_blast",
@@ -55,6 +60,7 @@ const data = {
 		"type":"creature",
 		"temperature":3,
 		"level":5,
+		"rarity":2,
 		"rules":["spawn_dead-2-fire_elemental"],
 		"on_dead":"spawn-2-fire_elemental",
 		"tags":["fire","golem","trap"],
@@ -65,6 +71,7 @@ const data = {
 		"type":"creature",
 		"temperature":4,
 		"level":6,
+		"rarity":2,
 		"rules":["heat_aura-1"],
 		"on_play":"inc_ally_temp-1",
 		"on_ally_creature_spawn":"inc_temp-1",
@@ -79,6 +86,7 @@ const data = {
 		"type":"spell",
 		"temperature":1,
 		"level":2,
+		"rarity":0,
 		"rules":["inc_ally_temp-1"],
 		"on_play":"inc_temp-1",
 		"target":"creature-ally",
@@ -90,6 +98,7 @@ const data = {
 		"type":"spell",
 		"temperature":3,
 		"level":3,
+		"rarity":0,
 		"rules":["kill_cold-3"],
 		"on_play":"kill_cold-3",
 		"target":"creature",
@@ -101,6 +110,7 @@ const data = {
 		"type":"spell",
 		"temperature":2,
 		"level":3,
+		"rarity":1,
 		"rules":["inc_temp-2"],
 		"on_play":"inc_temp-2",
 		"target":"creature",
@@ -112,6 +122,7 @@ const data = {
 		"type":"spell",
 		"temperature":0,
 		"level":4,
+		"rarity":2,
 		"rules":["explosion"],
 		"on_play":"explosion",
 		"target":"creature-ally",
@@ -125,6 +136,7 @@ const data = {
 		"type":"creature",
 		"temperature":-2,
 		"level":2,
+		"rarity":0,
 		"rules":[],
 		"tags":["ice","elemental"],
 		"animation":"water_blast",
@@ -134,6 +146,7 @@ const data = {
 		"type":"creature",
 		"temperature":-1,
 		"level":2,
+		"rarity":1,
 		"rules":["dec_attacker_temp-1"],
 		"on_attacked":"dec_temp-1",
 		"tags":["ice","elemental","trap"],
@@ -144,6 +157,7 @@ const data = {
 		"type":"creature",
 		"temperature":-3,
 		"level":3,
+		"rarity":0,
 		"rules":[],
 		"tags":["ice","elemental"],
 		"animation":"water_blast",
@@ -153,6 +167,7 @@ const data = {
 		"type":"creature",
 		"temperature":-4,
 		"level":4,
+		"rarity":1,
 		"rules":["fire_armor-2"],
 		"on_new_turn":"fire_armor-2",
 		"tags":["ice","elemental"],
@@ -163,6 +178,7 @@ const data = {
 		"type":"creature",
 		"temperature":-4,
 		"level":6,
+		"rarity":2,
 		"rules":["ice_armor-2"],
 		"on_new_turn":"ice_armor-2",
 		"tags":["ice","elemental"],
@@ -175,6 +191,7 @@ const data = {
 		"type":"spell",
 		"temperature":-1,
 		"level":2,
+		"rarity":0,
 		"rules":["dec_temp-1"],
 		"on_play":"dec_temp-1",
 		"target":"creature",
@@ -186,6 +203,7 @@ const data = {
 		"type":"spell",
 		"temperature":0,
 		"level":4,
+		"rarity":2,
 		"rules":["kill_all_hot-2"],
 		"on_play":"kill_all_hot-2",
 		"tags":["ice","area","attack"],
@@ -196,6 +214,7 @@ const data = {
 		"type":"spell",
 		"temperature":0,
 		"level":5,
+		"rarity":1,
 		"rules":["move_to_hand"],
 		"on_play":"move_to_hand",
 		"target":"creature",
@@ -207,6 +226,7 @@ const data = {
 		"type":"spell",
 		"temperature":0,
 		"level":3,
+		"rarity":1,
 		"rules":["neutralize_temp-2"],
 		"on_play":"neutralize_temp-2",
 		"target":"creature",
@@ -218,6 +238,7 @@ const data = {
 		"type":"spell",
 		"temperature":-2,
 		"level":2,
+		"rarity":2,
 		"rules":["ice_armor-2"],
 		"on_play":"",
 		"on_new_turn":"ice_armor-2",
@@ -232,6 +253,7 @@ const data = {
 		"type":"creature",
 		"temperature":0,
 		"level":2,
+		"rarity":1,
 		"rules":["kill_attacker_level-3"],
 		"on_attacked":"kill_level-3",
 		"tags":["neutral","elemental"],
@@ -242,6 +264,7 @@ const data = {
 		"type":"creature",
 		"temperature":0,
 		"level":4,
+		"rarity":1,
 		"rules":["kill_attacker_level-5"],
 		"on_attacked":"kill_level-5",
 		"tags":["neutral","elemental"],
@@ -252,6 +275,7 @@ const data = {
 		"type":"creature",
 		"temperature":0,
 		"level":5,
+		"rarity":1,
 		"rules":["assemble"],
 		"on_play":"assemble",
 		"tags":["neutral","golem"],
@@ -264,6 +288,7 @@ const data = {
 		"type":"spell",
 		"temperature":0,
 		"level":3,
+		"rarity":0,
 		"rules":["draw-3"],
 		"on_play":"draw-3",
 		"tags":[],
@@ -274,6 +299,7 @@ const data = {
 		"type":"spell",
 		"temperature":0,
 		"level":3,
+		"rarity":2,
 		"rules":["invert_temp"],
 		"on_play":"invert_temp",
 		"target":"creature",
@@ -285,6 +311,7 @@ const data = {
 		"type":"spell",
 		"temperature":0,
 		"level":4,
+		"rarity":1,
 		"rules":["cleanse"],
 		"on_play":"cleanse",
 		"target":"creature",
@@ -296,6 +323,7 @@ const data = {
 		"type":"spell",
 		"temperature":0,
 		"level":5,
+		"rarity":2,
 		"rules":["global_diffusion_all-1"],
 		"on_play":"global_diffusion_all-1",
 		"tags":["area"],
@@ -356,14 +384,22 @@ func create_card(type):
 
 func _ready():
 	for card in data.keys():
-		var grade = clamp(int(data[card]["level"]/2)-1,0,2)
+		var grade = clamp(data[card]["level"]/2+data[card]["rarity"]-1.5,0,2)
+		var g1 = int(grade)
+		var g2 = int(round(grade))
 		var type = "neutral"
 		if ("fire" in data[card]["tags"]):
-			grade_cards[grade]["fire"].push_back(card)
+			grade_cards[g1]["fire"].push_back(card)
+			if (g2!=g1):
+				grade_cards[g2]["fire"].push_back(card)
 			type = "fire"
 		if ("ice" in data[card]["tags"]):
-			grade_cards[grade]["ice"].push_back(card)
+			grade_cards[g1]["ice"].push_back(card)
+			if (g2!=g1):
+				grade_cards[g2]["ice"].push_back(card)
 			type = "ice"
 		if (type=="neutral" || ("neutral" in data[card]["tags"])):
-			grade_cards[grade]["neutral"].push_back(card)
+			grade_cards[g1]["neutral"].push_back(card)
+			if (g2!=g1):
+				grade_cards[g2]["neutral"].push_back(card)
 			type = "neutral"
