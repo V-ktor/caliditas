@@ -94,7 +94,9 @@ func _tutorial():
 	Main.player_name[0] = _name
 	Main.player_name[1] = tr("AI_SKIRMISH")
 	Main.ai = true
-	reward = 50
+	reward = 100
+	UI.get_node("Player1/VBoxContainer/Name").set_text(_name)
+	UI.get_node("Player2/VBoxContainer/Name").set_text(tr("AI_SKIRMISH"))
 	UI.show()
 	hide()
 	active = true
