@@ -562,6 +562,7 @@ func apply_effect(card,event,target=null):
 		target.temperature = Cards.data[target.ID]["temperature"]
 		target.level = Cards.data[target.ID]["level"]
 		target.update()
+		card.destroy()
 	elif (base=="explosion"):
 		var dmg = abs(target.temperature)
 		target.destroy()
