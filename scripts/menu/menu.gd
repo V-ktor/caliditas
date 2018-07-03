@@ -447,13 +447,18 @@ func load_deck(dname):
 	_show_deck()
 
 func save_deck():
-	deck = _deck
-	if (deck_name==tr("DEFAULT")):
-		return
 	var file = File.new()
 	var dir = Directory.new()
 	if (!dir.dir_exists("user://decks")):
 		dir.make_dir_recursive("user://decks")
+	deck = _deck
+	if (deck_name==tr("DEFAULT")):
+		# Change deck name to an unused name.
+		var ID = 1
+		while (file.file_exists("user://decks/"+tr("NEW_DECK")+" "+str(ID)+".cfg")):
+			ID += 1
+		deck_name = tr("NEW_DECK")+" "+str(ID)
+		get_node("Deck/Header/Name").set_text(deck_name)
 	
 	file.open("user://decks/"+deck_name+".cfg",File.WRITE)
 	file.store_line(JSON.print(deck))
