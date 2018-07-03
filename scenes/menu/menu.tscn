@@ -6,7 +6,7 @@
 [ext_resource path="res://images/cards/card_mask.png" type="Texture" id=4]
 [ext_resource path="res://images/cards/back.png" type="Texture" id=5]
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=1]
 
 resource_name = "rotate_gears"
 length = 10.0
@@ -37,7 +37,7 @@ tracks/1/keys = {
 "values": [ 375.0, 15.0 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=2]
 
 resource_name = "rotate_gears"
 length = 10.0
@@ -68,7 +68,7 @@ tracks/1/keys = {
 "values": [ 375.0, 15.0 ]
 }
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=3]
 
 code = "shader_type canvas_item;
 
@@ -84,19 +84,18 @@ void fragment()
 	COLOR.a *= clamp(texture(mask,uv).g*alpha,0.0,1.0);
 }"
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=4]
 
 render_priority = 0
-shader = SubResource( 1 )
+shader = SubResource( 3 )
 shader_param/frames = null
 shader_param/alpha = 100.0
 shader_param/frame = 0
 shader_param/mask = ExtResource( 4 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=5]
 
-resource_name = "fade_out"
 length = 1.5
 loop = false
 step = 0.1
@@ -628,7 +627,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.0
-margin_bottom = 52.0
+margin_bottom = 45.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -645,7 +644,7 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 96.0
-margin_bottom = 52.0
+margin_bottom = 45.0
 rect_min_size = Vector2( 96, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -663,7 +662,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 100.0
 margin_right = 228.0
-margin_bottom = 52.0
+margin_bottom = 45.0
 rect_min_size = Vector2( 128, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -687,7 +686,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 232.0
 margin_right = 601.0
-margin_bottom = 52.0
+margin_bottom = 45.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -712,7 +711,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 605.0
 margin_right = 974.0
-margin_bottom = 52.0
+margin_bottom = 45.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -737,7 +736,7 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 2.0
-margin_top = 52.0
+margin_top = 47.0
 margin_right = -2.0
 margin_bottom = -52.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -760,7 +759,7 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 970.0
-margin_bottom = 396.0
+margin_bottom = 401.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -1187,7 +1186,7 @@ autoplay = "rotate_gears"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/rotate_gears = SubResource( 4 )
+anims/rotate_gears = SubResource( 1 )
 blend_times = [  ]
 
 [node name="Shop" type="WindowDialog" parent="." index="2"]
@@ -2337,7 +2336,7 @@ autoplay = "rotate_gears"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/rotate_gears = SubResource( 5 )
+anims/rotate_gears = SubResource( 2 )
 blend_times = [  ]
 
 [node name="Acquired" type="WindowDialog" parent="." index="3"]
@@ -2410,7 +2409,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect", "Scroll" ]
 
 [node name="Stack" type="TextureRect" parent="Acquired" index="3"]
 
-material = SubResource( 2 )
+material = SubResource( 4 )
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -2437,7 +2436,7 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/fade_out = SubResource( 3 )
+anims/fade_out = SubResource( 5 )
 blend_times = [  ]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Acquired" index="4"]
@@ -2618,7 +2617,7 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 970.0
-margin_bottom = 432.0
+margin_bottom = 416.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -2762,7 +2761,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 109.0
 margin_right = 970.0
-margin_bottom = 161.0
+margin_bottom = 153.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -2784,9 +2783,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 165.0
+margin_top = 157.0
 margin_right = 970.0
-margin_bottom = 204.0
+margin_bottom = 196.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -2919,9 +2918,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 208.0
+margin_top = 200.0
 margin_right = 970.0
-margin_bottom = 224.0
+margin_bottom = 216.0
 rect_min_size = Vector2( 0, 16 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -2937,9 +2936,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 228.0
+margin_top = 220.0
 margin_right = 970.0
-margin_bottom = 247.0
+margin_bottom = 239.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -2959,9 +2958,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 251.0
+margin_top = 243.0
 margin_right = 970.0
-margin_bottom = 303.0
+margin_bottom = 287.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -2977,9 +2976,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 128.0
-margin_bottom = 52.0
-rect_min_size = Vector2( 128, 0 )
+margin_right = 160.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 160, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -3003,10 +3002,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 132.0
-margin_right = 264.0
-margin_bottom = 52.0
-rect_min_size = Vector2( 128, 0 )
+margin_left = 164.0
+margin_right = 324.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 160, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -3030,9 +3029,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 307.0
+margin_top = 291.0
 margin_right = 970.0
-margin_bottom = 346.0
+margin_bottom = 330.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -3165,9 +3164,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 350.0
+margin_top = 334.0
 margin_right = 970.0
-margin_bottom = 366.0
+margin_bottom = 350.0
 rect_min_size = Vector2( 0, 16 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -3183,9 +3182,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 370.0
+margin_top = 354.0
 margin_right = 970.0
-margin_bottom = 389.0
+margin_bottom = 373.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -3205,9 +3204,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 393.0
+margin_top = 377.0
 margin_right = 970.0
-margin_bottom = 432.0
+margin_bottom = 416.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -3246,9 +3245,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 90.0
-margin_right = 218.0
+margin_right = 250.0
 margin_bottom = 39.0
-rect_min_size = Vector2( 128, 0 )
+rect_min_size = Vector2( 160, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -3783,7 +3782,7 @@ size_flags_vertical = 1
 theme = ExtResource( 2 )
 _sections_unfolded = [ "Anchor", "Dialog", "Margin", "Theme" ]
 
-[node name="ButtonClose" type="Button" parent="Info" index="4"]
+[node name="ButtonClose" type="Button" parent="Info" index="0"]
 
 anchor_left = 0.5
 anchor_top = 1.0
@@ -3810,7 +3809,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Text" type="RichTextLabel" parent="Info" index="5"]
+[node name="Text" type="RichTextLabel" parent="Info" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0

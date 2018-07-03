@@ -279,19 +279,26 @@ func play_card(card,player,target=null):
 		
 		if (state.has("target") && state["target"]!=null && (state["target"] in field[PLAYER1]+field[PLAYER2])):
 			var pos
+			var offset
+			var p2
 			target = state["target"]
 			pos = target.node.get_global_position()+Vector2(0,(100*(target.equiped.size()+3)-225*int(player==PLAYER2))*(1-2*target.owner))
-			if (card.node.get_global_position()==p):
-				card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
-			else:
-				card.node.get_node("Tween").interpolate_property(card.node,"global_position",p,pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
-			card.node.get_node("Tween").start()
+			offset = min(75,200/max(target.equiped.size(),1))
+			p2 = target.node.get_global_position()+Vector2(0,offset*(target.equiped.size()+1))*(1-2*target.owner)
 			card.node._z = -target.equiped.size()-1
 			card.node.set_z_index(-target.equiped.size()-1)
 			card.node.type = "equiped"
 			card.node.pos = pos
 			target.equiped.push_back(card)
 			target.update()
+			card.node.get_node("Tween").remove_all()
+			if (card.node.get_global_position()==p):
+				card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+				card.node.get_node("Tween").interpolate_property(card.node,"global_position",pos,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
+			else:
+				card.node.get_node("Tween").interpolate_property(card.node,"global_position",p,pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
+				card.node.get_node("Tween").interpolate_property(card.node,"global_position",pos,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.5)
+			card.node.get_node("Tween").start()
 			if (Cards.data[card.ID].has("animation")):
 				var pi = load("res://scenes/animations/"+Cards.data[card.ID]["animation"]+".tscn").instance()
 				target.node.add_child(pi)
