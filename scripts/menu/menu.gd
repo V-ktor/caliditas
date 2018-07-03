@@ -678,7 +678,7 @@ func _display_status():
 
 
 func _resize():
-	get_node("Deck").popup_centered(OS.get_window_size()-Vector2(50,60))
+	get_node("Deck").popup_centered(OS.get_window_size()-Vector2(50,90))
 	yield(get_tree(),"idle_frame")
 	get_node("Deck/ScrollContainer/GridContainer").set_columns(floor(get_node("Deck/ScrollContainer/GridContainer").get_size().x/212))
 	get_node("Deck").hide()
@@ -709,7 +709,7 @@ func _ready():
 	get_node("Panel/VBoxContainer/Button2").connect("pressed",self,"_show_deck")
 	get_node("Panel/VBoxContainer/Button11").connect("pressed",self,"_show_shop")
 	get_node("Panel/VBoxContainer/Button3").connect("pressed",self,"_show_options")
-	get_node("Panel/VBoxContainer/Button6").connect("pressed",get_node("Info"),"popup_centered")
+	get_node("Panel/VBoxContainer/Button6").connect("pressed",get_node("Info"),"show")
 	get_node("Panel/VBoxContainer/Button8").connect("pressed",get_node("Credits"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button4").connect("pressed",self,"quit")
 	get_node("Quit").connect("confirmed",get_tree(),"quit")
