@@ -11,35 +11,35 @@ render_priority = 0
 blend_mode = 1
 light_mode = 0
 
-[sub_resource type="CanvasItemMaterial" id=6]
+[sub_resource type="CanvasItemMaterial" id=2]
 
 render_priority = 0
 blend_mode = 1
 light_mode = 0
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="Gradient" id=3]
 
 offsets = PoolRealArray( 0, 0.16568, 0.538462, 1 )
 colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=3]
+[sub_resource type="GradientTexture" id=4]
 
 flags = 4
-gradient = SubResource( 2 )
+gradient = SubResource( 3 )
 width = 2048
 
-[sub_resource type="Curve" id=4]
+[sub_resource type="Curve" id=5]
 
-min_value = 1.0
+min_value = 0.99
 max_value = 2.0
 bake_resolution = 100
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 2 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=5]
+[sub_resource type="CurveTexture" id=6]
 
 flags = 4
 width = 2048
-curve = SubResource( 4 )
+curve = SubResource( 5 )
 
 [sub_resource type="ParticlesMaterial" id=7]
 
@@ -71,8 +71,8 @@ angle = 360.0
 angle_random = 1.0
 scale = 0.15
 scale_random = 0.25
-scale_curve = SubResource( 5 )
-color_ramp = SubResource( 3 )
+scale_curve = SubResource( 6 )
+color_ramp = SubResource( 4 )
 hue_variation = 0.0
 hue_variation_random = 0.0
 anim_speed = 0.0
@@ -121,7 +121,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.4 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 3456, 1792 ), Vector2( 896, -768 ) ]
+"values": [ Vector2( -512, 256 ), Vector2( 2560, -512 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("FireSword:scale")
@@ -183,8 +183,8 @@ _sections_unfolded = [ "Z Index" ]
 
 self_modulate = Color( 1, 1, 1, 0 )
 material = SubResource( 1 )
-position = Vector2( 896, -768 )
-rotation = 0.785398
+position = Vector2( 2560, -512 )
+rotation = 2.79253
 scale = Vector2( 3, 4 )
 texture = ExtResource( 1 )
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
@@ -193,7 +193,7 @@ _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 
 self_modulate = Color( 1, 1, 1, 0.25098 )
 light_mask = 0
-material = SubResource( 6 )
+material = SubResource( 2 )
 rotation = 2.96706
 scale = Vector2( 2, 2 )
 emitting = false
