@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://images/cards/base.png" type="Texture" id=1]
 [ext_resource path="res://scripts/main/card_base.gd" type="Script" id=2]
@@ -6,14 +6,16 @@
 [ext_resource path="res://images/cards/overlay.png" type="Texture" id=4]
 [ext_resource path="res://images/cards/level.png" type="Texture" id=5]
 [ext_resource path="res://images/cards/temperature.png" type="Texture" id=6]
-[ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=7]
-[ext_resource path="res://images/cards/card_lines.png" type="Texture" id=8]
-[ext_resource path="res://images/cards/back.png" type="Texture" id=9]
-[ext_resource path="res://images/cards/card_select.png" type="Texture" id=10]
-[ext_resource path="res://images/cards/card_mask.png" type="Texture" id=11]
-[ext_resource path="res://images/cards/card_white.png" type="Texture" id=12]
-[ext_resource path="res://sounds/tap.wav" type="AudioStream" id=13]
-[ext_resource path="res://sounds/untap.wav" type="AudioStream" id=14]
+[ext_resource path="res://images/cards/temperature_burn.png" type="Texture" id=7]
+[ext_resource path="res://images/cards/temperature_frost.png" type="Texture" id=8]
+[ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://images/cards/card_lines.png" type="Texture" id=10]
+[ext_resource path="res://images/cards/back.png" type="Texture" id=11]
+[ext_resource path="res://images/cards/card_select.png" type="Texture" id=12]
+[ext_resource path="res://images/cards/card_mask.png" type="Texture" id=13]
+[ext_resource path="res://images/cards/card_white.png" type="Texture" id=14]
+[ext_resource path="res://sounds/tap.wav" type="AudioStream" id=15]
+[ext_resource path="res://sounds/untap.wav" type="AudioStream" id=16]
 
 [sub_resource type="Shader" id=1]
 
@@ -48,7 +50,7 @@ _sections_unfolded = [ "shader_param" ]
 size = 256
 use_mipmaps = false
 use_filter = false
-font_data = ExtResource( 7 )
+font_data = ExtResource( 9 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="DynamicFont" id=4]
@@ -56,7 +58,7 @@ _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 size = 80
 use_mipmaps = false
 use_filter = false
-font_data = ExtResource( 7 )
+font_data = ExtResource( 9 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="Shader" id=5]
@@ -82,7 +84,7 @@ shader = SubResource( 5 )
 shader_param/frames = null
 shader_param/alpha = 100.0
 shader_param/frame = 0
-shader_param/mask = ExtResource( 11 )
+shader_param/mask = ExtResource( 13 )
 _sections_unfolded = [ "shader_param" ]
 
 [sub_resource type="StyleBoxEmpty" id=7]
@@ -823,8 +825,22 @@ _sections_unfolded = [ "Visibility" ]
 
 [node name="OverlayTemp" type="Sprite" parent="." index="3"]
 
-self_modulate = Color( 1, 1, 1, 0.752941 )
+position = Vector2( -507, -672 )
 texture = ExtResource( 6 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Fire" type="Sprite" parent="OverlayTemp" index="0"]
+
+visible = false
+self_modulate = Color( 1, 1, 1, 0.752941 )
+texture = ExtResource( 7 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Frost" type="Sprite" parent="OverlayTemp" index="1"]
+
+visible = false
+self_modulate = Color( 1, 1, 1, 0.752941 )
+texture = ExtResource( 8 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="Level" type="Label" parent="." index="4"]
@@ -863,7 +879,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = -677.0
 margin_top = -833.0
-margin_right = -360.0
+margin_right = -343.0
 margin_bottom = -537.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -875,7 +891,7 @@ custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0 )
 custom_constants/shadow_as_outline = 0
-text = "0"
+text = "-0"
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
@@ -974,14 +990,14 @@ _sections_unfolded = [ "Rect", "Visibility", "custom_colors", "custom_constants"
 
 [node name="Lines" type="Sprite" parent="." index="9"]
 
-texture = ExtResource( 8 )
+texture = ExtResource( 10 )
 flip_h = true
 _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
 [node name="Back" type="Sprite" parent="." index="10"]
 
 visible = false
-texture = ExtResource( 9 )
+texture = ExtResource( 11 )
 flip_h = true
 _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
@@ -990,7 +1006,7 @@ _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 visible = false
 modulate = Color( 1, 1, 1, 0 )
 light_mask = 0
-texture = ExtResource( 10 )
+texture = ExtResource( 12 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="White" type="Sprite" parent="." index="12"]
@@ -998,7 +1014,7 @@ _sections_unfolded = [ "Visibility" ]
 modulate = Color( 1, 1, 1, 0 )
 light_mask = 0
 material = SubResource( 6 )
-texture = ExtResource( 12 )
+texture = ExtResource( 14 )
 flip_h = true
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 
@@ -1078,7 +1094,7 @@ playback/speed = 1.0
 
 [node name="SoundTap" type="AudioStreamPlayer" parent="." index="18"]
 
-stream = ExtResource( 13 )
+stream = ExtResource( 15 )
 volume_db = -16.0
 pitch_scale = 1.0
 autoplay = false
@@ -1087,7 +1103,7 @@ bus = "Sound"
 
 [node name="SoundUntap" type="AudioStreamPlayer" parent="." index="19"]
 
-stream = ExtResource( 14 )
+stream = ExtResource( 16 )
 volume_db = -16.0
 pitch_scale = 1.0
 autoplay = false

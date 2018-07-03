@@ -339,11 +339,13 @@ func create_card(type):
 	ci.get_node("Level").set_text(str(data[type]["level"]))
 	ci.get_node("Temp").set_text(str(data[type]["temperature"]))
 	if (data[type]["temperature"]>0):
-		ci.get_node("OverlayTemp").set_modulate(COLOR_HOT)
+		ci.get_node("OverlayTemp").set_self_modulate(COLOR_HOT)
+		ci.get_node("OverlayTemp/Fire").show()
 	elif (data[type]["temperature"]<0):
-		ci.get_node("OverlayTemp").set_modulate(COLOR_COLD)
+		ci.get_node("OverlayTemp").set_self_modulate(COLOR_COLD)
+		ci.get_node("OverlayTemp/Frost").show()
 	else:
-		ci.get_node("OverlayTemp").set_modulate(Color(0.5,0.5,0.5))
+		ci.get_node("OverlayTemp").set_self_modulate(Color(0.5,0.5,0.5))
 	if (data[type]["type"]=="creature"):
 		ci.get_node("Overlay").set_modulate(COLOR_CREATURE)
 	elif (data[type]["type"]=="spell"):
