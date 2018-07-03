@@ -167,7 +167,7 @@ const data = {
 		"type":"creature",
 		"temperature":-4,
 		"level":4,
-		"rarity":1,
+		"rarity":0,
 		"rules":["fire_armor-2"],
 		"on_new_turn":"fire_armor-2",
 		"tags":["ice","elemental"],

@@ -283,7 +283,7 @@ func play_card(card,player,target=null):
 			var p2
 			target = state["target"]
 			pos = target.node.get_global_position()+Vector2(0,(100*(target.equiped.size()+3)-225*int(player==PLAYER2))*(1-2*target.owner))
-			offset = min(75,200/max(target.equiped.size(),1))
+			offset = min(75,200/(target.equiped.size()+1))
 			p2 = target.node.get_global_position()+Vector2(0,offset*(target.equiped.size()+1))*(1-2*target.owner)
 			card.node._z = -target.equiped.size()-1
 			card.node.set_z_index(-target.equiped.size()-1)
@@ -559,6 +559,8 @@ func apply_effect(card,event,target=null):
 		target.update()
 	elif (base=="cleanse"):
 		target.remove_equipment()
+		target.temperature = Cards.data[target.ID]["temperature"]
+		target.level = Cards.data[target.ID]["level"]
 		target.update()
 	elif (base=="explosion"):
 		var dmg = abs(target.temperature)
