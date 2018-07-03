@@ -159,6 +159,7 @@ func game_over(victory,error=""):
 		get_node("GameOver/Text").set_text(tr("YOU_LOST")+"\n"+tr("REWARD_GAINED")%reward)
 		gold += reward
 	get_node("GameOver").popup_centered()
+	save_inventory()
 	UI.hide()
 	Main.hide()
 	show()
