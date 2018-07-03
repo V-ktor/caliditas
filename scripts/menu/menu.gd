@@ -375,23 +375,18 @@ func _buy_pack(grade,type):
 	get_node("Shop").hide()
 
 func show_new_cards(cards):
-	for c in get_node("Acquired/ScrollContainer/HBoxContainer").get_children():
-		c.hide()
+	var offset = (get_node("Acquired/Cards").get_size().x-150)/cards.size()
+	for c in get_node("Acquired/Cards").get_children():
+		c.queue_free()
 	
 	for i in range(cards.size()):
-		var ci
-		var ni
-		if (!has_node("Acquired/ScrollContainer/HBoxContainer/Card"+str(i))):
-			ci = get_node("Acquired/ScrollContainer/HBoxContainer/Card0").duplicate()
-			ci.set_name("Card"+str(i))
-			get_node("Acquired/ScrollContainer/HBoxContainer").add_child(ci)
-		else:
-			ci = get_node("Acquired/ScrollContainer/HBoxContainer/Card"+str(i))
-		ni = Cards.create_card(cards[i])
+		var ni = Cards.create_card(cards[i])
 		ni.type = "preview"
-		ni.set_position(Vector2(105,150))
-		ci.add_child(ni)
-		ci.show()
+		ni.set_position(get_node("Acquired").get_size()/2.0+Vector2(-95,45))
+		get_node("Acquired/Cards").add_child(ni)
+		ni.get_node("Tween").interpolate_property(ni,"position",ni.get_position(),Vector2(105+i*offset,150),0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.5+0.25*i)
+		ni.get_node("Tween").start()
+	get_node("Acquired/Stack/AnimationPlayer").play("fade_out")
 	get_node("Acquired").popup_centered()
 
 
