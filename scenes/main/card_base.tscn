@@ -1,21 +1,27 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://images/cards/base.png" type="Texture" id=1]
 [ext_resource path="res://scripts/main/card_base.gd" type="Script" id=2]
 [ext_resource path="res://images/cards/mask.png" type="Texture" id=3]
 [ext_resource path="res://images/cards/overlay.png" type="Texture" id=4]
-[ext_resource path="res://images/cards/level.png" type="Texture" id=5]
-[ext_resource path="res://images/cards/temperature.png" type="Texture" id=6]
-[ext_resource path="res://images/cards/temperature_burn.png" type="Texture" id=7]
-[ext_resource path="res://images/cards/temperature_frost.png" type="Texture" id=8]
-[ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=9]
-[ext_resource path="res://images/cards/card_lines.png" type="Texture" id=10]
-[ext_resource path="res://images/cards/back.png" type="Texture" id=11]
-[ext_resource path="res://images/cards/card_select.png" type="Texture" id=12]
-[ext_resource path="res://images/cards/card_mask.png" type="Texture" id=13]
-[ext_resource path="res://images/cards/card_white.png" type="Texture" id=14]
-[ext_resource path="res://sounds/tap.wav" type="AudioStream" id=15]
-[ext_resource path="res://sounds/untap.wav" type="AudioStream" id=16]
+[ext_resource path="res://images/cards/level1.png" type="Texture" id=5]
+[ext_resource path="res://images/cards/level_mask_linear.png" type="Texture" id=6]
+[ext_resource path="res://images/cards/level2.png" type="Texture" id=7]
+[ext_resource path="res://images/cards/level_mask_cone.png" type="Texture" id=8]
+[ext_resource path="res://images/cards/level3.png" type="Texture" id=9]
+[ext_resource path="res://images/cards/level_mask_colors.png" type="Texture" id=10]
+[ext_resource path="res://images/cards/level4.png" type="Texture" id=11]
+[ext_resource path="res://images/cards/temperature.png" type="Texture" id=12]
+[ext_resource path="res://images/cards/temperature_burn.png" type="Texture" id=13]
+[ext_resource path="res://images/cards/temperature_frost.png" type="Texture" id=14]
+[ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=15]
+[ext_resource path="res://images/cards/card_lines.png" type="Texture" id=16]
+[ext_resource path="res://images/cards/back.png" type="Texture" id=17]
+[ext_resource path="res://images/cards/card_select.png" type="Texture" id=18]
+[ext_resource path="res://images/cards/card_mask.png" type="Texture" id=19]
+[ext_resource path="res://images/cards/card_white.png" type="Texture" id=20]
+[ext_resource path="res://sounds/tap.wav" type="AudioStream" id=21]
+[ext_resource path="res://sounds/untap.wav" type="AudioStream" id=22]
 
 [sub_resource type="Shader" id=1]
 
@@ -45,12 +51,141 @@ shader = SubResource( 1 )
 shader_param/mask = ExtResource( 3 )
 _sections_unfolded = [ "shader_param" ]
 
+[sub_resource type="Shader" id=20]
+
+code = "shader_type canvas_item;
+
+uniform float offset = 0.0;
+uniform sampler2D gradient;
+
+void fragment()
+{
+	vec2 uv = UV+vec2(0,offset);
+	COLOR = texture(TEXTURE,UV);
+	COLOR.rgb += COLOR.a*texture(gradient,uv).g;
+}"
+
+[sub_resource type="ShaderMaterial" id=21]
+
+render_priority = 0
+shader = SubResource( 20 )
+shader_param/offset = -1.0
+shader_param/gradient = ExtResource( 6 )
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="Animation" id=22]
+
+resource_name = "animation"
+length = 2.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.2, 1.7, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ -1.0, 1.0, 1.0, -1.0 ]
+}
+
+[sub_resource type="Shader" id=24]
+
+code = "shader_type canvas_item;
+
+uniform float rot = 0.0;
+uniform sampler2D cone;
+
+void fragment()
+{
+	vec2 uv = (UV-vec2(0.6,0.5))*vec2(1.1,0.9)*mat2(vec2(cos(rot),sin(rot)),vec2(-sin(rot),cos(rot)))+vec2(0.6,0.5);
+	COLOR = texture(TEXTURE,UV);
+	COLOR.rgb += COLOR.a*texture(cone,uv).g;
+}"
+
+[sub_resource type="ShaderMaterial" id=25]
+
+render_priority = 0
+shader = SubResource( 24 )
+shader_param/rot = 0.0
+shader_param/cone = ExtResource( 8 )
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="Animation" id=26]
+
+resource_name = "animation"
+length = 2.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/rot")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 6.283 ]
+}
+
+[sub_resource type="Shader" id=27]
+
+code = "shader_type canvas_item;
+
+uniform float rot = 0.0;
+uniform sampler2D cone;
+uniform sampler2D colors;
+
+void fragment()
+{
+	vec2 uv1 = (UV-vec2(0.5))*mat2(vec2(cos(rot),sin(rot)),vec2(-sin(rot),cos(rot)))+vec2(0.5);
+	vec2 uv2 = (UV-vec2(0.5,0.5))*mat2(vec2(cos(-rot),sin(-rot)),vec2(-sin(-rot),cos(-rot)))+vec2(0.5,0.5);
+	float hl = texture(cone,uv1).g;
+	float blend = 0.25+0.5*hl;
+	COLOR = texture(TEXTURE,UV);
+	COLOR.rgb *= 1.0-blend+blend*texture(colors,uv2).rgb;
+	COLOR.rgb += COLOR.a*hl;
+}"
+
+[sub_resource type="ShaderMaterial" id=28]
+
+render_priority = 0
+shader = SubResource( 27 )
+shader_param/rot = 0.0
+shader_param/cone = ExtResource( 8 )
+shader_param/colors = ExtResource( 10 )
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="Animation" id=29]
+
+resource_name = "animation"
+length = 2.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/rot")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.8, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 3.1415, 6.283 ]
+}
+
 [sub_resource type="DynamicFont" id=3]
 
 size = 256
 use_mipmaps = false
 use_filter = false
-font_data = ExtResource( 9 )
+font_data = ExtResource( 15 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="DynamicFont" id=4]
@@ -58,7 +193,7 @@ _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 size = 80
 use_mipmaps = false
 use_filter = false
-font_data = ExtResource( 9 )
+font_data = ExtResource( 15 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="Shader" id=5]
@@ -84,7 +219,7 @@ shader = SubResource( 5 )
 shader_param/frames = null
 shader_param/alpha = 100.0
 shader_param/frame = 0
-shader_param/mask = ExtResource( 13 )
+shader_param/mask = ExtResource( 19 )
 _sections_unfolded = [ "shader_param" ]
 
 [sub_resource type="StyleBoxEmpty" id=7]
@@ -783,7 +918,7 @@ tracks/16/keys = {
 "values": [ false, false ]
 }
 
-[node name="Card" type="Sprite" index="0"]
+[node name="Card" type="Sprite"]
 
 scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 1 )
@@ -817,30 +952,94 @@ self_modulate = Color( 1, 1, 1, 0.752941 )
 texture = ExtResource( 4 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="OverlayLevel" type="Sprite" parent="." index="2"]
+[node name="OverlayLevel" type="Node2D" parent="." index="2"]
 
 self_modulate = Color( 1, 1, 1, 0.752941 )
+position = Vector2( 557, -672 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Grade0" type="Sprite" parent="OverlayLevel" index="0"]
+
+visible = false
+self_modulate = Color( 1, 1, 1, 0.752941 )
 texture = ExtResource( 5 )
-_sections_unfolded = [ "Visibility" ]
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Grade1" type="Sprite" parent="OverlayLevel" index="1"]
+
+visible = false
+self_modulate = Color( 1, 1, 1, 0.752941 )
+material = SubResource( 21 )
+position = Vector2( -3, 9 )
+texture = ExtResource( 7 )
+_sections_unfolded = [ "Material", "Transform", "Visibility" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OverlayLevel/Grade1" index="0"]
+
+root_node = NodePath("..")
+autoplay = "animation"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/animation = SubResource( 22 )
+blend_times = [  ]
+
+[node name="Grade2" type="Sprite" parent="OverlayLevel" index="2"]
+
+visible = false
+self_modulate = Color( 1, 1, 1, 0.752941 )
+material = SubResource( 25 )
+position = Vector2( -5, 20 )
+texture = ExtResource( 9 )
+_sections_unfolded = [ "Material", "Transform", "Visibility" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OverlayLevel/Grade2" index="0"]
+
+root_node = NodePath("..")
+autoplay = "animation"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/animation = SubResource( 26 )
+blend_times = [  ]
+
+[node name="Grade3" type="Sprite" parent="OverlayLevel" index="3"]
+
+visible = false
+self_modulate = Color( 1, 1, 1, 0.752941 )
+material = SubResource( 28 )
+position = Vector2( -5, 20 )
+texture = ExtResource( 11 )
+_sections_unfolded = [ "Material", "Transform", "Visibility" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OverlayLevel/Grade3" index="0"]
+
+root_node = NodePath("..")
+autoplay = "animation"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/animation = SubResource( 29 )
+blend_times = [  ]
 
 [node name="OverlayTemp" type="Sprite" parent="." index="3"]
 
 position = Vector2( -507, -672 )
-texture = ExtResource( 6 )
+texture = ExtResource( 12 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Fire" type="Sprite" parent="OverlayTemp" index="0"]
 
 visible = false
 self_modulate = Color( 1, 1, 1, 0.752941 )
-texture = ExtResource( 7 )
+texture = ExtResource( 13 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="Frost" type="Sprite" parent="OverlayTemp" index="1"]
 
 visible = false
 self_modulate = Color( 1, 1, 1, 0.752941 )
-texture = ExtResource( 8 )
+texture = ExtResource( 14 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="Level" type="Label" parent="." index="4"]
@@ -990,14 +1189,14 @@ _sections_unfolded = [ "Rect", "Visibility", "custom_colors", "custom_constants"
 
 [node name="Lines" type="Sprite" parent="." index="9"]
 
-texture = ExtResource( 10 )
+texture = ExtResource( 16 )
 flip_h = true
 _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
 [node name="Back" type="Sprite" parent="." index="10"]
 
 visible = false
-texture = ExtResource( 11 )
+texture = ExtResource( 17 )
 flip_h = true
 _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
@@ -1006,7 +1205,7 @@ _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 visible = false
 modulate = Color( 1, 1, 1, 0 )
 light_mask = 0
-texture = ExtResource( 12 )
+texture = ExtResource( 18 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="White" type="Sprite" parent="." index="12"]
@@ -1014,7 +1213,7 @@ _sections_unfolded = [ "Visibility" ]
 modulate = Color( 1, 1, 1, 0 )
 light_mask = 0
 material = SubResource( 6 )
-texture = ExtResource( 14 )
+texture = ExtResource( 20 )
 flip_h = true
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 
@@ -1094,7 +1293,7 @@ playback/speed = 1.0
 
 [node name="SoundTap" type="AudioStreamPlayer" parent="." index="18"]
 
-stream = ExtResource( 15 )
+stream = ExtResource( 21 )
 volume_db = -16.0
 pitch_scale = 1.0
 autoplay = false
@@ -1103,7 +1302,7 @@ bus = "Sound"
 
 [node name="SoundUntap" type="AudioStreamPlayer" parent="." index="19"]
 
-stream = ExtResource( 16 )
+stream = ExtResource( 22 )
 volume_db = -16.0
 pitch_scale = 1.0
 autoplay = false

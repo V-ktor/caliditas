@@ -366,6 +366,7 @@ func create_card(type):
 	ci.get_node("Desc").set_text(text)
 	ci.get_node("Level").set_text(str(data[type]["level"]))
 	ci.get_node("Temp").set_text(str(data[type]["temperature"]))
+	ci.get_node("OverlayLevel/Grade"+str(min(data[type]["rarity"],3))).show()
 	if (data[type]["temperature"]>0):
 		ci.get_node("OverlayTemp").set_self_modulate(COLOR_HOT)
 		ci.get_node("OverlayTemp/Fire").show()

@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/level.png-beafd736760530447e52ee255d55e9d2.stex"
+path="res://.import/level_mask_cone.png-b710662fd2c588d589dd17a9217a37e2.stex"
 
 [deps]
 
-source_file="res://images/cards/level.png"
-dest_files=[ "res://.import/level.png-beafd736760530447e52ee255d55e9d2.stex" ]
+source_file="res://images/cards/level_mask_cone.png"
+dest_files=[ "res://.import/level_mask_cone.png-b710662fd2c588d589dd17a9217a37e2.stex" ]
 
 [params]
 

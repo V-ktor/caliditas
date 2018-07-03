@@ -23,7 +23,7 @@ use_filter = false
 font_data = ExtResource( 3 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[sub_resource type="ShaderMaterial" id=15]
+[sub_resource type="ShaderMaterial" id=2]
 
 render_priority = 0
 shader = ExtResource( 7 )
@@ -32,7 +32,7 @@ shader_param/color = Color( 1, 0, 1, 1 )
 shader_param/bubbles = ExtResource( 8 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="ShaderMaterial" id=17]
+[sub_resource type="ShaderMaterial" id=3]
 
 render_priority = 0
 shader = ExtResource( 9 )
@@ -41,13 +41,13 @@ shader_param/frost = ExtResource( 10 )
 shader_param/mask = ExtResource( 5 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="CanvasItemMaterial" id=5]
+[sub_resource type="CanvasItemMaterial" id=4]
 
 render_priority = 0
 blend_mode = 1
 light_mode = 0
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 
 resource_name = "fire_damage"
 length = 0.5
@@ -102,7 +102,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 
 resource_name = "ice_damage"
 length = 0.5
@@ -157,7 +157,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="ShaderMaterial" id=16]
+[sub_resource type="ShaderMaterial" id=7]
 
 render_priority = 0
 shader = ExtResource( 7 )
@@ -166,7 +166,7 @@ shader_param/color = Color( 1, 0, 1, 1 )
 shader_param/bubbles = ExtResource( 8 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="ShaderMaterial" id=18]
+[sub_resource type="ShaderMaterial" id=8]
 
 render_priority = 0
 shader = ExtResource( 9 )
@@ -175,7 +175,7 @@ shader_param/frost = ExtResource( 10 )
 shader_param/mask = ExtResource( 5 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=9]
 
 resource_name = "fire_damage"
 length = 0.5
@@ -230,7 +230,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=10]
 
 resource_name = "ice_damage"
 length = 0.5
@@ -285,7 +285,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[node name="UI" type="CanvasLayer"]
+[node name="UI" type="CanvasLayer" index="0"]
 
 layer = 100
 offset = Vector2( 0, 0 )
@@ -303,8 +303,8 @@ anchor_top = 1.0
 anchor_right = 0.0
 anchor_bottom = 1.0
 margin_left = 6.0
-margin_top = -231.0
-margin_right = 166.0
+margin_top = -233.0
+margin_right = 168.0
 margin_bottom = -6.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -322,6 +322,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = -1.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -329,7 +333,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
-_sections_unfolded = [ "Anchor", "Margin" ]
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
 [node name="Name" type="Label" parent="Player1/VBoxContainer" index="0"]
 
@@ -563,7 +567,7 @@ _sections_unfolded = [ "Anchor", "Margin" ]
 
 self_modulate = Color( 1, 1, 1, 0.501961 )
 light_mask = 0
-material = SubResource( 15 )
+material = SubResource( 2 )
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -591,7 +595,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Material", "Percent", "Rect", "Textu
 
 [node name="Top" type="TextureRect" parent="Player1/VBoxContainer/Temp" index="1"]
 
-material = SubResource( 17 )
+material = SubResource( 3 )
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -667,7 +671,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 137.0
 margin_right = 160.0
-margin_bottom = 186.0
+margin_bottom = 179.0
 rect_min_size = Vector2( 0, 32 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -692,9 +696,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 190.0
+margin_top = 183.0
 margin_right = 160.0
-margin_bottom = 239.0
+margin_bottom = 225.0
 rect_min_size = Vector2( 0, 32 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -717,7 +721,7 @@ _sections_unfolded = [ "Rect" ]
 
 modulate = Color( 1, 1, 1, 0 )
 light_mask = 0
-material = SubResource( 5 )
+material = SubResource( 4 )
 position = Vector2( 75, 75 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 11 )
@@ -730,22 +734,21 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/fire_damage = SubResource( 6 )
-anims/ice_damage = SubResource( 7 )
+anims/fire_damage = SubResource( 5 )
+anims/ice_damage = SubResource( 6 )
 blend_times = [  ]
 
 [node name="Player2" type="Panel" parent="." index="1"]
 
-editor/display_folded = true
 light_mask = 0
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.0
-margin_left = -166.0
+margin_left = -168.0
 margin_top = 6.0
 margin_right = -6.0
-margin_bottom = 231.0
+margin_bottom = 233.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -762,6 +765,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = -1.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -1003,7 +1010,7 @@ _sections_unfolded = [ "Anchor", "Margin" ]
 
 self_modulate = Color( 1, 1, 1, 0.501961 )
 light_mask = 0
-material = SubResource( 16 )
+material = SubResource( 7 )
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -1031,7 +1038,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Material", "Percent", "Rect", "Textu
 
 [node name="Top" type="TextureRect" parent="Player2/VBoxContainer/Temp" index="1"]
 
-material = SubResource( 18 )
+material = SubResource( 8 )
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -1107,7 +1114,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 137.0
 margin_right = 160.0
-margin_bottom = 186.0
+margin_bottom = 179.0
 rect_min_size = Vector2( 0, 32 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -1132,9 +1139,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 190.0
+margin_top = 183.0
 margin_right = 160.0
-margin_bottom = 239.0
+margin_bottom = 225.0
 rect_min_size = Vector2( 0, 32 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -1157,7 +1164,7 @@ _sections_unfolded = [ "Rect" ]
 
 modulate = Color( 1, 1, 1, 0 )
 light_mask = 0
-material = SubResource( 5 )
+material = SubResource( 4 )
 position = Vector2( 75, 75 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 11 )
@@ -1170,8 +1177,8 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/fire_damage = SubResource( 12 )
-anims/ice_damage = SubResource( 13 )
+anims/fire_damage = SubResource( 9 )
+anims/ice_damage = SubResource( 10 )
 blend_times = [  ]
 
 [node name="SoundFire" type="AudioStreamPlayer" parent="." index="2"]

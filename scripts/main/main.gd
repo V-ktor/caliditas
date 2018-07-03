@@ -63,11 +63,11 @@ class Card:
 		node.get_node("Level").set_text(str(level))
 		node.get_node("Temp").set_text(str(temperature))
 		if (temperature>0):
-			node.get_node("OverlayTemp").set_modulate(Cards.COLOR_HOT)
+			node.get_node("OverlayTemp").set_self_modulate(Cards.COLOR_HOT)
 		elif (temperature<0):
-			node.get_node("OverlayTemp").set_modulate(Cards.COLOR_COLD)
+			node.get_node("OverlayTemp").set_self_modulate(Cards.COLOR_COLD)
 		else:
-			node.get_node("OverlayTemp").set_modulate(Color(0.5,0.5,0.5))
+			node.get_node("OverlayTemp").set_self_modulate(Color(0.5,0.5,0.5))
 		if (temperature!=last_temp):
 			var text
 			var ti = Main.text_temp.instance()
