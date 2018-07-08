@@ -1,28 +1,27 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://images/particles/ice01.png" type="Texture" id=1]
 [ext_resource path="res://images/particles/fire01.png" type="Texture" id=2]
 [ext_resource path="res://images/particles/flash.png" type="Texture" id=3]
-[ext_resource path="res://sounds/qubodup-ccbysa3-elementalSpell-opengameart4.wav" type="AudioStream" id=4]
-[ext_resource path="res://sounds/water.wav" type="AudioStream" id=5]
+[ext_resource path="res://sounds/Healing_Full.wav" type="AudioStream" id=4]
 
-[sub_resource type="CanvasItemMaterial" id=10]
-
-render_priority = 0
-blend_mode = 1
-light_mode = 0
-
-[sub_resource type="CanvasItemMaterial" id=12]
+[sub_resource type="CanvasItemMaterial" id=1]
 
 render_priority = 0
 blend_mode = 1
 light_mode = 0
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="CanvasItemMaterial" id=2]
 
-length = 2.5
+render_priority = 0
+blend_mode = 1
+light_mode = 0
+
+[sub_resource type="Animation" id=3]
+
+length = 3.5
 loop = false
-step = 0.05
+step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Ice:modulate")
 tracks/0/interp = 1
@@ -72,19 +71,19 @@ tracks/3/keys = {
 "values": [ true ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Fire:scale")
+tracks/4/path = NodePath("Sound1:volume_db")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1.5, 1 ),
+"times": PoolRealArray( 0, 2, 3.5 ),
+"transitions": PoolRealArray( 1, 4, 1 ),
 "update": 0,
-"values": [ Vector2( 3, 3 ), Vector2( 0.1, 0.1 ) ]
+"values": [ 0.0, 0.0, -80.0 ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Fire:rotation_degrees")
+tracks/5/path = NodePath("Fire:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -93,55 +92,55 @@ tracks/5/keys = {
 "times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1.5, 1 ),
 "update": 0,
-"values": [ 0.0, -360.0 ]
+"values": [ Vector2( 3, 3 ), Vector2( 0.1, 0.1 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("Fire:modulate")
+tracks/6/path = NodePath("Fire:rotation_degrees")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0, 0.3, 0.7, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1.5, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ 0.0, -360.0 ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("Flash:scale")
+tracks/7/path = NodePath("Fire:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0, 0.8, 1.1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.3, 0.7, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 2, 2 ), Vector2( 2, 2 ), Vector2( 5, 5 ) ]
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("Flash:modulate")
+tracks/8/path = NodePath("Flash:scale")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0, 0.8, 0.85, 0.95, 1.05 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.8, 1.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Vector2( 2, 2 ), Vector2( 2, 2 ), Vector2( 5, 5 ) ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("Sound2:playing")
+tracks/9/path = NodePath("Flash:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0.8 ),
-"transitions": PoolRealArray( 1 ),
-"update": 2,
-"values": [ true ]
+"times": PoolRealArray( 0, 0.8, 0.85, 0.95, 1.05 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 tracks/10/type = "method"
 tracks/10/path = NodePath(".")
@@ -150,7 +149,7 @@ tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 2.5 ),
+"times": PoolRealArray( 3.5 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -167,16 +166,18 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 [node name="Ice" type="Sprite" parent="." index="0"]
 
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 10 )
-scale = Vector2( 3, 3 )
+material = SubResource( 1 )
+rotation = -6.28319
+scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 1 )
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 
 [node name="Fire" type="Sprite" parent="." index="1"]
 
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 10 )
-scale = Vector2( 3, 3 )
+material = SubResource( 1 )
+rotation = -6.28319
+scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 
@@ -184,37 +185,28 @@ _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 
 modulate = Color( 1, 1, 1, 0 )
 light_mask = 0
-material = SubResource( 12 )
-scale = Vector2( 2, 2 )
+material = SubResource( 2 )
+scale = Vector2( 5, 5 )
 texture = ExtResource( 3 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
 [node name="Sound1" type="AudioStreamPlayer" parent="." index="3"]
 
 stream = ExtResource( 4 )
-volume_db = 0.0
+volume_db = -80.0
 pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "Sound"
 
-[node name="Sound2" type="AudioStreamPlayer" parent="." index="4"]
-
-stream = ExtResource( 5 )
-volume_db = 0.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
-bus = "Sound"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4"]
 
 root_node = NodePath("..")
 autoplay = "animation"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/animation = SubResource( 11 )
+anims/animation = SubResource( 3 )
 blend_times = [  ]
 
 

@@ -4,7 +4,7 @@
 [ext_resource path="res://images/particles/crystal01.png" type="Texture" id=2]
 [ext_resource path="res://images/particles/crystal02.png" type="Texture" id=3]
 [ext_resource path="res://images/particles/crystal03.png" type="Texture" id=4]
-[ext_resource path="res://sounds/qubodup-ccbysa3-elementalSpell-opengameart1.wav" type="AudioStream" id=5]
+[ext_resource path="res://sounds/Ice_attack_2.wav" type="AudioStream" id=5]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -12,31 +12,31 @@ render_priority = 0
 blend_mode = 1
 light_mode = 0
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=2]
 
 offsets = PoolRealArray( 0, 0.0710059, 0.792899, 1 )
 colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=4]
+[sub_resource type="GradientTexture" id=3]
 
 flags = 4
-gradient = SubResource( 3 )
+gradient = SubResource( 2 )
 width = 2048
 
-[sub_resource type="Curve" id=6]
+[sub_resource type="Curve" id=4]
 
-min_value = 1.0
+min_value = 0.99
 max_value = 2.0
 bake_resolution = 100
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 2 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=7]
+[sub_resource type="CurveTexture" id=5]
 
 flags = 4
 width = 2048
-curve = SubResource( 6 )
+curve = SubResource( 4 )
 
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=6]
 
 render_priority = 0
 trail_divisor = 1
@@ -66,8 +66,8 @@ angle = 360.0
 angle_random = 1.0
 scale = 0.25
 scale_random = 0.2
-scale_curve = SubResource( 7 )
-color_ramp = SubResource( 4 )
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
 hue_variation = 0.0
 hue_variation_random = 0.0
 anim_speed = 0.0
@@ -77,7 +77,7 @@ anim_offset_random = 0.0
 anim_loop = false
 _sections_unfolded = [ "Angle", "Color", "Damping", "Emission Shape", "Initial Velocity", "Scale", "Spread" ]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=7]
 
 length = 3.0
 loop = false
@@ -201,7 +201,7 @@ fract_delta = true
 visibility_rect = Rect2( -100, -100, 200, 200 )
 local_coords = false
 draw_order = 0
-process_material = SubResource( 5 )
+process_material = SubResource( 6 )
 texture = ExtResource( 2 )
 normal_map = null
 h_frames = 1
@@ -225,7 +225,7 @@ fract_delta = true
 visibility_rect = Rect2( -100, -100, 200, 200 )
 local_coords = false
 draw_order = 0
-process_material = SubResource( 5 )
+process_material = SubResource( 6 )
 texture = ExtResource( 3 )
 normal_map = null
 h_frames = 1
@@ -249,7 +249,7 @@ fract_delta = true
 visibility_rect = Rect2( -100, -100, 200, 200 )
 local_coords = false
 draw_order = 0
-process_material = SubResource( 5 )
+process_material = SubResource( 6 )
 texture = ExtResource( 4 )
 normal_map = null
 h_frames = 1
@@ -272,7 +272,7 @@ autoplay = "animation"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/animation = SubResource( 2 )
+anims/animation = SubResource( 7 )
 blend_times = [  ]
 
 

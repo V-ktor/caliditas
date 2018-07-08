@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Fire_impact_1.wav-f5f80771b6dbd870e3f9af56297a7e59.sample"
+
+[deps]
+
+source_file="res://sounds/Fire_impact_1.wav"
+dest_files=[ "res://.import/Fire_impact_1.wav-f5f80771b6dbd870e3f9af56297a7e59.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

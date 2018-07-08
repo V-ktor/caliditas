@@ -378,6 +378,7 @@ func _buy_pack(grade,type):
 	get_node("Shop").hide()
 
 func show_new_cards(cards):
+	var timer = Timer.new()
 	var offset = (get_node("Acquired/Cards").get_size().x-150)/cards.size()
 	for c in get_node("Acquired/Cards").get_children():
 		c.queue_free()
@@ -391,6 +392,18 @@ func show_new_cards(cards):
 		ni.get_node("Tween").start()
 	get_node("Acquired/Stack/AnimationPlayer").play("fade_out")
 	get_node("Acquired").popup_centered()
+	get_node("SoundShuffle").play()
+	timer.set_one_shot(true)
+	timer.set_wait_time(0.5)
+	add_child(timer)
+	timer.start()
+	yield(timer,"timeout")
+	timer.set_wait_time(0.25)
+	for i in range(cards.size()):
+		get_node("SoundCard").play()
+		timer.start()
+		yield(timer,"timeout")
+	timer.queue_free()
 
 
 func get_deck(d=deck):
@@ -785,6 +798,8 @@ func _ready():
 	add_child(timer)
 	timer.connect("timeout",self,"_display_status")
 	timer.start()
+	if (OS.has_feature("web")):
+		get_node("Panel/VBoxContainer/Button4").hide()
 	
 	# Set up info text.
 #	get_node("Info/Text").push_align(RichTextLabel.ALIGN_FILL)		# extreme stretching with half-filled lines
@@ -822,6 +837,8 @@ func _ready():
 	get_node("Credits/Text").add_text(tr("MUSIC")+":\n - Viktor Hahn\n\n")
 	get_node("Credits/Text").add_text(tr("SOUNDS")+":\n - Iwan 'qubodup' Gabovitch (")
 	get_node("Credits/Text").append_bbcode("[url=http://qubodup.net]qubodup.net[/url])\n")
-	get_node("Credits/Text").add_text(" - p0ss\n - Bart K.\n - artisticdude\n - Blender Foundation\n - artisticdude\n - HaelDB\n - Ylmir\n\n")
+	get_node("Credits/Text").add_text(" - ViRiX Dreamcore (David Mckee) (")
+	get_node("Credits/Text").append_bbcode("[url=http://www.soundcloud.com/virix]www.soundcloud.com[/url])\n")
+	get_node("Credits/Text").add_text(" - p0ss\n - Bart K.\n - artisticdude\n - Blender Foundation\n - artisticdude\n - HaelDB\n - Ylmir\n - Aleks41\n\n")
 	get_node("Credits/Text").add_text(tr("FONT")+":\n - Jonas Hecksher")
 	get_node("Credits/Text").connect("meta_clicked",OS,"shell_open")

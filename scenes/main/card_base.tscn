@@ -196,7 +196,7 @@ use_filter = false
 font_data = ExtResource( 15 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[sub_resource type="DynamicFont" id=29]
+[sub_resource type="DynamicFont" id=14]
 
 size = 96
 use_mipmaps = false
@@ -204,7 +204,7 @@ use_filter = false
 font_data = ExtResource( 15 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[sub_resource type="Shader" id=14]
+[sub_resource type="Shader" id=15]
 
 code = "shader_type canvas_item;
 
@@ -220,22 +220,15 @@ void fragment()
 	COLOR.a *= clamp(texture(mask,uv).g*alpha,0.0,1.0);
 }"
 
-[sub_resource type="ShaderMaterial" id=15]
+[sub_resource type="ShaderMaterial" id=16]
 
 render_priority = 0
-shader = SubResource( 14 )
+shader = SubResource( 15 )
 shader_param/frames = null
 shader_param/alpha = 100.0
 shader_param/frame = 0
 shader_param/mask = ExtResource( 19 )
 _sections_unfolded = [ "shader_param" ]
-
-[sub_resource type="StyleBoxEmpty" id=16]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
 
 [sub_resource type="StyleBoxEmpty" id=17]
 
@@ -265,7 +258,14 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[sub_resource type="Animation" id=21]
+[sub_resource type="StyleBoxEmpty" id=21]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="Animation" id=22]
 
 length = 1.2
 loop = true
@@ -295,7 +295,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=22]
+[sub_resource type="Animation" id=23]
 
 length = 0.2
 loop = false
@@ -325,7 +325,7 @@ tracks/1/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=23]
+[sub_resource type="Animation" id=24]
 
 length = 0.4
 loop = false
@@ -475,7 +475,7 @@ tracks/11/keys = {
 "values": [ Vector2( 0.15, 0.15 ), Vector2( -0.15, 0.15 ) ]
 }
 
-[sub_resource type="Animation" id=24]
+[sub_resource type="Animation" id=25]
 
 length = 0.2
 loop = false
@@ -505,7 +505,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=25]
+[sub_resource type="Animation" id=26]
 
 length = 0.4
 loop = false
@@ -655,7 +655,7 @@ tracks/11/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=27]
 
 length = 2.0
 loop = false
@@ -685,7 +685,7 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=27]
+[sub_resource type="Animation" id=28]
 
 length = 0.5
 loop = false
@@ -715,7 +715,7 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=28]
+[sub_resource type="Animation" id=29]
 
 length = 1.0
 loop = false
@@ -945,13 +945,13 @@ margin_right = -700.0
 margin_bottom = -1000.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-mouse_filter = 1
+mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 expand = true
 stretch_mode = 7
-_sections_unfolded = [ "Anchor", "Margin", "Material", "Rect", "Visibility" ]
+_sections_unfolded = [ "Anchor", "Margin", "Material", "Mouse", "Rect", "Visibility" ]
 
 [node name="Overlay" type="Sprite" parent="." index="1"]
 
@@ -1180,7 +1180,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 29 )
+custom_fonts/font = SubResource( 14 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0 )
 custom_constants/shadow_as_outline = 0
@@ -1219,7 +1219,7 @@ _sections_unfolded = [ "Visibility" ]
 
 modulate = Color( 1, 1, 1, 0 )
 light_mask = 0
-material = SubResource( 15 )
+material = SubResource( 16 )
 texture = ExtResource( 20 )
 flip_h = true
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
@@ -1241,11 +1241,11 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 16 )
-custom_styles/pressed = SubResource( 17 )
-custom_styles/focus = SubResource( 18 )
-custom_styles/disabled = SubResource( 19 )
-custom_styles/normal = SubResource( 20 )
+custom_styles/hover = SubResource( 17 )
+custom_styles/pressed = SubResource( 18 )
+custom_styles/focus = SubResource( 19 )
+custom_styles/disabled = SubResource( 20 )
+custom_styles/normal = SubResource( 21 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1261,11 +1261,11 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/blink = SubResource( 21 )
-anims/deselect = SubResource( 22 )
-anims/hide = SubResource( 23 )
-anims/select = SubResource( 24 )
-anims/show = SubResource( 25 )
+anims/blink = SubResource( 22 )
+anims/deselect = SubResource( 23 )
+anims/hide = SubResource( 24 )
+anims/select = SubResource( 25 )
+anims/show = SubResource( 26 )
 blend_times = [  ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="15"]
@@ -1275,9 +1275,9 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/delayed_fade_out = SubResource( 26 )
-anims/fade_out = SubResource( 27 )
-anims/fizzle = SubResource( 28 )
+anims/delayed_fade_out = SubResource( 27 )
+anims/fade_out = SubResource( 28 )
+anims/fizzle = SubResource( 29 )
 blend_times = [  ]
 
 [node name="Tween" type="Tween" parent="." index="16"]

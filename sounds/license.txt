@@ -23,6 +23,10 @@ rock_breaking.wav:
 Copyright: Blender Foundation
 License: CC-BY 3.0
 
+Fire_impact_1.wav, Healing_Full.wav, Ice_attack_2.wav, Wind_effects_5.wav:
+Copyright: ViRiX Dreamcore (David Mckee) www.soundcloud.com/virix
+License: CC-BY 3.0
+
 freeze.wav:
 Copyright: artisticdude
 License: CC0
@@ -35,7 +39,11 @@ rain.ogg:
 Copyright: Ylmir
 License: CC0
 
+406063__aleks41__magic-strike.wav:
+Copyright: Aleks41
+License: CC0
+
 explosion04.wav:
 Copyright: Viktor Hahn
-License: CC-BY 3.0
+License: CC0
 

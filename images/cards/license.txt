@@ -15,7 +15,7 @@ License: CC-BY-SA 3.0
 welcome_to_air_OMGWTF_by_shiroikuro.jpg:
 License: CC0
 
-base.png, card_mask.png, card_lines.png, card_select.png, card_white.png, level.png, mask.png, overlay.png, temperature.png:
+base.png, card_mask.png, card_lines.png, card_select.png, card_white.png, level1.png, level2.png, level3.png, level4.png, level_mask_colors.png, level_mask_cone.png, level_mask_linear.png, mask.png, overlay.png, temperature.png, temperature_burn.png, temperature_frost.png:
 Copyright: Viktor Hahn
 License: CC0
 
