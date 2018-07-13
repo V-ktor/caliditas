@@ -709,6 +709,12 @@ remote func draw_card(pl,ID=-1):
 	return ID
 
 func _draw_extra_card():
+	if (multiplayer):
+		rpc("draw_extra_card",player)
+	else:
+		draw_extra_card(player)
+
+sync func draw_extra_card(player):
 	if (!inc_mana[player]):
 		return
 	
