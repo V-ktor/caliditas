@@ -285,7 +285,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[node name="UI" type="CanvasLayer" index="0"]
+[node name="UI" type="CanvasLayer"]
 
 layer = 100
 offset = Vector2( 0, 0 )

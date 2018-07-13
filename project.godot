@@ -36,7 +36,7 @@ RMB=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_nam
 
 [locale]
 
-translations=PoolStringArray( "res://translations/cards.en.translation", "res://translations/menu.en.translation", "res://translations/ui.en.translation", "res://translations/effects.en.translation" )
+translations=PoolStringArray( "res://translations/cards.en.translation", "res://translations/menu.en.translation", "res://translations/ui.en.translation", "res://translations/effects.en.translation", "res://translations/tutorial.en.translation" )
 
 [rendering]
 
