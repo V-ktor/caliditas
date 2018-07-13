@@ -234,7 +234,10 @@ func _show_deck(t=false):
 		else:
 			bi.get_node("ButtonAdd").set_disabled(max_ammount==0 || num_cards>=MAX_CARDS)
 			bi.get_node("ButtonSub").set_disabled(true)
-		bi.get_node("Label").set_text(str(ammount)+" / "+str(max_ammount))
+		if (inventory.has(type)):
+			bi.get_node("Label").set_text(str(ammount)+" / "+str(max_ammount)+" ("+str(inventory[type])+")")
+		else:
+			bi.get_node("Label").set_text(str(ammount)+" / "+str(max_ammount))
 		if (show_all || max_ammount>0):
 			bi.show()
 		else:
@@ -536,7 +539,7 @@ func load_config():
 	file.load("user://config.cfg")
 	fullscreen = file.get_value("video","fullscreen",false)
 	maximized = file.get_value("video","maximized",true)
-	screen_size = Vector2(file.get_value("video","screenw",1024),file.get_value("video","screenh",768))
+	screen_size = Vector2(file.get_value("video","screenw",OS.get_screen_size().x),file.get_value("video","screenh",OS.get_screen_size().y))
 	music = file.get_value("audio","music",true)
 	music_volume = file.get_value("audio","music_volume",100)
 	sound = file.get_value("audio","sound",true)

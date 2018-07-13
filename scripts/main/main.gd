@@ -97,12 +97,7 @@ class Card:
 		equiped.clear()
 	
 	func destroy():
-		for c in equiped:
-			c.node.get_node("AnimationPlayer").play("fade_out")
-			c.node._z -= 1
-			c.node.z_index -= 1
-			c.node.type = "dead"
-		node.get_node("AnimationPlayer").play("fade_out")
+		var timer = Timer.new()
 		node._z -= 1
 		node.z_index -= 1
 		node.type = "dead"
@@ -116,6 +111,21 @@ class Card:
 		for card in equiped:
 			if (Cards.data[card.ID].has("on_removed")):
 				Main.apply_effect(card,"on_removed",self)
+		remove_equipment()
+		timer.set_one_shot(true)
+		timer.set_wait_time(0.5)
+		node.add_child(timer)
+		timer.start()
+		yield(timer,"timeout")
+		timer.queue_free()
+		node.get_node("Animation").clear_queue()
+		node.get_node("Animation").play("hide")
+		node.get_node("Tween").remove_all()
+		node.get_node("Tween").interpolate_property(node,"global_position",node.get_global_position(),Main.get_node("Graveyard"+str(owner+1)).get_global_position(),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.5)
+		node.get_node("Tween").start()
+		yield(node.get_node("Tween"),"tween_completed")
+		Main.get_node("Graveyard"+str(owner+1)+"/Sprite").show()
+		node.hide()
 
 # Used for sorting arrays descending by absolute value of temperature.
 class TemperatureSorter:
@@ -137,7 +147,7 @@ func reset():
 	mana_max = [2,3]
 	health = [20,20]
 	temperature = [0,0]
-	used_positions = [[],[]]
+	used_positions = [[-3,-4],[3,4]]
 	turn = -1
 	player = -1
 	selected_card = null
@@ -149,6 +159,8 @@ func reset():
 	UI.get_node("Player2/VBoxContainer/Health/Bar").set_max(health[PLAYER2])
 	UI.get_node("Player1/VBoxContainer/ButtonC").show()
 	UI.get_node("Player1/VBoxContainer/ButtonE").show()
+	get_node("Graveyard1/Sprite").hide()
+	get_node("Graveyard2/Sprite").hide()
 	Music.temperature = 0
 	deselect()
 
@@ -180,7 +192,6 @@ func game_over(lost=null):
 func hide():
 	for card in get_node("Cards").get_children():
 		card.get_node("AnimationPlayer").play("fade_out")
-
 
 func find_empty_position(player):
 	var p = 0
@@ -321,6 +332,7 @@ func play_card(card,player,target=null):
 			timer.start()
 			yield(timer,"timeout")
 			card.node.get_node("AnimationPlayer").play("fizzle")
+		graveyard[player].push_back(card)
 		card.in_game = true
 		hand[player].erase(card)
 	
@@ -669,7 +681,8 @@ remote func draw_card(pl,ID=-1):
 	node.card = card
 	node._z = 1
 	node.set_z_index(1)
-	node.set_position(OS.get_window_size()/2.0*Vector2(-1+2*pl,1-2*pl)*zoom)
+#	node.set_position(OS.get_window_size()/2.0*Vector2(-1+2*pl,1-2*pl)*zoom)
+	node.set_position(get_node("Deck"+str(pl+1)).get_global_position())
 	get_node("Cards").add_child(node)
 	node.get_node("Tween").interpolate_property(node,"global_position",node.get_global_position(),pos1,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	node.get_node("Tween").interpolate_property(node,"global_position",pos1,pos2,0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
@@ -684,6 +697,8 @@ remote func draw_card(pl,ID=-1):
 	else:
 		if (pl!=player):
 			node.get_node("Animation").play("hide",-1,10.0)
+	if (deck[pl].size()==0):
+		get_node("Deck"+str(pl+1)+"/Sprite").hide()
 	return ID
 
 func sort_hand(player):
@@ -715,6 +730,11 @@ func sort_cards():
 			if (card.get_z_index()==z):
 				card.raise()
 				card.get_node("Button").raise()
+	
+#	get_node("Deck1/Button").raise()
+#	get_node("Deck2/Button").raise()
+#	get_node("Graveyard1/Button").raise()
+#	get_node("Graveyard2/Button").raise()
 
 func select(card,type):
 	if ((ai || multiplayer) && player!=PLAYER1):
