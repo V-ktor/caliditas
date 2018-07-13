@@ -9,6 +9,9 @@ func hide():
 func show():
 	get_node("Player1").show()
 	get_node("Player2").show()
+	get_node("VBoxContainer").show()
+	get_node("VBoxContainer/LabelT").set_text("")
+	get_node("VBoxContainer/LabelP").set_text("")
 
 func _ready():
 	hide()

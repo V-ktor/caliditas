@@ -166,6 +166,7 @@ func reset():
 	get_node("Graveyard2/Sprite").hide()
 	Music.temperature = 0
 	deselect()
+	UI.get_node("VBoxContainer/LabelP").set_text(tr("DRAWING_PHASE"))
 
 func start():
 	# Start a new match.
@@ -831,6 +832,8 @@ func next_turn(draw=1):
 	selected_card = null
 	select = "hand"
 	update_stats()
+	UI.get_node("VBoxContainer/LabelT").set_text(tr("PLAYER_TURN")%player_name[player])
+	UI.get_node("VBoxContainer/LabelP").set_text(tr("PLAYING_PHASE"))
 	
 	if (!ai && !multiplayer):
 		for card in hand[player]:
@@ -870,6 +873,7 @@ remote func attack_phase():
 	# As targets are chosen randomly this will prevent strong creatures defeating weak ones
 	# and leaving only strong creatures that can't be killed by the weak ones.
 	list.sort_custom(TemperatureSorter,"sort_ascending")
+	UI.get_node("VBoxContainer/LabelP").set_text(tr("ATTACK_PHASE"))
 	
 	# Attack random enemies that can be defeated.
 	for card in list:
