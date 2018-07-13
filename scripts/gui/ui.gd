@@ -17,3 +17,4 @@ func _ready():
 	for i in range(1,3):
 		get_node("Player"+str(i)+"/VBoxContainer/ButtonC").connect("pressed",Main,"_confirm")
 		get_node("Player"+str(i)+"/VBoxContainer/ButtonE").connect("pressed",Main,"end_turn")
+		get_node("Player"+str(i)+"/VBoxContainer/ButtonD").connect("pressed",Main,"_draw_extra_card")

@@ -15,6 +15,7 @@ var mana = [0,0]
 var mana_max = [0,0]
 var health = [10,10]
 var temperature = [0,0]
+var inc_mana = [true,true]
 var player_name = ["",""]
 var player = -1
 var turn = -1
@@ -147,6 +148,7 @@ func reset():
 	mana_max = [2,3]
 	health = [20,20]
 	temperature = [0,0]
+	inc_mana = [true,true]
 	used_positions = [[-3,-4],[3,4]]
 	turn = -1
 	player = -1
@@ -159,6 +161,7 @@ func reset():
 	UI.get_node("Player2/VBoxContainer/Health/Bar").set_max(health[PLAYER2])
 	UI.get_node("Player1/VBoxContainer/ButtonC").show()
 	UI.get_node("Player1/VBoxContainer/ButtonE").show()
+	UI.get_node("Player1/VBoxContainer/ButtonD").show()
 	get_node("Graveyard1/Sprite").hide()
 	get_node("Graveyard2/Sprite").hide()
 	Music.temperature = 0
@@ -169,9 +172,10 @@ func start():
 	timer.set_wait_time(0.2)
 	UI.get_node("Player1/VBoxContainer/Name").set_text(player_name[PLAYER1])
 	UI.get_node("Player2/VBoxContainer/Name").set_text(player_name[PLAYER2])
-	if (ai):
+	if (ai || multiplayer):
 		UI.get_node("Player2/VBoxContainer/ButtonC").hide()
 		UI.get_node("Player2/VBoxContainer/ButtonE").hide()
+		UI.get_node("Player2/VBoxContainer/ButtonD").hide()
 	for i in range(START_CARDS):
 		_draw_card(PLAYER1)
 		_draw_card(PLAYER2)
@@ -216,6 +220,8 @@ func ai_turn(player):
 	timer.set_wait_time(1.0)
 	timer.start()
 	yield(timer,"timeout")
+	if (action==null):
+		_draw_extra_card()
 	while (action!=null):
 		timer.set_wait_time(0.5)
 		timer.start()
@@ -701,6 +707,15 @@ remote func draw_card(pl,ID=-1):
 		get_node("Deck"+str(pl+1)+"/Sprite").hide()
 	return ID
 
+func _draw_extra_card():
+	if (!inc_mana[player]):
+		return
+	
+	_draw_card(player)
+	inc_mana[player] = false
+	UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonD").set_disabled(true)
+
+
 func sort_hand(player):
 	# Shift the cards in hand to their right positions with offset depending on their number.
 	# Therefore they all fit onto the screen.
@@ -796,7 +811,11 @@ func next_turn(draw=1):
 	player = turn%2
 	enemy = (player+1)%2
 	
-	mana_max[player] += 1
+	if (mana[player]==mana_max[player]):
+		draw += 1
+	if (inc_mana[player]):
+		mana_max[player] += 1
+	inc_mana[player] = true
 	mana[player] = mana_max[player]
 	if (server):
 		for i in range(draw):
@@ -824,12 +843,16 @@ func next_turn(draw=1):
 		return
 	
 	UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonE").set_disabled(false)
+	UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonD").set_disabled(false)
 	UI.get_node("Player"+str(enemy+1)+"/VBoxContainer/ButtonE").set_disabled(true)
+	UI.get_node("Player"+str(enemy+1)+"/VBoxContainer/ButtonD").set_disabled(true)
 	if (!ai && !multiplayer):
 		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonC").show()
 		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonE").show()
+		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonD").show()
 		UI.get_node("Player"+str(enemy+1)+"/VBoxContainer/ButtonC").hide()
 		UI.get_node("Player"+str(enemy+1)+"/VBoxContainer/ButtonE").hide()
+		UI.get_node("Player"+str(enemy+1)+"/VBoxContainer/ButtonD").hide()
 	
 	if (ai && player==PLAYER2):
 		ai_turn(player)

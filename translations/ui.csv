@@ -7,6 +7,7 @@ CONFIRM,Contirm
 PLAY,Play
 CANCEL,Cancel
 END_TURN,End Turn
+DRAW_CARD,Draw Card
 CREATURE,Creature
 SPELL,Spell
 
