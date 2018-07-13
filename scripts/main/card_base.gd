@@ -46,6 +46,8 @@ func selected():
 
 func _ready():
 	get_node("White").set_material(get_node("White").get_material().duplicate())
+	get_node("Red").set_material(get_node("Red").get_material().duplicate())
+	get_node("Blue").set_material(get_node("Blue").get_material().duplicate())
 	get_node("Button").connect("pressed",self,"selected")
 	get_node("Button").connect("gui_input",self,"_gui_input")
 #	get_node("Button").connect("mouse_entered",self,"zoom")

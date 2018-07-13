@@ -5,6 +5,7 @@ enum {
 	PLAYER2 = 1
 }
 const START_CARDS = 4
+const DEATH_ANIMATIONS = {"neutral":"fizzle","fire":"burn","ice":"crack"}
 
 var timer
 var field = [[],[]]
@@ -99,6 +100,7 @@ class Card:
 	
 	func destroy():
 		var timer = Timer.new()
+		var alignment = "neutral"
 		node._z -= 1
 		node.z_index -= 1
 		node.type = "dead"
@@ -119,10 +121,16 @@ class Card:
 		timer.start()
 		yield(timer,"timeout")
 		timer.queue_free()
+		if (Cards.data[ID]["type"]!="spell"):
+			if ("fire" in Cards.data[ID]["tags"] && !("ice" in Cards.data[ID]["tags"])):
+				alignment = "fire"
+			elif ("ice" in Cards.data[ID]["tags"] && !("fire" in Cards.data[ID]["tags"])):
+				alignment = "ice"
 		node.get_node("Animation").clear_queue()
-		node.get_node("Animation").play("hide")
+#		node.get_node("Animation").play("hide")
+		node.get_node("AnimationPlayer").play(Main.DEATH_ANIMATIONS[alignment])
 		node.get_node("Tween").remove_all()
-		node.get_node("Tween").interpolate_property(node,"global_position",node.get_global_position(),Main.get_node("Graveyard"+str(owner+1)).get_global_position(),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.5)
+		node.get_node("Tween").interpolate_property(node,"global_position",node.get_global_position(),Main.get_node("Graveyard"+str(owner+1)).get_global_position(),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,1.0)
 		node.get_node("Tween").start()
 		yield(node.get_node("Tween"),"tween_completed")
 		Main.get_node("Graveyard"+str(owner+1)+"/Sprite").show()
@@ -166,6 +174,7 @@ func reset():
 	get_node("Graveyard2/Sprite").hide()
 	Music.temperature = 0
 	deselect()
+	UI.get_node("VBoxContainer/LabelT").set_text("")
 	UI.get_node("VBoxContainer/LabelP").set_text(tr("DRAWING_PHASE"))
 
 func start():
