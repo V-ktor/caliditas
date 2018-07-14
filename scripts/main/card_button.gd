@@ -2,7 +2,7 @@ extends Button
 
 
 func get_drag_data(position):
-	if (get_parent().type=="dead" || get_parent().type=="equiped" || get_parent().type=="preview"):
+	if (get_parent().type=="dead" || get_parent().type=="equiped" || get_parent().type=="preview" || get_parent().card.owner!=Main.player):
 		return
 	Main.get_node("Arrow").origin = get_parent().get_global_position()
 	set_drag_preview(Main.get_node("Arrow"))
