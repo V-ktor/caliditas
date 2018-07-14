@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://scripts/gui/ui.gd" type="Script" id=1]
 [ext_resource path="res://default_theme.tres" type="Theme" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://images/particles/exp_circle01.png" type="Texture" id=12]
 [ext_resource path="res://sounds/foom_0.wav" type="AudioStream" id=13]
 [ext_resource path="res://sounds/freeze.wav" type="AudioStream" id=14]
+[ext_resource path="res://images/gui/mask01.png" type="Texture" id=15]
+[ext_resource path="res://images/gui/ray.png" type="Texture" id=16]
 
 [sub_resource type="DynamicFont" id=1]
 
@@ -292,6 +294,231 @@ use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 3 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
+
+[sub_resource type="DynamicFont" id=16]
+
+size = 48
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 3 )
+_sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
+
+[sub_resource type="Shader" id=12]
+
+code = "shader_type canvas_item;
+render_mode blend_add;
+
+uniform sampler2D mask;
+uniform float scale = 1.0;
+uniform float offset = 0.0;
+uniform bool right = false;
+
+void fragment()
+{
+	vec2 uv = UV*vec2(1.0/scale,1.0);
+	if (right)
+	{
+		uv.x = (1.0-UV.x)*1.0/scale;
+	}
+	COLOR = texture(TEXTURE,UV+vec2(offset,0));
+	COLOR.a *= texture(mask,uv).g;
+}"
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="ShaderMaterial" id=13]
+
+render_priority = 0
+shader = SubResource( 12 )
+shader_param/scale = 0.0
+shader_param/offset = 10.0
+shader_param/right = true
+shader_param/mask = ExtResource( 15 )
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="ShaderMaterial" id=15]
+
+render_priority = 0
+shader = SubResource( 12 )
+shader_param/scale = 0.0
+shader_param/offset = -10.0
+shader_param/right = false
+shader_param/mask = ExtResource( 15 )
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="Animation" id=14]
+
+resource_name = "vs"
+length = 3.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Ray1:material:shader_param/offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 10.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Ray1:material:shader_param/scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 2.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0, 1.0, 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Ray1:material:shader_param/right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Ray2:material:shader_param/offset")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, -10.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Ray2:material:shader_param/right")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 2.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Ray2:material:shader_param/scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.5, 2.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0, 1.0, 0.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Ray1:margin_top")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.7, 1, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ -48.0, -48.0, -96.0, -96.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Ray1:margin_bottom")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.7, 1, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 16.0, 16.0, -32.0, -32.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Ray2:margin_top")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.7, 1, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ -32.0, -32.0, 32.0, 32.0 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Ray2:margin_bottom")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 0.7, 1, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 32.0, 32.0, 96.0, 96.0 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("LabelVS:modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 0.8, 1.1, 2.2, 2.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("LabelVS:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0, 0.8, 3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Ray1:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("Ray2:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
 
 [node name="UI" type="CanvasLayer"]
 
@@ -1246,6 +1473,7 @@ blend_times = [  ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." index="2"]
 
+light_mask = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -1259,7 +1487,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
-_sections_unfolded = [ "Margin" ]
+_sections_unfolded = [ "Margin", "Visibility" ]
 
 [node name="LabelT" type="Label" parent="VBoxContainer" index="0"]
 
@@ -1333,5 +1561,83 @@ pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "Master"
+
+[node name="LabelVS" type="Label" parent="." index="5"]
+
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+light_mask = 0
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -32.0
+margin_bottom = 32.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 16 )
+text = "PLAYER1 VS PLAYER2"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin", "Visibility", "custom_fonts" ]
+
+[node name="Ray1" type="TextureRect" parent="." index="6"]
+
+visible = false
+light_mask = 0
+material = SubResource( 13 )
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -96.0
+margin_bottom = -32.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+texture = ExtResource( 16 )
+expand = true
+_sections_unfolded = [ "Margin", "Material", "Rect", "Region", "Transform", "Visibility" ]
+
+[node name="Ray2" type="TextureRect" parent="." index="7"]
+
+visible = false
+light_mask = 0
+material = SubResource( 15 )
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = 32.0
+margin_bottom = 96.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+texture = ExtResource( 16 )
+expand = true
+_sections_unfolded = [ "Anchor", "Margin", "Material", "Rect", "Region", "Transform", "Visibility" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="8"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/vs = SubResource( 14 )
+blend_times = [  ]
 
 

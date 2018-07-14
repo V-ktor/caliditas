@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://images/cards/base.png" type="Texture" id=1]
 [ext_resource path="res://scripts/main/card_base.gd" type="Script" id=2]
@@ -22,8 +22,9 @@
 [ext_resource path="res://images/cards/card_white.png" type="Texture" id=20]
 [ext_resource path="res://images/cards/card_mask_burn.png" type="Texture" id=21]
 [ext_resource path="res://images/cards/card_mask_crack.png" type="Texture" id=22]
-[ext_resource path="res://sounds/tap.wav" type="AudioStream" id=23]
-[ext_resource path="res://sounds/untap.wav" type="AudioStream" id=24]
+[ext_resource path="res://scripts/main/card_button.gd" type="Script" id=23]
+[ext_resource path="res://sounds/tap.wav" type="AudioStream" id=24]
+[ext_resource path="res://sounds/untap.wav" type="AudioStream" id=25]
 
 [sub_resource type="Shader" id=1]
 
@@ -232,7 +233,7 @@ shader_param/frame = 0
 shader_param/mask = ExtResource( 19 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="ShaderMaterial" id=30]
+[sub_resource type="ShaderMaterial" id=17]
 
 render_priority = 0
 shader = SubResource( 15 )
@@ -242,7 +243,7 @@ shader_param/frame = 7
 shader_param/mask = ExtResource( 21 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="ShaderMaterial" id=32]
+[sub_resource type="ShaderMaterial" id=18]
 
 render_priority = 0
 shader = SubResource( 15 )
@@ -251,20 +252,6 @@ shader_param/alpha = 0.0
 shader_param/frame = 7
 shader_param/mask = ExtResource( 22 )
 _sections_unfolded = [ "shader_param" ]
-
-[sub_resource type="StyleBoxEmpty" id=17]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
-[sub_resource type="StyleBoxEmpty" id=18]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
 
 [sub_resource type="StyleBoxEmpty" id=19]
 
@@ -287,7 +274,21 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[sub_resource type="Animation" id=22]
+[sub_resource type="StyleBoxEmpty" id=22]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=23]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="Animation" id=24]
 
 length = 1.2
 loop = true
@@ -317,7 +318,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=23]
+[sub_resource type="Animation" id=25]
 
 length = 0.2
 loop = false
@@ -347,7 +348,7 @@ tracks/1/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=24]
+[sub_resource type="Animation" id=26]
 
 length = 0.4
 loop = false
@@ -497,7 +498,7 @@ tracks/11/keys = {
 "values": [ Vector2( 0.15, 0.15 ), Vector2( -0.15, 0.15 ) ]
 }
 
-[sub_resource type="Animation" id=25]
+[sub_resource type="Animation" id=27]
 
 length = 0.2
 loop = false
@@ -527,7 +528,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=28]
 
 length = 0.4
 loop = false
@@ -677,7 +678,7 @@ tracks/11/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=31]
+[sub_resource type="Animation" id=29]
 
 resource_name = "burn"
 length = 1.0
@@ -888,7 +889,7 @@ tracks/16/keys = {
 "values": [ false, false ]
 }
 
-[sub_resource type="Animation" id=33]
+[sub_resource type="Animation" id=30]
 
 resource_name = "crack"
 length = 1.0
@@ -1099,7 +1100,7 @@ tracks/16/keys = {
 "values": [ false, false ]
 }
 
-[sub_resource type="Animation" id=27]
+[sub_resource type="Animation" id=31]
 
 length = 2.0
 loop = false
@@ -1129,7 +1130,7 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=28]
+[sub_resource type="Animation" id=32]
 
 length = 0.5
 loop = false
@@ -1159,7 +1160,7 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=29]
+[sub_resource type="Animation" id=33]
 
 length = 1.0
 loop = false
@@ -1369,7 +1370,7 @@ tracks/16/keys = {
 "values": [ false, false ]
 }
 
-[node name="Card" type="Sprite" index="0"]
+[node name="Card" type="Sprite"]
 
 scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 1 )
@@ -1674,7 +1675,7 @@ _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 visible = false
 modulate = Color( 1, 0.12549, 0, 1 )
 light_mask = 0
-material = SubResource( 30 )
+material = SubResource( 17 )
 texture = ExtResource( 20 )
 flip_h = true
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
@@ -1684,7 +1685,7 @@ _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 visible = false
 modulate = Color( 0, 0.376471, 1, 1 )
 light_mask = 0
-material = SubResource( 32 )
+material = SubResource( 18 )
 texture = ExtResource( 20 )
 flip_h = true
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
@@ -1706,17 +1707,18 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 17 )
-custom_styles/pressed = SubResource( 18 )
-custom_styles/focus = SubResource( 19 )
-custom_styles/disabled = SubResource( 20 )
-custom_styles/normal = SubResource( 21 )
+custom_styles/hover = SubResource( 19 )
+custom_styles/pressed = SubResource( 20 )
+custom_styles/focus = SubResource( 21 )
+custom_styles/disabled = SubResource( 22 )
+custom_styles/normal = SubResource( 23 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
 flat = false
 align = 1
+script = ExtResource( 23 )
 _sections_unfolded = [ "Anchor", "Margin", "Mouse", "custom_styles" ]
 
 [node name="Animation" type="AnimationPlayer" parent="." index="16"]
@@ -1726,11 +1728,11 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/blink = SubResource( 22 )
-anims/deselect = SubResource( 23 )
-anims/hide = SubResource( 24 )
-anims/select = SubResource( 25 )
-anims/show = SubResource( 26 )
+anims/blink = SubResource( 24 )
+anims/deselect = SubResource( 25 )
+anims/hide = SubResource( 26 )
+anims/select = SubResource( 27 )
+anims/show = SubResource( 28 )
 blend_times = [  ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="17"]
@@ -1740,11 +1742,11 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/burn = SubResource( 31 )
-anims/crack = SubResource( 33 )
-anims/delayed_fade_out = SubResource( 27 )
-anims/fade_out = SubResource( 28 )
-anims/fizzle = SubResource( 29 )
+anims/burn = SubResource( 29 )
+anims/crack = SubResource( 30 )
+anims/delayed_fade_out = SubResource( 31 )
+anims/fade_out = SubResource( 32 )
+anims/fizzle = SubResource( 33 )
 blend_times = [  ]
 
 [node name="Tween" type="Tween" parent="." index="18"]
@@ -1767,7 +1769,7 @@ playback/speed = 1.0
 
 [node name="SoundTap" type="AudioStreamPlayer" parent="." index="20"]
 
-stream = ExtResource( 23 )
+stream = ExtResource( 24 )
 volume_db = -16.0
 pitch_scale = 1.0
 autoplay = false
@@ -1776,7 +1778,7 @@ bus = "Sound"
 
 [node name="SoundUntap" type="AudioStreamPlayer" parent="." index="21"]
 
-stream = ExtResource( 24 )
+stream = ExtResource( 25 )
 volume_db = -16.0
 pitch_scale = 1.0
 autoplay = false

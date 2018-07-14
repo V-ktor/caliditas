@@ -179,13 +179,18 @@ func reset():
 
 func start():
 	# Start a new match.
-	timer.set_wait_time(0.2)
+	timer.set_wait_time(2.0)
 	UI.get_node("Player1/VBoxContainer/Name").set_text(player_name[PLAYER1])
 	UI.get_node("Player2/VBoxContainer/Name").set_text(player_name[PLAYER2])
+	UI.get_node("LabelVS").set_text(player_name[PLAYER1]+" VS "+player_name[PLAYER2])
 	if (ai || multiplayer):
 		UI.get_node("Player2/VBoxContainer/ButtonC").hide()
 		UI.get_node("Player2/VBoxContainer/ButtonE").hide()
 		UI.get_node("Player2/VBoxContainer/ButtonD").hide()
+	UI.get_node("AnimationPlayer").play("vs")
+	timer.start()
+	yield(timer,"timeout")
+	timer.set_wait_time(0.2)
 	for i in range(START_CARDS):
 		_draw_card(PLAYER1)
 		_draw_card(PLAYER2)

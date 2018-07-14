@@ -1,14 +1,18 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scripts/main/main.gd" type="Script" id=1]
 [ext_resource path="res://images/background/diffuse.jpg" type="Texture" id=2]
-[ext_resource path="res://images/gui/line01.png" type="Texture" id=3]
-[ext_resource path="res://images/gui/card_outlines.png" type="Texture" id=4]
-[ext_resource path="res://images/cards/back.png" type="Texture" id=5]
-[ext_resource path="res://scripts/gui/button_graveyard.gd" type="Script" id=6]
-[ext_resource path="res://sounds/playcard.wav" type="AudioStream" id=7]
-[ext_resource path="res://sounds/draw.wav" type="AudioStream" id=8]
-[ext_resource path="res://sounds/shuffle.wav" type="AudioStream" id=9]
+[ext_resource path="res://scripts/gui/battle_field.gd" type="Script" id=3]
+[ext_resource path="res://images/gui/line01.png" type="Texture" id=4]
+[ext_resource path="res://images/gui/card_outlines.png" type="Texture" id=5]
+[ext_resource path="res://images/cards/back.png" type="Texture" id=6]
+[ext_resource path="res://scripts/gui/button_graveyard.gd" type="Script" id=7]
+[ext_resource path="res://sounds/playcard.wav" type="AudioStream" id=8]
+[ext_resource path="res://sounds/draw.wav" type="AudioStream" id=9]
+[ext_resource path="res://sounds/shuffle.wav" type="AudioStream" id=10]
+[ext_resource path="res://images/gui/line02.png" type="Texture" id=11]
+[ext_resource path="res://scripts/gui/arrow.gd" type="Script" id=12]
+[ext_resource path="res://images/gui/arrow01.png" type="Texture" id=13]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -45,7 +49,45 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[node name="Main" type="Node2D"]
+[sub_resource type="Shader" id=6]
+
+code = "shader_type canvas_item;
+
+uniform float offset = 0.0;
+
+void fragment()
+{
+	vec2 uv = UV+vec2(offset,0);
+	COLOR = texture(TEXTURE,uv);
+}"
+
+[sub_resource type="ShaderMaterial" id=7]
+
+render_priority = 0
+shader = SubResource( 6 )
+shader_param/offset = 1.0
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="Animation" id=8]
+
+resource_name = "animation"
+length = 2.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+
+[node name="Main" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 
@@ -64,7 +106,27 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 4096, 2048 )
 _sections_unfolded = [ "Offset", "Region", "Transform", "Visibility" ]
 
-[node name="Camera" type="Camera2D" parent="." index="1"]
+[node name="BattleField" type="Control" parent="." index="1"]
+
+light_mask = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1536.0
+margin_top = -896.0
+margin_right = 1472.0
+margin_bottom = 832.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 3 )
+_sections_unfolded = [ "Mouse", "Rect", "Visibility" ]
+
+[node name="Camera" type="Camera2D" parent="." index="2"]
 
 anchor_mode = 1
 rotating = false
@@ -89,60 +151,60 @@ editor_draw_screen = true
 editor_draw_limits = false
 editor_draw_drag_margin = false
 
-[node name="Line1" type="Sprite" parent="." index="2"]
+[node name="Line1" type="Sprite" parent="." index="3"]
 
 self_modulate = Color( 1, 1, 1, 0.627451 )
 position = Vector2( 136, 40 )
 scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( -14, 0, 4420, 32 )
 _sections_unfolded = [ "Region", "Transform" ]
 
-[node name="Line3" type="Sprite" parent="." index="3"]
+[node name="Line3" type="Sprite" parent="." index="4"]
 
 visible = false
 self_modulate = Color( 1, 1, 1, 0.627451 )
 position = Vector2( 136, 360 )
 scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( -14, 0, 4420, 32 )
 _sections_unfolded = [ "Region", "Transform" ]
 
-[node name="Line2" type="Sprite" parent="." index="4"]
+[node name="Line2" type="Sprite" parent="." index="5"]
 
 self_modulate = Color( 1, 1, 1, 0.627451 )
 position = Vector2( -136, -40 )
 scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( -14, 0, 4420, 32 )
 _sections_unfolded = [ "Region", "Transform" ]
 
-[node name="Line4" type="Sprite" parent="." index="5"]
+[node name="Line4" type="Sprite" parent="." index="6"]
 
 visible = false
 self_modulate = Color( 1, 1, 1, 0.627451 )
 position = Vector2( -136, -360 )
 scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( -14, 0, 4420, 32 )
 _sections_unfolded = [ "Region", "Transform" ]
 
-[node name="Deck1" type="Sprite" parent="." index="6"]
+[node name="Deck1" type="Sprite" parent="." index="7"]
 
 self_modulate = Color( 1, 1, 1, 0.627451 )
 position = Vector2( -675, 200 )
 scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="Deck1" index="0"]
 
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Button" type="Button" parent="Deck1" index="1"]
@@ -175,19 +237,19 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_styles" ]
 
-[node name="Graveyard1" type="Sprite" parent="." index="7"]
+[node name="Graveyard1" type="Sprite" parent="." index="8"]
 
 self_modulate = Color( 1, 1, 1, 0.627451 )
 position = Vector2( -675, 550 )
 scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="Graveyard1" index="0"]
 
 visible = false
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Button" type="Button" parent="Graveyard1" index="1"]
@@ -218,22 +280,22 @@ shortcut = null
 group = null
 flat = false
 align = 1
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_styles" ]
 player = 0
 
-[node name="Deck2" type="Sprite" parent="." index="8"]
+[node name="Deck2" type="Sprite" parent="." index="9"]
 
 self_modulate = Color( 1, 1, 1, 0.627451 )
 position = Vector2( 675, -200 )
 scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="Deck2" index="0"]
 
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Button" type="Button" parent="Deck2" index="1"]
@@ -266,19 +328,19 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_styles" ]
 
-[node name="Graveyard2" type="Sprite" parent="." index="9"]
+[node name="Graveyard2" type="Sprite" parent="." index="10"]
 
 self_modulate = Color( 1, 1, 1, 0.627451 )
 position = Vector2( 675, -550 )
 scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="Graveyard2" index="0"]
 
 visible = false
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Button" type="Button" parent="Graveyard2" index="1"]
@@ -309,33 +371,24 @@ shortcut = null
 group = null
 flat = false
 align = 1
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_styles" ]
 player = 1
 
-[node name="Cards" type="Node2D" parent="." index="10"]
+[node name="Cards" type="Node2D" parent="." index="11"]
 
 _sections_unfolded = [ "Transform" ]
 
-[node name="SoundPlay" type="AudioStreamPlayer" parent="." index="11"]
+[node name="SoundPlay" type="AudioStreamPlayer" parent="." index="12"]
 
-stream = ExtResource( 7 )
+stream = ExtResource( 8 )
 volume_db = 0.0
 pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "Sound"
 
-[node name="SoundDraw" type="AudioStreamPlayer" parent="." index="12"]
-
-stream = ExtResource( 8 )
-volume_db = -4.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
-bus = "Sound"
-
-[node name="SoundShuffle" type="AudioStreamPlayer" parent="." index="13"]
+[node name="SoundDraw" type="AudioStreamPlayer" parent="." index="13"]
 
 stream = ExtResource( 9 )
 volume_db = -4.0
@@ -343,5 +396,46 @@ pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "Sound"
+
+[node name="SoundShuffle" type="AudioStreamPlayer" parent="." index="14"]
+
+stream = ExtResource( 10 )
+volume_db = -4.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Sound"
+
+[node name="Arrow" type="Sprite" parent="." index="15"]
+
+visible = false
+modulate = Color( 1, 0, 0, 1 )
+light_mask = 0
+material = SubResource( 7 )
+position = Vector2( 256, 256 )
+scale = Vector2( 0.5, 0.5 )
+z_index = 10
+texture = ExtResource( 11 )
+offset = Vector2( -256, 0 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 128 )
+script = ExtResource( 12 )
+_sections_unfolded = [ "Material", "Offset", "Region", "Transform", "Visibility", "Z Index" ]
+
+[node name="Arrow" type="Sprite" parent="Arrow" index="0"]
+
+texture = ExtResource( 13 )
+offset = Vector2( 96, 0 )
+_sections_unfolded = [ "Offset" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Arrow" index="1"]
+
+root_node = NodePath("..")
+autoplay = "animation"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/animation = SubResource( 8 )
+blend_times = [  ]
 
 

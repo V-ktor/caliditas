@@ -713,6 +713,9 @@ func _input(event):
 				quit()
 		else:
 			show()
+	if (event is InputEventMouseButton):
+		if (event.button_index==1 && !event.pressed):
+			Main.get_node("Arrow").hide()
 
 func _ready():
 	randomize()
