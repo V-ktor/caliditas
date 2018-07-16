@@ -127,7 +127,6 @@ class Card:
 			elif ("ice" in Cards.data[ID]["tags"] && !("fire" in Cards.data[ID]["tags"])):
 				alignment = "ice"
 		node.get_node("Animation").clear_queue()
-#		node.get_node("Animation").play("hide")
 		node.get_node("AnimationPlayer").play(Main.DEATH_ANIMATIONS[alignment])
 		node.get_node("Tween").remove_all()
 		node.get_node("Tween").interpolate_property(node,"global_position",node.get_global_position(),Main.get_node("Graveyard"+str(owner+1)).get_global_position(),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,1.0)
@@ -285,6 +284,7 @@ func play_card(card,player,target=null):
 	using_card = true
 	get_node("SoundPlay").play()
 	state = {"used":false}
+	card.node.get_node("Animation").clear_queue()
 	if (!card.node.get_node("Image").is_visible() || card.node.get_node("Animation").get_current_animation()=="hide"):
 		card.node.get_node("Animation").play("show")
 	if (card.type=="creature"):
@@ -407,6 +407,43 @@ func create_creature(type,player,pos):
 	get_node("Cards").add_child(node)
 	spawn_creature(card,player)
 
+# Checks whether the target is a valid target for the cards effect or not.
+func can_target(card,effect,player,target):
+	var data = Cards.data[card.ID]
+	if (!data.has("target")):
+		return false
+	var type = data[effect]
+	var enemy = (player+1)%2
+	var target_type = data["target"].split("-")
+	if (!((target.type in target_type) || (target.node.type=="hand" && ("hand" in target_type)) || ("any" in target_type)) || (target.node.type=="hand" && !("hand" in target_type)) || (("ally" in target_type) && target.owner!=player)):
+		return false
+	var ammount = 0
+	var s = type.split("-")
+	if (s.size()==0):
+		return true
+	type = s[0]
+	if (s.size()>1):
+		ammount = int(s[1])
+	
+	if (type=="neutralize_temp"):
+		if (target.temperature==0):
+			return false
+	elif (type=="kill_cold"):
+		if (target.temperature>=0 || -target.temperature>ammount):
+			return false
+	elif (type=="kill_hot"):
+		if (target.temperature<=0 || target.temperature>ammount):
+			return false
+	elif (type=="kill_level"):
+		if (target.level>ammount):
+			return false
+	elif (type=="explosion"):
+		var dmg = abs(target.temperature)
+		if (dmg==0 || target.owner!=player):
+			return false
+	
+	return true
+
 func use_effect(card,effect,player,target=null):
 	var data = Cards.data[card.ID]
 	var type = data[effect]
@@ -420,9 +457,10 @@ func use_effect(card,effect,player,target=null):
 	
 	if (data.has("target")):
 		target_type = data["target"].split("-")
-		if ("creature" in target_type):
-			if (target==null):
-				select = "creature"
+		if (target==null):
+			select = target_type[0]
+			printt(target_type)
+			if ("creature" in target_type):
 				if (multiplayer && player!=PLAYER1):
 					printt("Invalid target selected.")
 					state = {"used":true}
@@ -431,10 +469,8 @@ func use_effect(card,effect,player,target=null):
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(false)
 				print("Please select a "+select+" card.")
-				for c in field[player]:
-					c.node.get_node("Animation").play("blink")
-				if !("ally" in target_type):
-					for c in field[enemy]:
+				for c in field[PLAYER1]+field[PLAYER2]+hand[PLAYER1]+hand[PLAYER2]:
+					if (can_target(card,effect,player,c)):
 						c.node.get_node("Animation").play("blink")
 				yield(self,"target_selected")
 				target = selected_card
@@ -474,27 +510,9 @@ func use_effect(card,effect,player,target=null):
 			if (t.size()>0):
 				state["_target"] = t
 	
-	if (type=="neutralize_temp"):
-		if (target.temperature==0):
-			emit_signal("effect_used")
-			return
-	elif (type=="kill_cold"):
-		if (target.temperature>=0 || -target.temperature>ammount):
-			emit_signal("effect_used")
-			return
-	elif (type=="kill_hot"):
-		if (target.temperature<=0 || target.temperature>ammount):
-			emit_signal("effect_used")
-			return
-	elif (type=="kill_level"):
-		if (target.level>ammount):
-			emit_signal("effect_used")
-			return
-	elif (type=="explosion"):
-		var dmg = abs(target.temperature)
-		if (dmg==0 || target.owner!=player):
-			emit_signal("effect_used")
-			return
+	if (target!=null && !can_target(card,effect,player,target)):
+		emit_signal("effect_used")
+		return
 	
 	apply_effect(card,effect,target)
 	
@@ -702,7 +720,6 @@ remote func draw_card(pl,ID=-1):
 	node.card = card
 	node._z = 1
 	node.set_z_index(1)
-#	node.set_position(OS.get_window_size()/2.0*Vector2(-1+2*pl,1-2*pl)*zoom)
 	node.set_position(get_node("Deck"+str(pl+1)).get_global_position())
 	get_node("Cards").add_child(node)
 	node.get_node("Tween").interpolate_property(node,"global_position",node.get_global_position(),pos1,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
@@ -766,11 +783,6 @@ func sort_cards():
 			if (card.get_z_index()==z):
 				card.raise()
 				card.get_node("Button").raise()
-	
-#	get_node("Deck1/Button").raise()
-#	get_node("Deck2/Button").raise()
-#	get_node("Graveyard1/Button").raise()
-#	get_node("Graveyard2/Button").raise()
 
 func select(card,type):
 	if ((ai || multiplayer) && player!=PLAYER1):
@@ -803,6 +815,10 @@ func deselect(emit=true):
 	for node in get_node("Cards").get_children():
 		if (node.get_node("Select").is_visible()):
 			node.get_node("Animation").play("deselect")
+	if (player==PLAYER1 || (!ai && !multiplayer)):
+		for card in hand[player]:
+			if (card.level<=mana[player]):
+				card.node.get_node("Animation").queue("blink")
 	if (emit):
 		state = null
 		emit_signal("target_selected",null)
@@ -826,8 +842,6 @@ func end_turn():
 
 func next_turn(draw=1):
 	var enemy
-#	if (turn>0):
-	deselect()
 	turn += 1
 	player = turn%2
 	enemy = (player+1)%2
@@ -841,6 +855,8 @@ func next_turn(draw=1):
 	if (server):
 		for i in range(draw):
 			_draw_card(player)
+	
+	deselect()
 	
 	for card in field[PLAYER1]+field[PLAYER2]:
 		if (Cards.data[card.ID].has("on_new_turn")):
