@@ -87,6 +87,10 @@ func _ready():
 	timer.start()
 	yield(timer,"timeout")
 	text.add_text(tr("TUTORIAL_ATTRIBUTES4")+"\n")
+	timer.set_wait_time(4.0)
+	timer.start()
+	yield(timer,"timeout")
+	text.add_text(tr("TUTORIAL_ZOOM")+"\n")
 	button.set_disabled(false)
 	yield(self,"forward")
 	# Allow player to play cards.

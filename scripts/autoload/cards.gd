@@ -76,7 +76,7 @@ const data = {
 		"on_play":"inc_ally_temp-1",
 		"on_ally_creature_spawn":"inc_temp-1",
 		"on_removed":"dec_ally_temp-1",
-		"tags":["fire","elemental","area","support"],
+		"tags":["fire","elemental","support"],
 		"animation":"fire_strike",
 		"image":preload("res://images/cards/DivineGuardian.jpg")
 	},
@@ -148,7 +148,7 @@ const data = {
 		"level":2,
 		"rarity":1,
 		"rules":["dec_attacker_temp-1"],
-		"on_attacked":"dec_temp-1",
+		"on_attacked":"equip-chill",
 		"tags":["ice","elemental","trap"],
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/wisp_ice.jpg")
@@ -230,7 +230,7 @@ const data = {
 		"rules":["neutralize_temp-2"],
 		"on_play":"neutralize_temp-2",
 		"target":"creature",
-		"tags":["ice"],
+		"tags":["ice","curse"],
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
@@ -244,6 +244,31 @@ const data = {
 		"on_new_turn":"ice_armor-2",
 		"target":"creature-ally",
 		"tags":["ice","equipment"],
+		"animation":"ice_shield",
+		"image":preload("res://images/cards/ice_shield.jpg")
+	},
+	"freeze":{
+		"type":"spell",
+		"temperature":0,
+		"level":2,
+		"rarity":0,
+		"rules":["no_attack_temp"],
+		"on_play":"",
+		"on_new_turn":"destroy_player_turn",
+		"no_attack":true,
+		"target":"creature",
+		"tags":["ice","curse"],
+		"animation":"ice_circle",
+		"image":preload("res://images/cards/ice_spell.jpg")
+	},
+	"ice_wall":{
+		"type":"spell",
+		"temperature":-2,
+		"level":5,
+		"rarity":3,
+		"rules":["ice_wall-2"],
+		"on_play":"equip_all_ally_ice-ice_armor",
+		"tags":["ice","area","equipment"],
 		"animation":"ice_shield",
 		"image":preload("res://images/cards/ice_shield.jpg")
 	},

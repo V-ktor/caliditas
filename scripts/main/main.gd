@@ -407,8 +407,32 @@ func create_creature(type,player,pos):
 	get_node("Cards").add_child(node)
 	spawn_creature(card,player)
 
-# Checks whether the target is a valid target for the cards effect or not.
+func create_equipment_card(type,player,parent,pos):
+	var node = Cards.create_card(type)
+	var card = Card.new(type,player,node)
+	node.card = card
+	node.pos = pos
+	node.set_global_position(pos)
+	get_node("Cards").add_child(node)
+	return card
+
+func add_equipment_card(type,player,parent,pos):
+	# Add a equipment card to parent. The effects are applied.
+	var card = create_equipment_card(type,player,parent,pos)
+	var offset = min(75,200/(parent.equiped.size()+1))
+	var p2 = parent.node.get_global_position()+Vector2(0,offset*(parent.equiped.size()+1))*(1-2*parent.owner)
+	card.node._z = -parent.equiped.size()-1
+	card.node.set_z_index(-parent.equiped.size()-1)
+	card.node.type = "equiped"
+	card.node.pos = pos
+	parent.equiped.push_back(card)
+	parent.update()
+	card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+	card.node.get_node("Tween").start()
+	apply_effect(card,"on_play",parent)
+
 func can_target(card,effect,player,target):
+	# Checks whether the target is a valid target for the cards effect or not.
 	var data = Cards.data[card.ID]
 	if (!data.has("target")):
 		return false
@@ -641,7 +665,25 @@ func apply_effect(card,event,target=null):
 		temperature[card.owner] += ammount
 	elif (base=="dec_player_temp"):
 		temperature[card.owner] -= ammount
-	
+	elif (base=="destroy_enemy_turn" && card.owner!=player):
+		card.destroy()
+	elif (base=="destroy_player_turn" && card.owner==player):
+		card.destroy()
+	elif (base=="equip"):
+		add_equipment_card(array[1],card.owner,target,card.node.get_global_position())
+	elif (base=="equip_all"):
+		for c in field[PLAYER1]+field[PLAYER2]:
+			add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
+	elif (base=="equip_all_enemy"):
+		for c in field[enemy]:
+			add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
+	elif (base=="equip_all_ally"):
+		for c in field[card.owner]:
+			add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
+	elif (base=="equip_all_ally_ice"):
+		for c in field[card.owner]:
+			if ("ice" in Cards.data[card.ID]["tags"]):
+				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
 	
 
 # Send positions instead of classes to other players.
@@ -811,7 +853,7 @@ func deselect(emit=true):
 	select = "hand"
 	using_card = false
 	UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(true)
-	sort_hand(player)
+#	sort_hand(player)
 	for node in get_node("Cards").get_children():
 		if (node.get_node("Select").is_visible()):
 			node.get_node("Animation").play("deselect")
@@ -905,6 +947,16 @@ remote func attack_phase():
 	var enemy = (player+1)%2
 	var list = []+field[player]
 	var above_50 = health[enemy]>=10
+	# Check if a creature or one of it's equiped cards has the no_attack special.
+	for i in range(list.size()-1,-1,-1):
+		var card = list[i]
+		if (Cards.data[card.ID].has("no_attack") && Cards.data[card.ID]["no_attack"]):
+			list.remove(i)
+		else:
+			for equiped in card.equiped:
+				if (Cards.data[equiped.ID].has("no_attack") && Cards.data[equiped.ID]["no_attack"]):
+					list.remove(i)
+					break
 	# Sort the creatures by abs(temperature).
 	# As targets are chosen randomly this will prevent strong creatures defeating weak ones
 	# and leaving only strong creatures that can't be killed by the weak ones.
@@ -935,11 +987,11 @@ remote func attack_phase():
 			update_stats()
 	
 	if (multiplayer):
-		rpc("attack_phase_end")
+		rpc("attack_phase_end",above_50)
 	else:
-		attack_phase_end()
+		attack_phase_end(above_50)
 
-sync func attack_phase_end():
+sync func attack_phase_end(above_50):
 	var enemy = (player+1)%2
 	var draw = 1
 	if (turn>1-int(server) && field[enemy].size()==0):
@@ -949,7 +1001,7 @@ sync func attack_phase_end():
 		if (dmg>0):
 			health[enemy] -= dmg
 			# Draw 2 cards if damaged, 4 if health drops below 10 the first time.
-			draw += 1+2*int(health[enemy]<10)
+			draw += 1+2*int(health[enemy]<10 && above_50)
 			if (temp>0):
 				UI.get_node("Player"+str(enemy+1)+"/Animation").play("fire_damage")
 			else:

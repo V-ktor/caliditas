@@ -9,6 +9,7 @@ SUPPORT,Support
 EQUIPMENT,Equipment
 ATTACK,Attack
 TRAP,Trap
+CURSE,Curse
 FIRE_ELEMENTAL,Fire Elemental
 GREATER_FIRE_ELEMENTAL,Greater Fire Elemental
 LAVA_ELEMENTAL,Lava Elemental
@@ -29,6 +30,8 @@ CHILL,Chill
 HAILSTORM,Hailstorm
 FLASH_FLOOD,Flash Flood
 ICE_ARMOR,Ice Armor
+ICE_WALL,Ice Wall
+FREEZE,Freeze
 WIND_ELEMENTAL,Wind Elemental
 LIGHTNING_ELEMENTAL,Lightning Elemental
 ASSEMBLED_GOLEM,Assembled Golem
