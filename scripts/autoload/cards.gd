@@ -265,7 +265,7 @@ const data = {
 		"type":"spell",
 		"temperature":-2,
 		"level":5,
-		"rarity":3,
+		"rarity":2,
 		"rules":["ice_wall-2"],
 		"on_play":"equip_all_ally_ice-ice_armor",
 		"tags":["ice","area","equipment"],
@@ -400,6 +400,9 @@ func create_card(type):
 		ci.get_node("OverlayTemp/Frost").show()
 	else:
 		ci.get_node("OverlayTemp").set_self_modulate(Color(0.5,0.5,0.5))
+		if (data[type]["type"]!="creature"):
+			ci.get_node("OverlayTemp").hide()
+			ci.get_node("Temp").hide()
 	if (data[type]["type"]=="creature"):
 		ci.get_node("Overlay").set_modulate(COLOR_CREATURE)
 	elif (data[type]["type"]=="spell"):
