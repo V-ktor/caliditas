@@ -586,6 +586,22 @@ func apply_effect(card,event,target=null):
 		for c in field[card.owner]:
 			c.temperature -= ammount
 			c.update()
+	elif (base=="ice_aura"):
+		for c in field[card.owner]:
+			if ("ice" in Cards.data[c.ID]["tags"]):
+				if (player==c.owner):
+					c.temperature -= ammount
+				else:
+					c.temperature += ammount
+				c.update()
+	elif (base=="fire_aura"):
+		for c in field[card.owner]:
+			if ("fire" in Cards.data[c.ID]["tags"]):
+				if (player==c.owner):
+					c.temperature += ammount
+				else:
+					c.temperature -= ammount
+				c.update()
 	elif (base=="kill_cold"):
 		if (target.temperature<0 && -target.temperature<=ammount):
 			target.destroy()
@@ -684,7 +700,17 @@ func apply_effect(card,event,target=null):
 		for c in field[card.owner]:
 			if ("ice" in Cards.data[card.ID]["tags"]):
 				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
+	elif (base=="damage_enemy" && card.owner==player):
+		health[enemy] -= ammount
+		update_stats()
+	elif (base=="damage_player" && card.owner==player):
+		health[player] -= ammount
+		update_stats()
 	
+	if (health[player]<=0):
+		game_over(player==PLAYER1)
+	elif (health[enemy]<=0):
+		game_over(enemy==PLAYER1)
 
 # Send positions instead of classes to other players.
 remote func _attack(a,t,no_counter=false):
@@ -1019,6 +1045,8 @@ sync func update_stats():
 	# Update GUI.
 	for p in range(2):
 		var temp = get_player_temperature(p)
+		if (health[p]<=0):
+			health[p] = 0
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Health/Label").set_text(tr("HEALTH")+": "+str(health[p]))
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Health/Bar").set_value(health[p])
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Mana/Label").set_text(tr("MANA")+": "+str(mana[p]))

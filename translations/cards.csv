@@ -24,8 +24,10 @@ EXPLOSION,Explosion
 WATER_ELEMENTAL,Water Elemental
 GREATER_WATER_ELEMENTAL,Greater Water Elemental
 ICE_ELEMENTAL,Ice Elemental
-ICE_AVATAR,Ice Avatar
 FREEZING_WISP,Freezing Wisp
+PHALANX,Phalanx
+ICE_AVATAR,Ice Avatar
+ICE_SHARD_DEFENDER,Ice Shard Defender
 CHILL,Chill
 HAILSTORM,Hailstorm
 FLASH_FLOOD,Flash Flood
@@ -34,10 +36,12 @@ ICE_WALL,Ice Wall
 FREEZE,Freeze
 WIND_ELEMENTAL,Wind Elemental
 LIGHTNING_ELEMENTAL,Lightning Elemental
+SHADOW_ELEMENTAL,Shadow Elemental
 ASSEMBLED_GOLEM,Assembled Golem
 EQUALIZE,Equalize
 DRAW,Draw Cards
 INVERSION,Inversion
 CLEANSE,Cleanse
+BLOOD_BOIL,Blood Boil
 MASS_CALIBRATION,Mass Calibration
 

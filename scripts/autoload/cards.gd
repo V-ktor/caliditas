@@ -118,6 +118,17 @@ const data = {
 		"animation":"fire_circle",
 		"image":preload("res://images/cards/blaze.jpg")
 	},
+	"blood_boil":{
+		"type":"spell",
+		"temperature":0,
+		"level":4,
+		"rarity":1,
+		"rules":["damage_enemy-2"],
+		"on_play":"damage_enemy-2",
+		"tags":["fire","attack"],
+		"animation":"sparks",
+		"image":preload("res://images/cards/fire_ball.jpg")
+	},
 	"explosion":{
 		"type":"spell",
 		"temperature":0,
@@ -174,6 +185,17 @@ const data = {
 		"animation":"ice_blast",
 		"image":preload("res://images/cards/ice_creature.jpg")
 	},
+	"phalanx":{
+		"type":"creature",
+		"temperature":-6,
+		"level":5,
+		"rarity":1,
+		"rules":["no_attack"],
+		"no_attack":true,
+		"tags":["ice","golem"],
+		"animation":"ice_blast",
+		"image":preload("res://images/cards/ice_creature.jpg")
+	},
 	"ice_avatar":{
 		"type":"creature",
 		"temperature":-4,
@@ -182,6 +204,18 @@ const data = {
 		"rules":["ice_armor-2"],
 		"on_new_turn":"ice_armor-2",
 		"tags":["ice","elemental"],
+		"animation":"spike_blast",
+		"image":preload("res://images/cards/ice_creature.jpg")
+	},
+	"ice_shard_defender":{
+		"type":"creature",
+		"temperature":-5,
+		"level":6,
+		"rarity":2,
+		"rules":["ice_aura-1","no_attack"],
+		"on_new_turn":"ice_aura-1",
+		"no_attack":true,
+		"tags":["ice","golem"],
 		"animation":"spike_blast",
 		"image":preload("res://images/cards/ice_creature.jpg")
 	},
@@ -209,30 +243,6 @@ const data = {
 		"tags":["ice","area","attack"],
 		"animation":"hailstorm",
 		"image":preload("res://images/cards/hailstorm.jpg")
-	},
-	"flash_flood":{
-		"type":"spell",
-		"temperature":0,
-		"level":5,
-		"rarity":1,
-		"rules":["move_to_hand"],
-		"on_play":"move_to_hand",
-		"target":"creature",
-		"tags":["attack"],
-		"animation":"flash_flood",
-		"image":preload("res://images/cards/flash_flood.jpg")
-	},
-	"equalize":{
-		"type":"spell",
-		"temperature":0,
-		"level":3,
-		"rarity":1,
-		"rules":["neutralize_temp-2"],
-		"on_play":"neutralize_temp-2",
-		"target":"creature",
-		"tags":["ice","curse"],
-		"animation":"neutralize",
-		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
 	"ice_armor":{
 		"type":"spell",
@@ -296,6 +306,17 @@ const data = {
 		"animation":"wind_blast",
 		"image":preload("res://images/cards/back.png")
 	},
+	"shadow_elemental":{
+		"type":"creature",
+		"temperature":0,
+		"level":3,
+		"rarity":2,
+		"rules":["damage_enemy_next_turn-1"],
+		"on_next_turn":"damage_enemy-1",
+		"tags":["neutral","elemental"],
+		"animation":"wind_blast",
+		"image":preload("res://images/cards/back.png")
+	},
 	"assembled_golem":{
 		"type":"creature",
 		"temperature":0,
@@ -320,6 +341,18 @@ const data = {
 		"animation":"sparks",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
+	"equalize":{
+		"type":"spell",
+		"temperature":0,
+		"level":3,
+		"rarity":1,
+		"rules":["neutralize_temp-2"],
+		"on_play":"neutralize_temp-2",
+		"target":"creature",
+		"tags":["curse"],
+		"animation":"neutralize",
+		"image":preload("res://images/cards/spell_neutral.jpg")
+	},
 	"inversion":{
 		"type":"spell",
 		"temperature":0,
@@ -328,7 +361,7 @@ const data = {
 		"rules":["invert_temp"],
 		"on_play":"invert_temp",
 		"target":"creature",
-		"tags":[],
+		"tags":["curse"],
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
@@ -343,6 +376,18 @@ const data = {
 		"tags":[],
 		"animation":"sparks",
 		"image":preload("res://images/cards/spell_neutral.jpg")
+	},
+	"flash_flood":{
+		"type":"spell",
+		"temperature":0,
+		"level":5,
+		"rarity":1,
+		"rules":["move_to_hand"],
+		"on_play":"move_to_hand",
+		"target":"creature",
+		"tags":["attack"],
+		"animation":"flash_flood",
+		"image":preload("res://images/cards/flash_flood.jpg")
 	},
 	"mass_calibration":{
 		"type":"spell",
