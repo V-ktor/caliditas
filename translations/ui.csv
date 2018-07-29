@@ -8,8 +8,6 @@ PLAY,Play
 CANCEL,Cancel
 END_TURN,End Turn
 DRAW_CARD,Draw Card
-CREATURE,Creature
-SPELL,Spell
 PLAYER_TURN,"%s's Turn"
 PLAYING_PHASE,"Playing Phase"
 ATTACK_PHASE,"Attack Phase"

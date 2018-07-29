@@ -89,6 +89,7 @@ const data = {
 		"rarity":0,
 		"rules":["inc_ally_temp-1"],
 		"on_play":"inc_temp-1",
+		"on_removed":"dec_temp-1",
 		"target":"creature-ally",
 		"tags":["fire","equipment"],
 		"animation":"fire_blade",
@@ -113,6 +114,7 @@ const data = {
 		"rarity":1,
 		"rules":["inc_temp-2"],
 		"on_play":"inc_temp-2",
+		"on_removed":"dec_temp-2",
 		"target":"creature",
 		"tags":["fire"],
 		"animation":"fire_circle",
@@ -120,7 +122,6 @@ const data = {
 	},
 	"blood_boil":{
 		"type":"spell",
-		"temperature":0,
 		"level":4,
 		"rarity":1,
 		"rules":["damage_enemy-2"],
@@ -131,7 +132,6 @@ const data = {
 	},
 	"explosion":{
 		"type":"spell",
-		"temperature":0,
 		"level":4,
 		"rarity":2,
 		"rules":["explosion"],
@@ -140,6 +140,20 @@ const data = {
 		"tags":["fire","area","attack"],
 		"animation":"explosion",
 		"image":preload("res://images/cards/explosion.jpg")
+	},
+	
+	# fire lands
+	"vulcano":{
+		"type":"land",
+		"level":5,
+		"rarity":1,
+		"rules":["heat_aura-1"],
+		"on_play":"inc_ally_temp-1",
+		"on_ally_creature_spawn":"inc_temp-1",
+		"on_removed":"dec_ally_temp-1",
+		"tags":["area","support"],
+		"animation":"",
+		"image":preload("res://images/cards/back.png")
 	},
 	
 	# ice creatures
@@ -219,6 +233,17 @@ const data = {
 		"animation":"spike_blast",
 		"image":preload("res://images/cards/ice_creature.jpg")
 	},
+	"giant_ice_golem":{
+		"type":"creature",
+		"temperature":-7,
+		"level":6,
+		"rarity":0,
+		"rules":["melt"],
+		"on_new_turn":"melt",
+		"tags":["ice","golem"],
+		"animation":"spike_blast",
+		"image":preload("res://images/cards/ice_creature.jpg")
+	},
 	
 	# ice spells
 	"chill":{
@@ -228,6 +253,7 @@ const data = {
 		"rarity":0,
 		"rules":["dec_temp-1"],
 		"on_play":"dec_temp-1",
+		"on_removed":"inc_temp-1",
 		"target":"creature",
 		"tags":["ice"],
 		"animation":"ice_circle",
@@ -235,7 +261,6 @@ const data = {
 	},
 	"hailstorm":{
 		"type":"spell",
-		"temperature":0,
 		"level":4,
 		"rarity":2,
 		"rules":["kill_all_hot-2"],
@@ -259,12 +284,12 @@ const data = {
 	},
 	"freeze":{
 		"type":"spell",
-		"temperature":0,
+		"temperature":-1,
 		"level":2,
 		"rarity":0,
 		"rules":["no_attack_temp"],
 		"on_play":"",
-		"on_new_turn":"destroy_player_turn",
+		"on_new_turn":"melt",
 		"no_attack":true,
 		"target":"creature",
 		"tags":["ice","curse"],
@@ -281,6 +306,18 @@ const data = {
 		"tags":["ice","area","equipment"],
 		"animation":"ice_shield",
 		"image":preload("res://images/cards/ice_shield.jpg")
+	},
+	
+	# ice lands
+	"snow_storm":{
+		"type":"land",
+		"level":5,
+		"rarity":2,
+		"rules":["freeze_attacker"],
+		"on_attacked":"freeze-2",
+		"tags":[],
+		"animation":"",
+		"image":preload("res://images/cards/back.png")
 	},
 	
 	# neutral creatures
@@ -312,7 +349,7 @@ const data = {
 		"level":3,
 		"rarity":2,
 		"rules":["damage_enemy_next_turn-1"],
-		"on_next_turn":"damage_enemy-1",
+		"on_new_turn":"damage_enemy-1",
 		"tags":["neutral","elemental"],
 		"animation":"wind_blast",
 		"image":preload("res://images/cards/back.png")
@@ -332,22 +369,21 @@ const data = {
 	# neutral spells
 	"draw":{
 		"type":"spell",
-		"temperature":0,
 		"level":3,
 		"rarity":0,
 		"rules":["draw-3"],
 		"on_play":"draw-3",
 		"tags":[],
 		"animation":"sparks",
-		"image":preload("res://images/cards/spell_neutral.jpg")
+		"image":preload("res://images/cards/back.png")
 	},
 	"equalize":{
 		"type":"spell",
-		"temperature":0,
 		"level":3,
 		"rarity":1,
 		"rules":["neutralize_temp-2"],
 		"on_play":"neutralize_temp-2",
+		"on_removed":"amplify_temp-2",
 		"target":"creature",
 		"tags":["curse"],
 		"animation":"neutralize",
@@ -355,7 +391,6 @@ const data = {
 	},
 	"inversion":{
 		"type":"spell",
-		"temperature":0,
 		"level":3,
 		"rarity":2,
 		"rules":["invert_temp"],
@@ -365,9 +400,20 @@ const data = {
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
+	"dissolving_acid":{
+		"type":"spell",
+		"level":3,
+		"rarity":1,
+		"rules":["remove_equipment","dec_level-2"],
+		"on_play":"acid",
+		"on_removed":"inc_level-1",
+		"target":"creature",
+		"tags":["curse"],
+		"animation":"sparks",
+		"image":preload("res://images/cards/back.png")
+	},
 	"cleanse":{
 		"type":"spell",
-		"temperature":0,
 		"level":4,
 		"rarity":1,
 		"rules":["cleanse"],
@@ -377,9 +423,18 @@ const data = {
 		"animation":"sparks",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
+	"hurricane":{
+		"type":"spell",
+		"level":4,
+		"rarity":1,
+		"rules":["destroy_all_lands"],
+		"on_play":"destroy_all_lands",
+		"tags":["area"],
+		"animation":"neutralize",
+		"image":preload("res://images/cards/back.png")
+	},
 	"flash_flood":{
 		"type":"spell",
-		"temperature":0,
 		"level":5,
 		"rarity":1,
 		"rules":["move_to_hand"],
@@ -391,7 +446,6 @@ const data = {
 	},
 	"mass_calibration":{
 		"type":"spell",
-		"temperature":0,
 		"level":5,
 		"rarity":2,
 		"rules":["global_diffusion_all-1"],
@@ -399,12 +453,37 @@ const data = {
 		"tags":["area"],
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
+	},
+	
+	# neutral lands
+	"mine":{
+		"type":"land",
+		"level":5,
+		"rarity":0,
+		"rules":["inc_mana-1"],
+		"on_play":"inc_mana-1",
+		"on_removed":"dec_mana-1",
+		"tags":[],
+		"animation":"",
+		"image":preload("res://images/cards/back.png")
+	},
+	"thermal_shield":{
+		"type":"land",
+		"level":4,
+		"rarity":1,
+		"rules":["health_shield_temp"],
+		"on_damaged":"health_shield",
+		"on_new_turn":"destroy_player_turn",
+		"tags":["shield"],
+		"animation":"",
+		"image":preload("res://images/cards/spell_neutral.jpg")
 	}
 }
 const COLOR_COLD = Color(0.25,0.5,1.0)
 const COLOR_HOT = Color(1.0,0.4,0.2)
 const COLOR_CREATURE = Color(0.3,0.8,0.2)
 const COLOR_SPELL = Color(0.8,0.7,0.1)
+const COLOR_LAND = Color(0.2,0.6,0.8)
 const COLOR_HEALTH = Color(1.0,0.25,0.225)
 const COLOR_MANA = Color(0.9,0.7,0.2)
 const CARD_PACK_PRICE = [
@@ -421,11 +500,13 @@ var base = preload("res://scenes/main/card_base.tscn")
 func create_card(type):
 	var ci = base.instance()
 	var text = ""
-	var tag_text = tr(data[type]["type"].to_upper())+" - "
+	var tag_text = tr(data[type]["type"].to_upper())
 	ci.get_node("Image").set_texture(data[type]["image"])
 	ci.get_node("Name").set_text(tr(type.to_upper()))
-	for t in data[type]["tags"]:
-		tag_text += tr(t.to_upper())+" "
+	if (data[type]["tags"].size()>0):
+		tag_text += " - "
+		for t in data[type]["tags"]:
+			tag_text += tr(t.to_upper())+" "
 	ci.get_node("Tags").set_text(tag_text)
 	for s in data[type]["rules"]:
 		var array = s.split("-")
@@ -435,29 +516,34 @@ func create_card(type):
 		text += line
 	ci.get_node("Desc").set_text(text)
 	ci.get_node("Level").set_text(str(data[type]["level"]))
-	ci.get_node("Temp").set_text(str(data[type]["temperature"]))
-	ci.get_node("OverlayLevel/Grade"+str(min(data[type]["rarity"],3))).show()
-	if (data[type]["temperature"]>0):
-		ci.get_node("OverlayTemp").set_self_modulate(COLOR_HOT)
-		ci.get_node("OverlayTemp/Fire").show()
-	elif (data[type]["temperature"]<0):
-		ci.get_node("OverlayTemp").set_self_modulate(COLOR_COLD)
-		ci.get_node("OverlayTemp/Frost").show()
+	ci.get_node("OverlayLevel/Grade"+str(min(int(data[type]["rarity"]),3))).show()
+	if (data[type].has("temperature")):
+		ci.get_node("Temp").set_text(str(data[type]["temperature"]))
+		if (data[type]["temperature"]>0):
+			ci.get_node("OverlayTemp").set_self_modulate(COLOR_HOT)
+			ci.get_node("OverlayTemp/Fire").show()
+		elif (data[type]["temperature"]<0):
+			ci.get_node("OverlayTemp").set_self_modulate(COLOR_COLD)
+			ci.get_node("OverlayTemp/Frost").show()
+		else:
+			ci.get_node("OverlayTemp").set_self_modulate(Color(0.5,0.5,0.5))
 	else:
-		ci.get_node("OverlayTemp").set_self_modulate(Color(0.5,0.5,0.5))
-		if (data[type]["type"]!="creature"):
-			ci.get_node("OverlayTemp").hide()
-			ci.get_node("Temp").hide()
+		ci.get_node("OverlayTemp").hide()
+		ci.get_node("Temp").hide()
 	if (data[type]["type"]=="creature"):
 		ci.get_node("Overlay").set_modulate(COLOR_CREATURE)
 	elif (data[type]["type"]=="spell"):
 		ci.get_node("Overlay").set_modulate(COLOR_SPELL)
+	elif (data[type]["type"]=="land"):
+		ci.get_node("Overlay").set_modulate(COLOR_LAND)
 	
 	return ci
 
 
 func _ready():
 	for card in data.keys():
+		if (typeof(data[card]["rarity"])==TYPE_BOOL && !data[card]["rarity"]):
+			continue
 		var grade = clamp(data[card]["level"]/2+data[card]["rarity"]-1.5,0,2)
 		var g1 = int(grade)
 		var g2 = int(round(grade))

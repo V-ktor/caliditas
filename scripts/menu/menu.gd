@@ -209,6 +209,8 @@ func _show_deck(t=false):
 		_deck = deck.duplicate()
 	num_cards = get_num_cards(_deck)
 	for i in range(Cards.data.size()):
+		if (typeof(Cards.data.values()[i]["rarity"])==TYPE_BOOL && !Cards.data.values()[i]["rarity"]):
+			continue
 		var bi
 		var type = Cards.data.keys()[i]
 		var ammount = 0

@@ -70,7 +70,7 @@ func get_spell():
 			var a = ammount[i]
 			if (e=="inc_temp"):
 				for ally in Main.field[player]:
-					if (ally.temperature<=0):
+					if (ally.type!="creature" || ally.temperature<=0):
 						continue
 					
 					var v = value+ally.temperature+2*a
@@ -79,7 +79,7 @@ func get_spell():
 						t = ally
 						score = v
 				for tg in Main.field[enemy]:
-					if (tg.temperature>=0):
+					if (tg.type!="creature" || tg.temperature>=0):
 						continue
 					
 					var v = value-tg.temperature+2*a
@@ -89,7 +89,7 @@ func get_spell():
 						score = v
 			elif (e=="dec_temp"):
 				for ally in Main.field[player]:
-					if (ally.temperature>=0):
+					if (ally.type!="creature" || ally.temperature>=0):
 						continue
 					
 					var v = value-ally.temperature+2*a
@@ -98,7 +98,7 @@ func get_spell():
 						t = ally
 						score = v
 				for tg in Main.field[enemy]:
-					if (tg.temperature<=0):
+					if (tg.type!="creature" || tg.temperature<=0):
 						continue
 					
 					var v = value+tg.temperature+2*a
@@ -109,13 +109,20 @@ func get_spell():
 			elif (e=="neutralize_temp"):
 				for tg in Main.field[enemy]:
 					var v = value+abs(tg.temperature)+2*a
-					if (tg.temperature!=0 && v>score):
+					if (tg.type!="creature" || tg.temperature!=0 && v>score):
+						c = card
+						t = tg
+						score = v
+			elif (e=="amplify_temp"):
+				for tg in Main.field[enemy]:
+					var v = value+abs(tg.temperature)+2*a
+					if (tg.type!="creature" || tg.temperature!=0 && v>score):
 						c = card
 						t = tg
 						score = v
 			elif (e=="inc_ally_temp"):
 				for ally in Main.field[player]:
-					if (ally.temperature<=0):
+					if (ally.type!="creature" || ally.temperature<=0):
 						continue
 					
 					var v = max(value+ally.temperature+2*a,1)
@@ -125,7 +132,7 @@ func get_spell():
 						score = v
 			elif (e=="kill_hot"):
 				for tg in Main.field[enemy]:
-					if (tg.temperature<=0 || tg.temperature>a):
+					if (tg.type!="creature" || tg.temperature<=0 || tg.temperature>a):
 						continue
 					
 					var v = value+2*tg.temperature
@@ -135,7 +142,7 @@ func get_spell():
 						score = v
 			elif (e=="kill_cold"):
 				for tg in Main.field[enemy]:
-					if (tg.temperature>=0 || -tg.temperature>a):
+					if (tg.type!="creature" || tg.temperature>=0 || -tg.temperature>a):
 						continue
 					
 					var v = value-2*tg.temperature
@@ -147,11 +154,11 @@ func get_spell():
 				var v = value
 				var balance = 0
 				for ally in Main.field[player]:
-					if (ally.temperature<=0 || ally.temperature>a):
+					if (ally.type!="creature" || ally.temperature<=0 || ally.temperature>a):
 						continue
 					balance -= 1
 				for tg in Main.field[enemy]:
-					if (tg.temperature<=0 || tg.temperature>a):
+					if (tg.type!="creature" || tg.temperature<=0 || tg.temperature>a):
 						continue
 					balance += 1
 					v += 2*tg.temperature
@@ -164,7 +171,7 @@ func get_spell():
 			elif (e=="kill_all_cold"):
 				var v = value
 				for tg in Main.field[enemy]:
-					if (tg.temperature>=0 || -tg.temperature>a):
+					if (tg.type!="creature" || tg.temperature>=0 || -tg.temperature>a):
 						continue
 					
 					v -= 2*tg.temperature
@@ -174,6 +181,8 @@ func get_spell():
 					score = v
 			elif (e=="move_to_hand"):
 				for tg in Main.field[enemy]:
+					if (tg.type!="creature"):
+						continue
 					var v = value+abs(tg.temperature)+tg.level
 					if (v>score):
 						c = card
@@ -181,12 +190,16 @@ func get_spell():
 						score = v
 			elif (e=="invert_temp"):
 				for ally in Main.field[player]:
+					if (ally.type!="creature"):
+						continue
 					var v = value+0.5*ally.level+randi()%6
 					if (ally.temperature!=0 && v>score):
 						c = card
 						t = ally
 						score = v
 				for tg in Main.field[enemy]:
+					if (tg.type!="creature"):
+						continue
 					var v = value+0.5*tg.level+randi()%6
 					if (tg.temperature!=0 && v>score):
 						c = card
@@ -197,10 +210,10 @@ func get_spell():
 					var v = value-abs(ally.temperature)-0.5*ally.level
 					var balance = -0.75
 					for t in Main.field[player]:
-						if (abs(t.temperature)<abs(ally.temperature)):
+						if (t.type=="creature" && abs(t.temperature)<abs(ally.temperature)):
 							balance -= 1
 					for t in Main.field[enemy]:
-						if (abs(t.temperature)<abs(ally.temperature)):
+						if (t.type=="creature" && abs(t.temperature)<abs(ally.temperature)):
 							balance += 1
 							v += 0.25*abs(t.temperature)*sqrt(abs(t.temperature))
 					v *= min(0.5*balance,2.0)
@@ -216,6 +229,8 @@ func get_spell():
 						score = v
 			elif (e=="no_attack_temp"):
 				for tg in Main.field[enemy]:
+					if (tg.type!="creature"):
+						continue
 					var v = value+abs(tg.temperature)
 					if (v>score):
 						c = card
@@ -224,7 +239,7 @@ func get_spell():
 			elif (e=="ice_wall"):
 				var v = value-4
 				for ally in Main.field[player]:
-					if ("ice" in Cards.data[ally.ID]["tags"]):
+					if (ally.type=="creature" && ("ice" in Cards.data[ally.ID]["tags"])):
 						v += abs(ally.temperature)
 				if (v>score):
 					c = card

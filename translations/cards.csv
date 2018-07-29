@@ -1,4 +1,7 @@
 ,en
+CREATURE,Creature
+SPELL,Spell
+LAND,Land
 NEUTRAL,Neutral
 FIRE,Fire
 ICE,Ice
@@ -10,6 +13,7 @@ EQUIPMENT,Equipment
 ATTACK,Attack
 TRAP,Trap
 CURSE,Curse
+SHIELD,Shield
 FIRE_ELEMENTAL,Fire Elemental
 GREATER_FIRE_ELEMENTAL,Greater Fire Elemental
 LAVA_ELEMENTAL,Lava Elemental
@@ -21,6 +25,7 @@ FIRE_BLADE,Fire Blade
 BLAZE,Blaze
 FIRE_BALL,Fire Ball
 EXPLOSION,Explosion
+VULCANO,Vulcano
 WATER_ELEMENTAL,Water Elemental
 GREATER_WATER_ELEMENTAL,Greater Water Elemental
 ICE_ELEMENTAL,Ice Elemental
@@ -28,12 +33,14 @@ FREEZING_WISP,Freezing Wisp
 PHALANX,Phalanx
 ICE_AVATAR,Ice Avatar
 ICE_SHARD_DEFENDER,Ice Shard Defender
+GIANT_ICE_GOLEM,Giant Ice Golem
 CHILL,Chill
 HAILSTORM,Hailstorm
 FLASH_FLOOD,Flash Flood
 ICE_ARMOR,Ice Armor
 ICE_WALL,Ice Wall
 FREEZE,Freeze
+SNOW_STORM,Snow Storm
 WIND_ELEMENTAL,Wind Elemental
 LIGHTNING_ELEMENTAL,Lightning Elemental
 SHADOW_ELEMENTAL,Shadow Elemental
@@ -42,6 +49,10 @@ EQUALIZE,Equalize
 DRAW,Draw Cards
 INVERSION,Inversion
 CLEANSE,Cleanse
+DISSOLVING_ACID,Dissolving Acid
 BLOOD_BOIL,Blood Boil
 MASS_CALIBRATION,Mass Calibration
+HURRICANE,Hurricane
+MINE,Mine
+THERMAL_SHIELD,Thermal Shield
 

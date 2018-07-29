@@ -55,7 +55,10 @@ class Card:
 		owner = p
 		type = Cards.data[ID]["type"]
 		level = Cards.data[ID]["level"]
-		temperature = Cards.data[ID]["temperature"]
+		if (Cards.data[ID].has("temperature")):
+			temperature = Cards.data[ID]["temperature"]
+		else:
+			temperature = 0
 		last_temp = temperature
 		node = n
 		in_game = a
@@ -70,7 +73,7 @@ class Card:
 			node.get_node("OverlayTemp").set_self_modulate(Cards.COLOR_COLD)
 		else:
 			node.get_node("OverlayTemp").set_self_modulate(Color(0.5,0.5,0.5))
-		if (temperature!=last_temp):
+		if (temperature!=last_temp && node.get_node("Temp").is_visible()):
 			var text
 			var ti = Main.text_temp.instance()
 			if (temperature>last_temp):
@@ -110,7 +113,7 @@ class Card:
 		Main.graveyard[owner].push_back(self)
 		Main.field[owner].erase(self)
 		if (Cards.data[ID].has("on_removed")):
-			Main.apply_effect(self,"on_removed")
+			Main.apply_effect(self,"on_removed",self)
 		for card in equiped:
 			if (Cards.data[card.ID].has("on_removed")):
 				Main.apply_effect(card,"on_removed",self)
@@ -121,7 +124,7 @@ class Card:
 		timer.start()
 		yield(timer,"timeout")
 		timer.queue_free()
-		if (Cards.data[ID]["type"]!="spell"):
+		if (type!="spell"):
 			if ("fire" in Cards.data[ID]["tags"] && !("ice" in Cards.data[ID]["tags"])):
 				alignment = "fire"
 			elif ("ice" in Cards.data[ID]["tags"] && !("fire" in Cards.data[ID]["tags"])):
@@ -141,8 +144,6 @@ class TemperatureSorter:
 		return abs(a.temperature)>abs(b.temperature)
 
 
-
-
 func reset():
 	# Reset to initial values and remove old cards.
 	for card in get_node("Cards").get_children():
@@ -156,7 +157,7 @@ func reset():
 	health = [20,20]
 	temperature = [0,0]
 	inc_mana = [true,true]
-	used_positions = [[-3,-4],[3,4]]
+	used_positions = [[-3],[3]]
 	turn = -1
 	player = -1
 	selected_card = null
@@ -356,6 +357,15 @@ func play_card(card,player,target=null):
 		graveyard[player].push_back(card)
 		card.in_game = true
 		hand[player].erase(card)
+	elif (card.type=="land"):
+		var p2
+		var p1 = Vector2(card.node.get_global_position().x,0.5*card.node.get_global_position().y)
+		spawn_creature(card,player,"land")
+		card.node.get_node("Tween").remove_all()
+		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p1,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		p2 = Vector2(225*card.pos,200*(1-2*player))
+		card.node.get_node("Tween").interpolate_property(card.node,"global_position",p1,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
+		card.node.get_node("Tween").start()
 	
 	if (multiplayer && player==PLAYER1):
 		var t = {}
@@ -371,7 +381,7 @@ func play_card(card,player,target=null):
 	sort_cards()
 	emit_signal("card_played",player,card,target)
 
-func spawn_creature(card,player):
+func spawn_creature(card,player,type="creature"):
 	var pID = find_empty_position(player)
 	var pos = Vector2(225*pID,200*(1-2*player))
 	used_positions[player].push_back(pID)
@@ -382,20 +392,20 @@ func spawn_creature(card,player):
 	card.node._z = 0
 	card.node.set_z_index(0)
 	card.in_game = true
-	card.node.type = "creature"
+	card.node.type = type
 	card.node.pos = pos
 	if (Cards.data[card.ID].has("on_play")):
 		apply_effect(card,"on_play")
 	for p in range(2):
 		for c in field[p]:
-			if (Cards.data[c.ID].has("on_creature_spawn")):
-				apply_effect(c,"on_creature_spawn",card)
+			if (Cards.data[c.ID].has("on_"+type+"_spawn")):
+				apply_effect(c,"on_"+type+"_spawn",card)
 	for c in field[player]:
-		if (Cards.data[c.ID].has("on_ally_creature_spawn")):
-			apply_effect(c,"on_ally_creature_spawn",card)
+		if (Cards.data[c.ID].has("on_ally_"+type+"_spawn")):
+			apply_effect(c,"on_ally_"+type+"_spawn",card)
 	for c in field[(player+1)%2]:
-		if (Cards.data[c.ID].has("on_enemy_creature_spawn")):
-			apply_effect(c,"on_enemy_creature_spawn",card)
+		if (Cards.data[c.ID].has("on_enemy_"+type+"_spawn")):
+			apply_effect(c,"on_enemy_"+type+"_spawn",card)
 	field[player].push_back(card)
 
 func create_creature(type,player,pos):
@@ -430,6 +440,7 @@ func add_equipment_card(type,player,parent,pos):
 	card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	card.node.get_node("Tween").start()
 	apply_effect(card,"on_play",parent)
+	return card
 
 func can_target(card,effect,player,target):
 	# Checks whether the target is a valid target for the cards effect or not.
@@ -483,7 +494,6 @@ func use_effect(card,effect,player,target=null):
 		target_type = data["target"].split("-")
 		if (target==null):
 			select = target_type[0]
-			printt(target_type)
 			if ("creature" in target_type):
 				if (multiplayer && player!=PLAYER1):
 					printt("Invalid target selected.")
@@ -545,7 +555,7 @@ func use_effect(card,effect,player,target=null):
 	emit_signal("effect_used")
 	return
 
-func apply_effect(card,event,target=null):
+func apply_effect(card,event,target=null,am=null):
 	var effect = Cards.data[card.ID][event]
 	var enemy = (card.owner+1)%2
 	var array = effect.split("-")
@@ -553,6 +563,8 @@ func apply_effect(card,event,target=null):
 	var ammount
 	if (array.size()>1):
 		ammount = int(array[1])
+	elif am!=null:
+		ammount = am
 	
 	if (base=="inc_temp"):
 		target.temperature += ammount
@@ -565,6 +577,12 @@ func apply_effect(card,event,target=null):
 			target.temperature -= ammount
 		elif (target.temperature<0):
 			target.temperature += ammount
+		target.update()
+	elif (base=="amplify_temp"):
+		if (target.temperature>0):
+			target.temperature += ammount
+		elif (target.temperature<0):
+			target.temperature -= ammount
 		target.update()
 	elif (base=="ice_armor"):
 		if (player==card.owner):
@@ -590,9 +608,9 @@ func apply_effect(card,event,target=null):
 		for c in field[card.owner]:
 			if ("ice" in Cards.data[c.ID]["tags"]):
 				if (player==c.owner):
-					c.temperature -= ammount
-				else:
 					c.temperature += ammount
+				else:
+					c.temperature -= ammount
 				c.update()
 	elif (base=="fire_aura"):
 		for c in field[card.owner]:
@@ -613,11 +631,11 @@ func apply_effect(card,event,target=null):
 			target.destroy()
 	elif (base=="kill_all_hot"):
 		for c in field[PLAYER1]+field[PLAYER2]:
-			if (c.temperature>0 && c.temperature<=ammount):
+			if (c.type=="creature" && c.temperature>0 && c.temperature<=ammount):
 				c.destroy()
 	elif (base=="kill_all_cold"):
 		for c in field[PLAYER1]+field[PLAYER2]:
-			if (c.temperature<0 && -c.temperature<=ammount):
+			if (c.type=="creature" && c.temperature<0 && -c.temperature<=ammount):
 				c.destroy()
 	elif (base=="draw"):
 		get_node("SoundShuffle").play()
@@ -635,7 +653,7 @@ func apply_effect(card,event,target=null):
 		field[target.owner].erase(target)
 		target.remove_equipment()
 		if (Cards.data[target.ID].has("on_removed")):
-			apply_effect(target,"on_removed")
+			apply_effect(target,"on_removed",target)
 		target.in_game = false
 		target.node.type = "hand"
 		target.temperature = Cards.data[target.ID]["temperature"]
@@ -659,7 +677,7 @@ func apply_effect(card,event,target=null):
 		target.destroy()
 		if (dmg>0):
 			for c in field[PLAYER1]+field[PLAYER2]:
-				if (abs(c.temperature)<dmg):
+				if (c.type=="creature" && abs(c.temperature)<dmg):
 					c.destroy()
 	elif (base=="spawn"):
 		if (array.size()>=2):
@@ -667,8 +685,9 @@ func apply_effect(card,event,target=null):
 				create_creature(array[2],card.owner,card.node.pos)
 	elif (base=="assemble"):
 		for c in []+field[card.owner]:
-			card.temperature += c.temperature
-			c.destroy()
+			if (c.type=="creature"):
+				card.temperature += c.temperature
+				c.destroy()
 		card.update()
 	elif (base=="global_diffusion"):
 		var global_temp = (get_player_temperature(PLAYER1)+get_player_temperature(PLAYER2))/2
@@ -676,7 +695,8 @@ func apply_effect(card,event,target=null):
 	elif (base=="global_diffusion_all"):
 		var global_temp = (get_player_temperature(PLAYER1)+get_player_temperature(PLAYER2))/2
 		for c in field[PLAYER1]+field[PLAYER2]:
-			c.temperature += ammount*sign(global_temp-c.temperature)
+			if (c.type=="creature"):
+				c.temperature += ammount*sign(global_temp-c.temperature)
 	elif (base=="inc_player_temp"):
 		temperature[card.owner] += ammount
 	elif (base=="dec_player_temp"):
@@ -689,16 +709,19 @@ func apply_effect(card,event,target=null):
 		add_equipment_card(array[1],card.owner,target,card.node.get_global_position())
 	elif (base=="equip_all"):
 		for c in field[PLAYER1]+field[PLAYER2]:
-			add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
+			if (c.type=="creature"):
+				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
 	elif (base=="equip_all_enemy"):
 		for c in field[enemy]:
-			add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
+			if (c.type=="creature"):
+				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
 	elif (base=="equip_all_ally"):
 		for c in field[card.owner]:
-			add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
+			if (c.type=="creature"):
+				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
 	elif (base=="equip_all_ally_ice"):
 		for c in field[card.owner]:
-			if ("ice" in Cards.data[card.ID]["tags"]):
+			if (("ice" in Cards.data[card.ID]["tags"]) && c.type=="creature"):
 				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
 	elif (base=="damage_enemy" && card.owner==player):
 		health[enemy] -= ammount
@@ -706,6 +729,32 @@ func apply_effect(card,event,target=null):
 	elif (base=="damage_player" && card.owner==player):
 		health[player] -= ammount
 		update_stats()
+	elif (base=="health_shield" && card.owner==enemy):
+		health[card.owner] += ammount
+	elif (base=="destroy_all_lands"):
+		for c in field[PLAYER1]+field[PLAYER2]:
+			if (c.type=="land"):
+				c.destroy()
+	elif (base=="acid"):
+		target.level -= 2
+		for eq in target.equiped:
+			if ("equipment" in Cards.data[eq.ID]["tags"]):
+				target.equipment.erase(eq)
+				eq.destroy()
+		target.update()
+	elif (base=="inc_mana"):
+		mana_max[card.owner] += ammount
+	elif (base=="dec_mana"):
+		mana_max[card.owner] -= ammount
+	elif (base=="melt" && card.owner==player):
+		card.temperature += 1
+		card.update()
+		if (card.temperature>=0):
+			card.destroy()
+	elif (base=="freeze" && ("ice" in Cards.data[am.ID]["tags"])):
+		var eq = add_equipment_card("freeze",card.owner,target,card.node.get_global_position())
+		eq.temperature -= 1
+		eq.update()
 	
 	if (health[player]<=0):
 		game_over(player==PLAYER1)
@@ -718,8 +767,8 @@ remote func _attack(a,t,no_counter=false):
 	var target = field[(t["player"]+1)%2][t["index"]]
 	attack(attacker,target,no_counter)
 
-func attack(attacker,target,no_counter=false):
-	var counterattack = !no_counter && abs(target.temperature)>=abs(attacker.temperature) && sign(attacker.temperature)!=sign(target.temperature)
+func attack(attacker,target,counter=false):
+	var counterattack = !counter && abs(target.temperature)>=abs(attacker.temperature) && sign(attacker.temperature)!=sign(target.temperature)
 	if (multiplayer && server):
 		var a = {}
 		var t = {}
@@ -732,37 +781,47 @@ func attack(attacker,target,no_counter=false):
 					t["index"] = i
 					t["player"] = p
 		if (a.size()>0 && t.size()>0):
-			rpc("_attack",a,t,no_counter)
-	if (abs(attacker.temperature)>=abs(target.temperature) && sign(attacker.temperature)!=sign(target.temperature)):
-		var pos_a = attacker.node.get_global_position()
-		var pos = 0.75*attacker.node.get_global_position()+0.25*target.node.get_global_position()
+			rpc("_attack",a,t,counter)
+	if (abs(attacker.temperature)<abs(target.temperature) || sign(attacker.temperature)==sign(target.temperature)):
+		return
+	var pos_a = attacker.node.get_global_position()
+	var pos = 0.75*attacker.node.get_global_position()+0.25*target.node.get_global_position()
+	if (!counter):
+		# on_attacked events for target
 		if (Cards.data[target.ID].has("on_attacked")):
-			apply_effect(target,"on_attacked",attacker)
+			apply_effect(target,"on_attacked",attacker,target)
 		for equiped in target.equiped:
 			if (Cards.data[equiped.ID].has("on_attacked")):
-				apply_effect(equiped,"on_attacked",attacker)
+				apply_effect(equiped,"on_attacked",attacker,target)
+		for land in field[target.owner]:
+			if (land.type=="land" && Cards.data[land.ID].has("on_attacked")):
+				apply_effect(land,"on_attacked",attacker,target)
+		# on_attack events for attacker
 		if (Cards.data[attacker.ID].has("on_attack")):
-			apply_effect(attacker,"on_attack",target)
+			apply_effect(attacker,"on_attack",target,attacker)
 		for equiped in attacker.equiped:
-			if (Cards.data[equiped.ID].has("on_attacked")):
-				apply_effect(equiped,"on_attacked",target)
-		if (Cards.data[attacker.ID].has("animation")):
-			var pi = load("res://scenes/animations/"+Cards.data[attacker.ID]["animation"]+".tscn").instance()
-			pi.set_global_position(attacker.node.get_global_position())
-			pi.scale *= 0.15
-			add_child(pi)
-			pi.look_at(target.node.get_global_position())
-		if (Cards.data[target.ID].has("on_dead")):
-			apply_effect(target,"on_dead",attacker)
-		for equiped in target.equiped:
-			if (Cards.data[equiped.ID].has("on_dead")):
-				apply_effect(equiped,"on_dead",attacker)
-		target.destroy()
-		attacker.node.get_node("Tween").interpolate_property(attacker.node,"global_position",pos_a,pos,0.4,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-		attacker.node.get_node("Tween").interpolate_property(attacker.node,"global_position",pos,pos_a,0.6,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.4)
-		attacker.node.get_node("Tween").start()
+			if (Cards.data[equiped.ID].has("on_attack")):
+				apply_effect(equiped,"on_attack",target,attacker)
+		for land in field[attacker.owner]:
+			if (land.type=="land" && Cards.data[land.ID].has("on_attack")):
+				apply_effect(land,"on_attack",target,attacker)
+	if (Cards.data[attacker.ID].has("animation")):
+		var pi = load("res://scenes/animations/"+Cards.data[attacker.ID]["animation"]+".tscn").instance()
+		pi.set_global_position(attacker.node.get_global_position())
+		pi.scale *= 0.15
+		add_child(pi)
+		pi.look_at(target.node.get_global_position())
+	if (Cards.data[target.ID].has("on_dead")):
+		apply_effect(target,"on_dead",attacker)
+	for equiped in target.equiped:
+		if (Cards.data[equiped.ID].has("on_dead")):
+			apply_effect(equiped,"on_dead",attacker)
+	attacker.node.get_node("Tween").interpolate_property(attacker.node,"global_position",pos_a,pos,0.4,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+	attacker.node.get_node("Tween").interpolate_property(attacker.node,"global_position",pos,pos_a,0.6,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.4)
+	attacker.node.get_node("Tween").start()
 	if (counterattack):
 		attack(target,attacker,true)
+	target.destroy()
 
 
 func _draw_card(pl,ID=-1):
@@ -818,6 +877,7 @@ sync func draw_extra_card(player):
 		return
 	
 	_draw_card(player)
+	deselect()
 	inc_mana[player] = false
 	UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonD").set_disabled(true)
 
@@ -832,6 +892,7 @@ func sort_hand(player):
 	var offset = min(200,(OS.get_window_size().x-100)/max(hand[player].size(),1))
 	for card in hand[player]:
 		var pos = Vector2((275+ID*offset/zoom-OS.get_window_size().x/2.0)*(1-2*player),OS.get_window_size().y/2.0*(1-2*player))*zoom
+		card.node.get_node("Tween").remove_all()
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		card.node.get_node("Tween").start()
 		card.node.pos = pos
@@ -879,7 +940,7 @@ func deselect(emit=true):
 	select = "hand"
 	using_card = false
 	UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(true)
-#	sort_hand(player)
+	sort_hand(player)
 	for node in get_node("Cards").get_children():
 		if (node.get_node("Select").is_visible()):
 			node.get_node("Animation").play("deselect")
@@ -976,7 +1037,7 @@ remote func attack_phase():
 	# Check if a creature or one of it's equiped cards has the no_attack special.
 	for i in range(list.size()-1,-1,-1):
 		var card = list[i]
-		if (Cards.data[card.ID].has("no_attack") && Cards.data[card.ID]["no_attack"]):
+		if (card.type!="creature" || (Cards.data[card.ID].has("no_attack") && Cards.data[card.ID]["no_attack"])):
 			list.remove(i)
 		else:
 			for equiped in card.equiped:
@@ -993,7 +1054,7 @@ remote func attack_phase():
 	for card in list:
 		var targets = []
 		for t in field[enemy]:
-			if (abs(t.temperature)<abs(card.temperature) && sign(t.temperature)!=sign(card.temperature)):
+			if (t.type=="creature" && abs(t.temperature)<abs(card.temperature) && sign(t.temperature)!=sign(card.temperature)):
 				targets.push_back(t)
 		if (targets.size()==0):
 			for t in field[enemy]:
@@ -1020,12 +1081,18 @@ remote func attack_phase():
 sync func attack_phase_end(above_50):
 	var enemy = (player+1)%2
 	var draw = 1
-	if (turn>1-int(server) && field[enemy].size()==0):
+	var num_enemy_creatures = 0
+	for card in field[enemy]:
+		num_enemy_creatures += int(card.type=="creature")
+	if (turn>1-int(server) && num_enemy_creatures==0):
 		# Deal damage to enemy.
 		var temp = get_player_temperature(player)
 		var dmg = min(abs(temp),10)
 		if (dmg>0):
 			health[enemy] -= dmg
+			for c in field[PLAYER1]+field[PLAYER2]:
+				if (Cards.data[c.ID].has("on_damaged")):
+					apply_effect(c,"on_damaged",enemy,dmg)
 			# Draw 2 cards if damaged, 4 if health drops below 10 the first time.
 			draw += 1+2*int(health[enemy]<10 && above_50)
 			if (temp>0):
