@@ -276,7 +276,7 @@ func play_card(card,player,target=null):
 		return
 	
 	var c
-	print("Player "+str(player)+" plays card "+str(card)+".")
+	print("Player "+str(player)+" plays card "+str(card.ID)+".")
 	if (multiplayer && player==PLAYER1):
 		for i in range(hand[player].size()):
 			if (hand[player][i]==card):
