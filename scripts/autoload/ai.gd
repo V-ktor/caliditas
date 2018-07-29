@@ -129,14 +129,14 @@ func get_spell():
 			elif (e=="neutralize_temp"):
 				for tg in Main.field[enemy]:
 					var v = value+abs(tg.temperature)+2*a
-					if (tg.type!="creature" || tg.temperature!=0 && v>score):
+					if (tg.type=="creature" && tg.temperature!=0 && v>score):
 						c = card
 						t = tg
 						score = v
 			elif (e=="amplify_temp"):
 				for tg in Main.field[enemy]:
 					var v = value+abs(tg.temperature)+2*a
-					if (tg.type!="creature" || tg.temperature!=0 && v>score):
+					if (tg.type=="creature" && tg.temperature!=0 && v>score):
 						c = card
 						t = tg
 						score = v

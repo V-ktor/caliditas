@@ -555,206 +555,26 @@ func use_effect(card,effect,player,target=null):
 	emit_signal("effect_used")
 	return
 
-func apply_effect(card,event,target=null,am=null):
+func apply_effect(card,event,target=null,arg=null):
+	var args
 	var effect = Cards.data[card.ID][event]
 	var enemy = (card.owner+1)%2
-	var array = effect.split("-")
+	var array = Array(effect.split("-"))
 	var base = array[0]
-	var ammount
 	if (array.size()>1):
-		ammount = int(array[1])
-	elif am!=null:
-		ammount = am
+		for i in range(1,array.size()):
+			var num = int(array[i])
+			if (num!=0):
+				array[i] = num
+	args = [card,target]
+	if (array.size()>1):
+		for i in range(1,array.size()):
+			args.push_back(array[i])
+	if (arg!=null):
+		args.push_back(arg)
 	
-	if (base=="inc_temp"):
-		target.temperature += ammount
-		target.update()
-	elif (base=="dec_temp"):
-		target.temperature -= ammount
-		target.update()
-	elif (base=="neutralize_temp"):
-		if (target.temperature>0):
-			target.temperature -= ammount
-		elif (target.temperature<0):
-			target.temperature += ammount
-		target.update()
-	elif (base=="amplify_temp"):
-		if (target.temperature>0):
-			target.temperature += ammount
-		elif (target.temperature<0):
-			target.temperature -= ammount
-		target.update()
-	elif (base=="ice_armor"):
-		if (player==card.owner):
-			target.temperature += ammount
-		else:
-			target.temperature -= ammount
-		target.update()
-	elif (base=="fire_armor"):
-		if (player==target.owner):
-			target.temperature -= ammount
-		else:
-			target.temperature += ammount
-		target.update()
-	elif (base=="inc_ally_temp"):
-		for c in field[card.owner]:
-			c.temperature += ammount
-			c.update()
-	elif (base=="dec_ally_temp"):
-		for c in field[card.owner]:
-			c.temperature -= ammount
-			c.update()
-	elif (base=="ice_aura"):
-		for c in field[card.owner]:
-			if ("ice" in Cards.data[c.ID]["tags"]):
-				if (player==c.owner):
-					c.temperature += ammount
-				else:
-					c.temperature -= ammount
-				c.update()
-	elif (base=="fire_aura"):
-		for c in field[card.owner]:
-			if ("fire" in Cards.data[c.ID]["tags"]):
-				if (player==c.owner):
-					c.temperature += ammount
-				else:
-					c.temperature -= ammount
-				c.update()
-	elif (base=="kill_cold"):
-		if (target.temperature<0 && -target.temperature<=ammount):
-			target.destroy()
-	elif (base=="kill_hot"):
-		if (target.temperature>0 && target.temperature<=ammount):
-			target.destroy()
-	elif (base=="kill_level"):
-		if (target.level<=ammount):
-			target.destroy()
-	elif (base=="kill_all_hot"):
-		for c in field[PLAYER1]+field[PLAYER2]:
-			if (c.type=="creature" && c.temperature>0 && c.temperature<=ammount):
-				c.destroy()
-	elif (base=="kill_all_cold"):
-		for c in field[PLAYER1]+field[PLAYER2]:
-			if (c.type=="creature" && c.temperature<0 && -c.temperature<=ammount):
-				c.destroy()
-	elif (base=="draw"):
-		get_node("SoundShuffle").play()
-		for i in range(ammount):
-			_draw_card(player)
-			timer.set_wait_time(0.2)
-			timer.start()
-			yield(timer,"timeout")
-		timer.set_wait_time(0.1)
-		timer.start()
-		yield(timer,"timeout")
-		sort_hand(player)
-	elif (base=="move_to_hand"):
-		hand[target.owner].push_back(target)
-		field[target.owner].erase(target)
-		target.remove_equipment()
-		if (Cards.data[target.ID].has("on_removed")):
-			apply_effect(target,"on_removed",target)
-		target.in_game = false
-		target.node.type = "hand"
-		target.temperature = Cards.data[target.ID]["temperature"]
-		target.level = Cards.data[target.ID]["level"]
-		target.update()
-		if (target.owner!=player && !((ai || multiplayer) && target.owner==PLAYER1)):
-			target.node.get_node("Animation").play("hide")
-		used_positions[enemy].erase(target.pos)
-		sort_hand(enemy)
-	elif (base=="invert_temp"):
-		target.temperature *= -1
-		target.update()
-	elif (base=="cleanse"):
-		target.remove_equipment()
-		target.temperature = Cards.data[target.ID]["temperature"]
-		target.level = Cards.data[target.ID]["level"]
-		target.update()
-		card.destroy()
-	elif (base=="explosion"):
-		var dmg = abs(target.temperature)
-		target.destroy()
-		if (dmg>0):
-			for c in field[PLAYER1]+field[PLAYER2]:
-				if (c.type=="creature" && abs(c.temperature)<dmg):
-					c.destroy()
-	elif (base=="spawn"):
-		if (array.size()>=2):
-			for i in range(ammount):
-				create_creature(array[2],card.owner,card.node.pos)
-	elif (base=="assemble"):
-		for c in []+field[card.owner]:
-			if (c.type=="creature"):
-				card.temperature += c.temperature
-				c.destroy()
-		card.update()
-	elif (base=="global_diffusion"):
-		var global_temp = (get_player_temperature(PLAYER1)+get_player_temperature(PLAYER2))/2
-		target.temperature += ammount*sign(global_temp-target.temperature)
-	elif (base=="global_diffusion_all"):
-		var global_temp = (get_player_temperature(PLAYER1)+get_player_temperature(PLAYER2))/2
-		for c in field[PLAYER1]+field[PLAYER2]:
-			if (c.type=="creature"):
-				c.temperature += ammount*sign(global_temp-c.temperature)
-	elif (base=="inc_player_temp"):
-		temperature[card.owner] += ammount
-	elif (base=="dec_player_temp"):
-		temperature[card.owner] -= ammount
-	elif (base=="destroy_enemy_turn" && card.owner!=player):
-		card.destroy()
-	elif (base=="destroy_player_turn" && card.owner==player):
-		card.destroy()
-	elif (base=="equip"):
-		add_equipment_card(array[1],card.owner,target,card.node.get_global_position())
-	elif (base=="equip_all"):
-		for c in field[PLAYER1]+field[PLAYER2]:
-			if (c.type=="creature"):
-				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
-	elif (base=="equip_all_enemy"):
-		for c in field[enemy]:
-			if (c.type=="creature"):
-				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
-	elif (base=="equip_all_ally"):
-		for c in field[card.owner]:
-			if (c.type=="creature"):
-				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
-	elif (base=="equip_all_ally_ice"):
-		for c in field[card.owner]:
-			if (("ice" in Cards.data[card.ID]["tags"]) && c.type=="creature"):
-				add_equipment_card(array[1],card.owner,c,card.node.get_global_position())
-	elif (base=="damage_enemy" && card.owner==player):
-		health[enemy] -= ammount
-		update_stats()
-	elif (base=="damage_player" && card.owner==player):
-		health[player] -= ammount
-		update_stats()
-	elif (base=="health_shield" && card.owner==enemy):
-		health[card.owner] += ammount
-	elif (base=="destroy_all_lands"):
-		for c in field[PLAYER1]+field[PLAYER2]:
-			if (c.type=="land"):
-				c.destroy()
-	elif (base=="acid"):
-		target.level -= 2
-		for eq in target.equiped:
-			if ("equipment" in Cards.data[eq.ID]["tags"]):
-				target.equipment.erase(eq)
-				eq.destroy()
-		target.update()
-	elif (base=="inc_mana"):
-		mana_max[card.owner] += ammount
-	elif (base=="dec_mana"):
-		mana_max[card.owner] -= ammount
-	elif (base=="melt" && card.owner==player):
-		card.temperature += 1
-		card.update()
-		if (card.temperature>=0):
-			card.destroy()
-	elif (base=="freeze" && ("ice" in Cards.data[am.ID]["tags"])):
-		var eq = add_equipment_card("freeze",card.owner,target,card.node.get_global_position())
-		eq.temperature -= 1
-		eq.update()
+	if (Effects.has_method(base)):
+		Effects.callv(base,args)
 	
 	if (health[player]<=0):
 		game_over(player==PLAYER1)
@@ -964,6 +784,12 @@ func _confirm():
 
 func end_turn():
 	deselect()
+	UI.get_node("Player1/VBoxContainer/ButtonE").set_disabled(true)
+	UI.get_node("Player1/VBoxContainer/ButtonD").set_disabled(true)
+	UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(true)
+	UI.get_node("Player2/VBoxContainer/ButtonE").set_disabled(true)
+	UI.get_node("Player2/VBoxContainer/ButtonD").set_disabled(true)
+	UI.get_node("Player2/VBoxContainer/ButtonC").set_disabled(true)
 	if (!multiplayer || server):
 		attack_phase()
 	else:
@@ -1058,7 +884,7 @@ remote func attack_phase():
 				targets.push_back(t)
 		if (targets.size()==0):
 			for t in field[enemy]:
-				if (abs(t.temperature)==abs(card.temperature) && sign(t.temperature)!=sign(card.temperature)):
+				if (t.type=="creature" && abs(t.temperature)==abs(card.temperature) && sign(t.temperature)!=sign(card.temperature)):
 					targets.push_back(t)
 		if (targets.size()==0):
 			continue
@@ -1092,7 +918,7 @@ sync func attack_phase_end(above_50):
 			health[enemy] -= dmg
 			for c in field[PLAYER1]+field[PLAYER2]:
 				if (Cards.data[c.ID].has("on_damaged")):
-					apply_effect(c,"on_damaged",enemy,dmg)
+					apply_effect(c,"on_damaged",dmg)
 			# Draw 2 cards if damaged, 4 if health drops below 10 the first time.
 			draw += 1+2*int(health[enemy]<10 && above_50)
 			if (temp>0):

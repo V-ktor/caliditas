@@ -21,6 +21,7 @@ Main="*res://scenes/autoload/main.tscn"
 UI="*res://scenes/autoload/ui.tscn"
 AI="*res://scripts/autoload/ai.gd"
 Music="*res://scenes/autoload/music.tscn"
+Effects="*res://scripts/autoload/effects.gd"
 
 [importer_defaults]
 
