@@ -859,7 +859,6 @@ remote func attack_phase():
 	
 	var enemy = (player+1)%2
 	var list = []+field[player]
-	var above_50 = health[enemy]>=10
 	# Check if a creature or one of it's equiped cards has the no_attack special.
 	for i in range(list.size()-1,-1,-1):
 		var card = list[i]
@@ -900,11 +899,11 @@ remote func attack_phase():
 			update_stats()
 	
 	if (multiplayer):
-		rpc("attack_phase_end",above_50)
+		rpc("attack_phase_end")
 	else:
-		attack_phase_end(above_50)
+		attack_phase_end()
 
-sync func attack_phase_end(above_50):
+sync func attack_phase_end():
 	var enemy = (player+1)%2
 	var draw = 1
 	var num_enemy_creatures = 0
@@ -920,7 +919,7 @@ sync func attack_phase_end(above_50):
 				if (Cards.data[c.ID].has("on_damaged")):
 					apply_effect(c,"on_damaged",dmg)
 			# Draw 2 cards if damaged, 4 if health drops below 10 the first time.
-			draw += 1+2*int(health[enemy]<10 && above_50)
+			draw += 1
 			if (temp>0):
 				UI.get_node("Player"+str(enemy+1)+"/Animation").play("fire_damage")
 			else:

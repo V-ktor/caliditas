@@ -14,7 +14,7 @@ TUTORIAL_NO_CREATURE,"The card you played was not a creature! This will give you
 TUTORIAL_DRAW_CARD,"In case you run out of cards you have the ability to draw one additional card per turn but this will reduce your maximum mana by one point. It will not be increased by one at the start of your next turn."
 TUTORIAL_NEXT_TURN,"If you have no more mana left you should end your turn by pressing the 'End Turn' button."
 TUTORIAL_ENEMY_TURN,"Now is you opponents turn."
-TUTORIAL_PLAYER_TURN,"You start your turn by drawing a card. If the opponent damaged you on his turn, draw 2 cards instead. If your health drops below 10 for the first time you can even draw 4 cards."
+TUTORIAL_PLAYER_TURN,"You start your turn by drawing a card. If the opponent damaged you on his turn, draw 2 cards instead."
 TUTORIAL_CREATURES1,"Your creatures attack the opponents creatures after you end your turn."
 TUTORIAL_CREATURES2,"Every creature choses a single target to attack randomly, but they will only attack creatures they are able to destroy."
 TUTORIAL_CREATURES3,"Creatures can only attack a creature of the opposite element."
