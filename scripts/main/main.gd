@@ -452,6 +452,16 @@ func can_target(card,effect,player,target):
 	var target_type = data["target"].split("-")
 	if (!((target.type in target_type) || (target.node.type=="hand" && ("hand" in target_type)) || ("any" in target_type)) || (target.node.type=="hand" && !("hand" in target_type)) || (("ally" in target_type) && target.owner!=player)):
 		return false
+	if (target_type.size()>1):
+		var has_tag = true
+		for i in range(1,target_type.size()):
+			var tag = target_type[i]
+			if !(tag in ["ally","enemy","any","creature","land","hand"]):
+				has_tag = tag in Cards.data[target.ID]["tags"]
+				if (has_tag):
+					break
+		if (!has_tag):
+			return false
 	var ammount = 0
 	var s = type.split("-")
 	if (s.size()==0):
@@ -602,8 +612,6 @@ func attack(attacker,target,counter=false):
 					t["player"] = p
 		if (a.size()>0 && t.size()>0):
 			rpc("_attack",a,t,counter)
-	if (abs(attacker.temperature)<abs(target.temperature) || sign(attacker.temperature)==sign(target.temperature)):
-		return
 	var pos_a = attacker.node.get_global_position()
 	var pos = 0.75*attacker.node.get_global_position()+0.25*target.node.get_global_position()
 	if (!counter):
@@ -878,12 +886,18 @@ remote func attack_phase():
 	# Attack random enemies that can be defeated.
 	for card in list:
 		var targets = []
+		var can_target_all = Cards.data[card.ID].has("can_target_all") && Cards.data[card.ID]["can_target_all"]
+		if (!can_target_all):
+			for eq in card.equiped:
+				if (Cards.data[eq.ID].has("can_target_all") && Cards.data[eq.ID]["can_target_all"]):
+					can_target_all = true
+					break
 		for t in field[enemy]:
-			if (t.type=="creature" && abs(t.temperature)<abs(card.temperature) && sign(t.temperature)!=sign(card.temperature)):
+			if (t.type=="creature" && abs(t.temperature)<abs(card.temperature) && (sign(t.temperature)!=sign(card.temperature) || can_target_all)):
 				targets.push_back(t)
 		if (targets.size()==0):
 			for t in field[enemy]:
-				if (t.type=="creature" && abs(t.temperature)==abs(card.temperature) && sign(t.temperature)!=sign(card.temperature)):
+				if (t.type=="creature" && abs(t.temperature)==abs(card.temperature) && (sign(t.temperature)!=sign(card.temperature) || can_target_all)):
 					targets.push_back(t)
 		if (targets.size()==0):
 			continue

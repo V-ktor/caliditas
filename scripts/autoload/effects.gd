@@ -147,6 +147,30 @@ func melt(card,target):
 	if (card.temperature>=0):
 		card.destroy()
 
+func melt_target(card,target):
+	if (Main.player!=card.owner):
+		return
+	target.temperature += 1
+	target.update()
+	if (target.temperature>=0):
+		target.destroy()
+
+func anneal(card,target):
+	if (Main.player!=card.owner):
+		return
+	card.temperature -= 1
+	card.update()
+	if (card.temperature<=0):
+		card.destroy()
+
+func anneal_target(card,target):
+	if (Main.player!=card.owner):
+		return
+	target.temperature -= 1
+	target.update()
+	if (target.temperature<=0):
+		target.destroy()
+
 func move_to_hand(card,target):
 	var enemy = (Main.player+1)%2
 	Main.hand[target.owner].push_back(target)
@@ -241,7 +265,7 @@ func spawn(card,target,ammount,type=""):
 	if (type==""):
 		return
 	for i in range(ammount):
-		create_creature(type,card.owner,card.node.pos)
+		Main.create_creature(type,card.owner,card.node.pos)
 
 func assemble(card,target):
 	for c in []+Main.field[card.owner]:

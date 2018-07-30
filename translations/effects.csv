@@ -39,4 +39,7 @@ REMOVE_EQUIPMENT_DESC,"Destroy all equipment cards of the target."
 INC_MANA_DESC,"Increase your max. mana by %1."
 DEC_MANA_DESC,"Decrease your max. mana by %1."
 MELT_DESC,"Increase temperature by 1 on the start of your turn. Once the temperature reached zero the card is destroyed."
+ANNEAL_DESC,"Decrease temperature by 1 on the start of your turn. Once the temperature reached zero the card is destroyed."
+CAN_ATTACK_ALL_DESC,"The creature can attack both, ice and fire creatures."
+FIRE_ATTACK_ALL_ANNEAL_DESC,"Allows one of your fire creatures to attack both, ice and fire creatures, but reduce it's temperature by 1 every turn. Once the temperature reached zero it is destroyed."
 

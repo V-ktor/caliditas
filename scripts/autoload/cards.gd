@@ -120,6 +120,19 @@ const data = {
 		"animation":"fire_circle",
 		"image":preload("res://images/cards/blaze.jpg")
 	},
+	"spectral_blade":{
+		"type":"spell",
+		"level":3,
+		"rarity":2,
+		"rules":["fire_attack_all_anneal"],
+		"on_play":"",
+		"on_new_turn":"anneal_target",
+		"can_target_all":true,
+		"target":"creature-ally-fire",
+		"tags":["fire","curse","equipment"],
+		"animation":"fire_blade",
+		"image":preload("res://images/cards/fire_blade.jpg")
+	},
 	"blood_boil":{
 		"type":"spell",
 		"level":4,
