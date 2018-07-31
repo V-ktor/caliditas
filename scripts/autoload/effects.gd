@@ -28,6 +28,16 @@ func invert_temp(card,target):
 	target.temperature *= -1
 	target.update()
 
+func invert_ally_temp(card,target):
+	for card in Main.field[card.owner]:
+		card.temperature *= -1
+		card.update()
+
+func invert_enemy_temp(card,target):
+	for card in Main.field[(card.owner+1)%2]:
+		card.temperature *= -1
+		card.update()
+
 func inc_ally_temp(card,target,ammount):
 	for c in Main.field[card.owner]:
 		c.temperature += ammount

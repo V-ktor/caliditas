@@ -131,7 +131,7 @@ const data = {
 		"target":"creature-ally-fire",
 		"tags":["fire","curse","equipment"],
 		"animation":"fire_blade",
-		"image":preload("res://images/cards/fire_blade.jpg")
+		"image":preload("res://images/cards/magic_sword.jpg")
 	},
 	"blood_boil":{
 		"type":"spell",
@@ -409,7 +409,7 @@ const data = {
 		"rules":["invert_temp"],
 		"on_play":"invert_temp",
 		"target":"creature",
-		"tags":["curse"],
+		"tags":[],
 		"animation":"neutralize",
 		"image":preload("res://images/cards/spell_neutral.jpg")
 	},
@@ -480,6 +480,18 @@ const data = {
 		"animation":"",
 		"image":preload("res://images/cards/back.png")
 	},
+	"mass_inversion":{
+		"type":"land",
+		"level":5,
+		"rarity":2,
+		"rules":["invert_ally_temp"],
+		"on_play":"invert_ally_temp",
+		"on_removed":"invert_temp-ally",
+		"on_new_turn":"destroy_player_turn",
+		"tags":["area"],
+		"animation":"",
+		"image":preload("res://images/cards/spell_neutral.jpg")
+	},
 	"thermal_shield":{
 		"type":"land",
 		"level":4,
@@ -489,7 +501,7 @@ const data = {
 		"on_new_turn":"destroy_player_turn",
 		"tags":["shield"],
 		"animation":"",
-		"image":preload("res://images/cards/spell_neutral.jpg")
+		"image":preload("res://images/cards/thermal_shield.jpg")
 	}
 }
 const COLOR_COLD = Color(0.25,0.5,1.0)
