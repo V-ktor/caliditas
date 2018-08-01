@@ -293,6 +293,7 @@ func acid(card,target):
 	target.update()
 
 func freeze(card,target,attacked):
+	printt("freeze",card.ID,target.ID,attacked.ID)
 	if !("ice" in Cards.data[attacked.ID]["tags"]):
 		return
 	var eq = Main.add_equipment_card("freeze",card.owner,target,card.node.get_global_position())

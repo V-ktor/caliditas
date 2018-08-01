@@ -513,9 +513,7 @@ func use_effect(card,effect,player,target=null):
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(false)
 				print("Please select a "+select+" card.")
-				for c in field[PLAYER1]+field[PLAYER2]+hand[PLAYER1]+hand[PLAYER2]:
-					if (can_target(card,effect,player,c)):
-						c.node.get_node("Animation").play("blink")
+				hint_valid_cards("creature",card,effect)
 				yield(self,"target_selected")
 				target = selected_card
 		
@@ -741,6 +739,23 @@ func sort_cards():
 				card.raise()
 				card.get_node("Button").raise()
 
+func hint_valid_cards(s=null,card=null,event="on_play"):
+	if (s==null):
+		s = select
+	for node in get_node("Cards").get_children():
+		if (node.get_node("Select").is_visible()):
+			node.get_node("Animation").play("deselect")
+	if (s=="hand"):
+		if (player==PLAYER1 || (!ai && !multiplayer)):
+			for card in hand[player]:
+				if (card.level<=mana[player]):
+					card.node.get_node("Animation").queue("blink")
+	elif (card!=null):
+		for c in field[PLAYER1]+field[PLAYER2]+hand[PLAYER1]+hand[PLAYER2]:
+			if (can_target(card,event,player,c)):
+				c.node.get_node("Animation").play("blink")
+	
+
 func select(card,type):
 	if ((ai || multiplayer) && player!=PLAYER1):
 		return
@@ -749,8 +764,7 @@ func select(card,type):
 		emit_signal("target_selected",null)
 		return
 	
-	if (selected_card!=null):
-		selected_card.node.get_node("Animation").play("deselect")
+	hint_valid_cards()
 	selected_card = card
 	selected_card.node.get_node("Animation").play("select")
 	if (type=="hand"):
@@ -769,13 +783,8 @@ func deselect(emit=true):
 	using_card = false
 	UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(true)
 	sort_hand(player)
-	for node in get_node("Cards").get_children():
-		if (node.get_node("Select").is_visible()):
-			node.get_node("Animation").play("deselect")
-	if (player==PLAYER1 || (!ai && !multiplayer)):
-		for card in hand[player]:
-			if (card.level<=mana[player]):
-				card.node.get_node("Animation").queue("blink")
+	hint_valid_cards()
+	
 	if (emit):
 		state = null
 		emit_signal("target_selected",null)
@@ -932,7 +941,7 @@ sync func attack_phase_end():
 			for c in field[PLAYER1]+field[PLAYER2]:
 				if (Cards.data[c.ID].has("on_damaged")):
 					apply_effect(c,"on_damaged",dmg)
-			# Draw 2 cards if damaged, 4 if health drops below 10 the first time.
+			# Draw 2 cards if damaged.
 			draw += 1
 			if (temp>0):
 				UI.get_node("Player"+str(enemy+1)+"/Animation").play("fire_damage")
@@ -974,10 +983,16 @@ func _resize():
 	for p in range(2):
 		sort_hand(p)
 
+func _input(event):
+	if (event is InputEventMouseButton && event.button_index==1 && !event.pressed):
+		yield(get_tree(),"idle_frame")
+		hint_valid_cards("hand")
+
 func _ready():
 	timer = Timer.new()
 	timer.set_one_shot(true)
 	add_child(timer)
+	set_process_input(true)
 	get_tree().connect("screen_resized",self,"_resize")
 	_resize()
 	get_node("Camera").make_current()
