@@ -423,7 +423,7 @@ const data = {
 		"target":"creature",
 		"tags":["curse"],
 		"animation":"sparks",
-		"image":preload("res://images/cards/back.png")
+		"image":preload("res://images/cards/acid_blast.jpg")
 	},
 	"cleanse":{
 		"type":"spell",
