@@ -365,7 +365,7 @@ const data = {
 		"on_new_turn":"damage_enemy-1",
 		"tags":["neutral","elemental"],
 		"animation":"wind_blast",
-		"image":preload("res://images/cards/back.png")
+		"image":preload("res://images/cards/shadow_creature.jpg")
 	},
 	"assembled_golem":{
 		"type":"creature",

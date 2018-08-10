@@ -8,7 +8,7 @@ Katarzyna Zalecka (concept) http://kasia88.deviantart.com;
 Gabriel Verdon (artwork) http://www.gabrielverdon.com
 License: CC-BY-SA 3.0
 
-acid_blast.jpg, blaze.jpg, explosion.jpg, fire_ball.jpg, fire_blade.jpg, fire_creature.jpg, flash_flood.jpg, hailstorm.jpg, ice_creature.jpg, ice_shield.jpg, ice_spell.jpg, magic_sword.jpg, spell_neutral.jpg, thermal_shield.jpg, wisp_fire.jpg, wisp_ice.jpg:
+acid_blast.jpg, blaze.jpg, cleanse.jpg, explosion.jpg, fire_ball.jpg, fire_blade.jpg, fire_creature.jpg, flash_flood.jpg, hailstorm.jpg, ice_creature.jpg, ice_shield.jpg, ice_spell.jpg, magic_sword.jpg, shadow_creature.jpg, spell_neutral.jpg, thermal_shield.jpg, wisp_fire.jpg, wisp_ice.jpg:
 Copyright: Viktor Hahn
 License: CC-BY-SA 3.0
 
