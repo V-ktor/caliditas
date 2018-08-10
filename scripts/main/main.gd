@@ -23,6 +23,7 @@ var turn = -1
 var selected_card
 var zoom = 1.0
 var used_positions = [[],[]]
+var attack_list = {}
 var select = "none"
 var state
 var using_card = false
@@ -49,6 +50,7 @@ class Card:
 	var pos
 	var in_game
 	var equiped
+	var arrow
 	
 	func _init(t,p,n,a=false):
 		ID = t
@@ -146,6 +148,7 @@ class TemperatureSorter:
 
 func reset():
 	# Reset to initial values and remove old cards.
+	clear_attack_list()
 	for card in get_node("Cards").get_children():
 		card.queue_free()
 	field = [[],[]]
@@ -158,6 +161,7 @@ func reset():
 	temperature = [0,0]
 	inc_mana = [true,true]
 	used_positions = [[-3],[3]]
+	attack_list.clear()
 	turn = -1
 	player = -1
 	selected_card = null
@@ -180,6 +184,8 @@ func reset():
 func start():
 	# Start a new match.
 	timer.set_wait_time(2.0)
+	UI.get_node("Player1").hide()
+	UI.get_node("Player2").hide()
 	UI.get_node("Player1/VBoxContainer/Name").set_text(player_name[PLAYER1])
 	UI.get_node("Player2/VBoxContainer/Name").set_text(player_name[PLAYER2])
 	UI.get_node("LabelVS").set_text(player_name[PLAYER1]+" VS "+player_name[PLAYER2])
@@ -190,6 +196,8 @@ func start():
 	UI.get_node("AnimationPlayer").play("vs")
 	timer.start()
 	yield(timer,"timeout")
+	UI.get_node("Player1/Animation").play("show")
+	UI.get_node("Player2/Animation").play("show")
 	timer.set_wait_time(0.2)
 	for i in range(START_CARDS):
 		_draw_card(PLAYER1)
@@ -251,10 +259,46 @@ func ai_turn(player):
 			timer.start()
 			yield(timer,"timeout")
 	
+	ai_set_attack(player)
 	timer.set_wait_time(1.0)
 	timer.start()
 	yield(timer,"timeout")
 	end_turn()
+
+func ai_set_attack(player):
+	var enemy = (player+1)%2
+	var list = []+field[player]
+	# Check if a creature or one of it's equiped cards has the no_attack special.
+	for i in range(list.size()-1,-1,-1):
+		var card = list[i]
+		if (card.type!="creature" || (Cards.data[card.ID].has("no_attack") && Cards.data[card.ID]["no_attack"])):
+			list.remove(i)
+		else:
+			for equiped in card.equiped:
+				if (Cards.data[equiped.ID].has("no_attack") && Cards.data[equiped.ID]["no_attack"]):
+					list.remove(i)
+					break
+	# Sort the creatures by abs(temperature).
+	# As targets are chosen randomly this will prevent strong creatures defeating weak ones
+	# and leaving only strong creatures that can't be killed by the weak ones.
+	list.sort_custom(TemperatureSorter,"sort_ascending")
+	UI.get_node("VBoxContainer/LabelP").set_text(tr("ATTACK_PHASE"))
+	
+	# Attack random enemies that can be defeated.
+	for card in list:
+		var targets = []
+		for t in field[enemy]:
+			if (can_attack(card,t) && abs(t.temperature)<abs(card.temperature)):
+				targets.push_back(t)
+		if (targets.size()==0):
+			for t in field[enemy]:
+				if (can_attack(card,t) && abs(t.temperature)==abs(card.temperature)):
+					targets.push_back(t)
+		if (targets.size()==0):
+			continue
+		
+		var target = targets[randi()%targets.size()]
+		set_attack(card,target)
 
 
 # Send positions instead of classes to other players.
@@ -512,6 +556,9 @@ func use_effect(card,effect,player,target=null):
 				if (player==PLAYER1):
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(false)
+				elif (player==PLAYER2 && !ai && !multiplayer):
+					UI.get_node("Player2/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
+					UI.get_node("Player2/VBoxContainer/ButtonC").set_disabled(false)
 				print("Please select a "+select+" card.")
 				hint_valid_cards("creature",card,effect)
 				yield(self,"target_selected")
@@ -596,7 +643,10 @@ remote func _attack(a,t,no_counter=false):
 	attack(attacker,target,no_counter)
 
 func attack(attacker,target,counter=false):
-	var counterattack = !counter && abs(target.temperature)>=abs(attacker.temperature) && sign(attacker.temperature)!=sign(target.temperature)
+	if (!can_attack(attacker,target)):
+		return
+#	var counterattack = !counter && abs(target.temperature)>=abs(attacker.temperature) && sign(attacker.temperature)!=sign(target.temperature)
+	var counterattack = !counter && can_attack(target,attacker)
 	if (multiplayer && server):
 		var a = {}
 		var t = {}
@@ -745,11 +795,15 @@ func hint_valid_cards(s=null,card=null,event="on_play"):
 	for node in get_node("Cards").get_children():
 		if (node.get_node("Select").is_visible()):
 			node.get_node("Animation").play("deselect")
-	if (s=="hand"):
+	if (s=="hand" || s=="hand_creature"):
 		if (player==PLAYER1 || (!ai && !multiplayer)):
 			for card in hand[player]:
 				if (card.level<=mana[player]):
 					card.node.get_node("Animation").queue("blink")
+	elif (s=="attack"):
+		for t in field[(player+1)%2]:
+			if (can_attack(card,t)):
+				t.node.get_node("Animation").play("blink")
 	elif (card!=null):
 		for c in field[PLAYER1]+field[PLAYER2]+hand[PLAYER1]+hand[PLAYER2]:
 			if (can_target(card,event,player,c)):
@@ -759,29 +813,48 @@ func hint_valid_cards(s=null,card=null,event="on_play"):
 func select(card,type):
 	if ((ai || multiplayer) && player!=PLAYER1):
 		return
-	if (type!=select):
+	if (type!=select && !(select=="hand_creature" && type in ["hand","creature"])):
 		deselect(false)
 		emit_signal("target_selected",null)
 		return
 	
+	var last_selected = selected_card
 	hint_valid_cards()
 	selected_card = card
 	selected_card.node.get_node("Animation").play("select")
-	if (type=="hand"):
-		UI.get_node("Player1/VBoxContainer/ButtonC").set_text(tr("PLAY"))
-		UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(false)
+	if (type=="hand" || (select=="hand_creature" && !selected_card.in_game)):
+		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonC").set_text(tr("PLAY"))
+		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonC").set_disabled(false)
+	elif (selected_card.type=="creature"):
+		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
+		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonC").set_disabled(false)
 	emit_signal("target_selected",card)
+	if (selected_card==null):
+		return
 	
 	if (select=="hand"):
 		play_card(card,player)
+	elif (select=="hand_creature"):
+		if (selected_card.owner!=player):
+			deselect(false)
+		elif (!selected_card.in_game):
+			play_card(card,player)
+		elif (selected_card.type=="creature"):
+			select = "creature"
+			hint_valid_cards("attack",selected_card)
+	elif (select=="creature"):
+		set_attack(last_selected,selected_card)
+		deselect(false)
 
 func deselect(emit=true):
 	if (selected_card!=null):
-		selected_card.node.get_node("Animation").play("deselect")
+		selected_card.node.get_node("Animation").queue("deselect")
 	selected_card = null
-	select = "hand"
+#	select = "hand"
+	select = "hand_creature"
 	using_card = false
-	UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(true)
+	if (player>=0):
+		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonC").set_disabled(true)
 	sort_hand(player)
 	hint_valid_cards()
 	
@@ -796,7 +869,11 @@ func _confirm():
 		return
 	
 	if (selected_card!=null):
-		play_card(selected_card,player)
+		if (selected_card.type=="creature" && selected_card.in_game):
+			clear_attack(selected_card)
+			UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonC").set_disabled(true)
+		else:
+			play_card(selected_card,player)
 
 
 func end_turn():
@@ -817,6 +894,7 @@ func next_turn(draw=1):
 	turn += 1
 	player = turn%2
 	enemy = (player+1)%2
+	clear_attack_list()
 	
 	if (mana[player]==mana_max[player]):
 		draw += 1
@@ -838,7 +916,7 @@ func next_turn(draw=1):
 				apply_effect(equiped,"on_new_turn",card)
 	
 	selected_card = null
-	select = "hand"
+	select = "hand_creature"
 	update_stats()
 	UI.get_node("VBoxContainer/LabelT").set_text(tr("PLAYER_TURN")%player_name[player])
 	UI.get_node("VBoxContainer/LabelP").set_text(tr("PLAYING_PHASE"))
@@ -875,44 +953,11 @@ remote func attack_phase():
 		return
 	
 	var enemy = (player+1)%2
-	var list = []+field[player]
-	# Check if a creature or one of it's equiped cards has the no_attack special.
-	for i in range(list.size()-1,-1,-1):
-		var card = list[i]
-		if (card.type!="creature" || (Cards.data[card.ID].has("no_attack") && Cards.data[card.ID]["no_attack"])):
-			list.remove(i)
-		else:
-			for equiped in card.equiped:
-				if (Cards.data[equiped.ID].has("no_attack") && Cards.data[equiped.ID]["no_attack"]):
-					list.remove(i)
-					break
-	# Sort the creatures by abs(temperature).
-	# As targets are chosen randomly this will prevent strong creatures defeating weak ones
-	# and leaving only strong creatures that can't be killed by the weak ones.
-	list.sort_custom(TemperatureSorter,"sort_ascending")
-	UI.get_node("VBoxContainer/LabelP").set_text(tr("ATTACK_PHASE"))
-	
-	# Attack random enemies that can be defeated.
-	for card in list:
-		var targets = []
-		var can_target_all = Cards.data[card.ID].has("can_target_all") && Cards.data[card.ID]["can_target_all"]
-		if (!can_target_all):
-			for eq in card.equiped:
-				if (Cards.data[eq.ID].has("can_target_all") && Cards.data[eq.ID]["can_target_all"]):
-					can_target_all = true
-					break
-		for t in field[enemy]:
-			if (t.type=="creature" && abs(t.temperature)<abs(card.temperature) && (sign(t.temperature)!=sign(card.temperature) || can_target_all)):
-				targets.push_back(t)
-		if (targets.size()==0):
-			for t in field[enemy]:
-				if (t.type=="creature" && abs(t.temperature)==abs(card.temperature) && (sign(t.temperature)!=sign(card.temperature) || can_target_all)):
-					targets.push_back(t)
-		if (targets.size()==0):
+	for card in field[player]:
+		if (!attack_list.has(card)):
 			continue
-		
-		var target = targets[randi()%targets.size()]
-		attack(card,target)
+		attack(card,attack_list[card])
+		clear_attack(card)
 		timer.set_wait_time(1.0)
 		timer.start()
 		yield(timer,"timeout")
@@ -954,6 +999,45 @@ sync func attack_phase_end():
 		game_over()
 	else:
 		next_turn(draw)
+
+func can_attack(attacker,target):
+	if (attacker.type!="creature" || target.type!="creature" || attacker.owner==target.owner || Cards.data[attacker.ID].has("no_attack") && Cards.data[attacker.ID]["no_attack"]):
+		return false
+	var can_target_all = Cards.data[attacker.ID].has("can_target_all") && Cards.data[attacker.ID]["can_target_all"]
+	if (!can_target_all):
+		for eq in attacker.equiped:
+			if (Cards.data[eq.ID].has("no_attack") && Cards.data[eq.ID]["no_attack"]):
+				return false
+			if (Cards.data[eq.ID].has("can_target_all") && Cards.data[eq.ID]["can_target_all"]):
+				can_target_all = true
+	return abs(target.temperature)<=abs(attacker.temperature) && (can_target_all || sign(target.temperature)!=sign(attacker.temperature))
+
+func is_targeted(target):
+	return target in attack_list.values()
+
+func set_attack(attacker,target):
+	if (!(attacker in field[attacker.owner]) || !(target in field[target.owner]) || !can_attack(attacker,target) || is_targeted(target)):
+		return
+	var ai = get_node("ArrowAttack").duplicate()
+	if (attack_list.has(attacker)):
+		clear_attack(attacker)
+	attack_list[attacker] = target
+	attacker.arrow = ai
+	ai.origin = attacker.node.get_global_position()
+	ai.set_global_position(target.node.get_global_position())
+	ai.show()
+	add_child(ai)
+
+func clear_attack(attacker):
+	if (attacker.arrow!=null):
+		attacker.arrow.queue_free()
+	attack_list.erase(attacker)
+
+func clear_attack_list():
+	for attacker in attack_list.keys():
+		if (attacker.arrow!=null):
+			attacker.arrow.queue_free()
+	attack_list.clear()
 
 
 sync func update_stats():

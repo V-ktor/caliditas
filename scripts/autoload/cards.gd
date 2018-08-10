@@ -434,7 +434,7 @@ const data = {
 		"target":"creature",
 		"tags":[],
 		"animation":"sparks",
-		"image":preload("res://images/cards/spell_neutral.jpg")
+		"image":preload("res://images/cards/cleanse.jpg")
 	},
 	"hurricane":{
 		"type":"spell",

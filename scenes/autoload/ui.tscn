@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://scripts/gui/ui.gd" type="Script" id=1]
 [ext_resource path="res://default_theme.tres" type="Theme" id=2]
@@ -104,6 +104,49 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
+[sub_resource type="Animation" id=17]
+
+resource_name = "hide"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:margin_left")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 6.0, -194.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:margin_right")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 168.0, -32.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
 [sub_resource type="Animation" id=6]
 
 resource_name = "ice_damage"
@@ -156,6 +199,49 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 2,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=18]
+
+resource_name = "show"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:margin_left")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -194.0, 6.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:margin_right")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -32.0, 168.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
 "values": [ true ]
 }
 
@@ -232,6 +318,49 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
+[sub_resource type="Animation" id=19]
+
+resource_name = "hide"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:margin_left")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -168.0, 32.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:margin_right")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -6.0, 194.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
 [sub_resource type="Animation" id=10]
 
 resource_name = "ice_damage"
@@ -287,6 +416,49 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
+[sub_resource type="Animation" id=20]
+
+resource_name = "show"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:margin_left")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 32.0, -168.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:margin_right")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 194.0, -6.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
 [sub_resource type="DynamicFont" id=11]
 
 size = 24
@@ -295,7 +467,7 @@ use_filter = false
 font_data = ExtResource( 3 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[sub_resource type="DynamicFont" id=16]
+[sub_resource type="DynamicFont" id=12]
 
 size = 48
 use_mipmaps = false
@@ -303,7 +475,7 @@ use_filter = false
 font_data = ExtResource( 3 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[sub_resource type="Shader" id=12]
+[sub_resource type="Shader" id=13]
 
 code = "shader_type canvas_item;
 render_mode blend_add;
@@ -325,10 +497,10 @@ void fragment()
 }"
 _sections_unfolded = [ "Resource" ]
 
-[sub_resource type="ShaderMaterial" id=13]
+[sub_resource type="ShaderMaterial" id=14]
 
 render_priority = 0
-shader = SubResource( 12 )
+shader = SubResource( 13 )
 shader_param/scale = 0.0
 shader_param/offset = 10.0
 shader_param/right = true
@@ -338,16 +510,15 @@ _sections_unfolded = [ "shader_param" ]
 [sub_resource type="ShaderMaterial" id=15]
 
 render_priority = 0
-shader = SubResource( 12 )
+shader = SubResource( 13 )
 shader_param/scale = 0.0
 shader_param/offset = -10.0
 shader_param/right = false
 shader_param/mask = ExtResource( 15 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=16]
 
-resource_name = "vs"
 length = 3.0
 loop = false
 step = 0.1
@@ -520,7 +691,7 @@ tracks/13/keys = {
 "values": [ true, false ]
 }
 
-[node name="UI" type="CanvasLayer"]
+[node name="UI" type="CanvasLayer" index="0"]
 
 layer = 100
 offset = Vector2( 0, 0 )
@@ -997,7 +1168,9 @@ playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
 anims/fire_damage = SubResource( 5 )
+anims/hide = SubResource( 17 )
 anims/ice_damage = SubResource( 6 )
+anims/show = SubResource( 18 )
 blend_times = [  ]
 
 [node name="Player2" type="Panel" parent="." index="1"]
@@ -1468,7 +1641,9 @@ playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
 anims/fire_damage = SubResource( 9 )
+anims/hide = SubResource( 19 )
 anims/ice_damage = SubResource( 10 )
+anims/show = SubResource( 20 )
 blend_times = [  ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." index="2"]
@@ -1579,7 +1754,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 16 )
+custom_fonts/font = SubResource( 12 )
 text = "PLAYER1 VS PLAYER2"
 align = 1
 valign = 1
@@ -1592,7 +1767,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Visibility", "custom_fonts" ]
 
 visible = false
 light_mask = 0
-material = SubResource( 13 )
+material = SubResource( 14 )
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -1607,6 +1782,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 texture = ExtResource( 16 )
 expand = true
+stretch_mode = 0
 _sections_unfolded = [ "Margin", "Material", "Rect", "Region", "Transform", "Visibility" ]
 
 [node name="Ray2" type="TextureRect" parent="." index="7"]
@@ -1628,6 +1804,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 texture = ExtResource( 16 )
 expand = true
+stretch_mode = 0
 _sections_unfolded = [ "Anchor", "Margin", "Material", "Rect", "Region", "Transform", "Visibility" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="8"]
@@ -1637,7 +1814,7 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/vs = SubResource( 14 )
+anims/vs = SubResource( 16 )
 blend_times = [  ]
 
 

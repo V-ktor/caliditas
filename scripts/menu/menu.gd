@@ -60,9 +60,9 @@ func _skirmish():
 	Main.player_name[0] = _name
 	Main.player_name[1] = tr("AI_SKIRMISH")
 	Main.ai = true
+	UI.show()
 	Main.start()
 	reward = 100
-	UI.show()
 	hide()
 	active = true
 	get_node("Panel/VBoxContainer/Button5").show()
@@ -76,9 +76,9 @@ func _local():
 	Main.deck[1] = get_deck()
 	Main.player_name[0] = _name
 	Main.player_name[1] = _name
+	UI.show()
 	Main.start()
 	reward = 0
-	UI.show()
 	hide()
 	active = true
 	get_node("Panel/VBoxContainer/Button5").show()
@@ -125,9 +125,9 @@ sync func _multiplayer():
 		Main.turn = 0
 		Main.mana = [3,2]
 		Main.mana_max = [3,2]
+	UI.show()
 	Main.start()
 	reward = 250
-	UI.show()
 	hide()
 	active = true
 	get_node("Panel/VBoxContainer/Button5").show()

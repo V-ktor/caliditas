@@ -22,6 +22,8 @@ func _continue():
 func _ready():
 	var card
 	var ID = 0
+	UI.get_node("Player1").hide()
+	UI.get_node("Player2").hide()
 	timer.set_one_shot(true)
 	add_child(timer)
 	get_node("Panel/ButtonF").connect("pressed",self,"_continue")
@@ -51,6 +53,8 @@ func _ready():
 		Main.draw_card(Main.PLAYER2)
 		timer.start()
 		yield(timer,"timeout")
+	UI.get_node("Player1/Animation").play("show")
+	UI.get_node("Player2/Animation").play("show")
 	ID = randi()%Main.deck[Main.PLAYER1].size()
 	while (Cards.data[Main.deck[Main.PLAYER1][ID]]["type"]!="creature" || Cards.data[Main.deck[Main.PLAYER1][ID]]["level"]>3):
 		ID = randi()%Main.deck[Main.PLAYER1].size()

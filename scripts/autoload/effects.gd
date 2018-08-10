@@ -106,8 +106,7 @@ func kill_hot(card,target,ammount):
 	if (target.temperature>0 && target.temperature<=ammount):
 		target.destroy()
 
-func kill_level(card,target,ammount):
-	printt(card,target,ammount)
+func kill_level(card,target,ammount,attacked=null):
 	if (target.level<=ammount):
 		target.destroy()
 

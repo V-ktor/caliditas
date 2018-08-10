@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scripts/main/main.gd" type="Script" id=1]
 [ext_resource path="res://images/background/diffuse.jpg" type="Texture" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://images/gui/line02.png" type="Texture" id=11]
 [ext_resource path="res://scripts/gui/arrow.gd" type="Script" id=12]
 [ext_resource path="res://images/gui/arrow01.png" type="Texture" id=13]
+[ext_resource path="res://scripts/gui/arrow_attack.gd" type="Script" id=14]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -87,7 +88,26 @@ tracks/0/keys = {
 "values": [ 1.0, 0.0 ]
 }
 
-[node name="Main" type="Node2D" index="0"]
+[sub_resource type="Animation" id=9]
+
+resource_name = "animation"
+length = 2.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+
+[node name="Main" type="Node2D"]
 
 script = ExtResource( 1 )
 
@@ -436,6 +456,38 @@ playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
 anims/animation = SubResource( 8 )
+blend_times = [  ]
+
+[node name="ArrowAttack" type="Sprite" parent="." index="16"]
+
+visible = false
+modulate = Color( 1, 0, 0, 1 )
+light_mask = 0
+material = SubResource( 7 )
+position = Vector2( 256, 256 )
+scale = Vector2( 0.5, 0.5 )
+z_index = 10
+texture = ExtResource( 11 )
+offset = Vector2( -320, 0 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 384, 128 )
+script = ExtResource( 14 )
+_sections_unfolded = [ "Material", "Offset", "Region", "Transform", "Visibility", "Z Index" ]
+
+[node name="Arrow" type="Sprite" parent="ArrowAttack" index="0"]
+
+texture = ExtResource( 13 )
+offset = Vector2( -32, 0 )
+_sections_unfolded = [ "Offset" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ArrowAttack" index="1"]
+
+root_node = NodePath("..")
+autoplay = "animation"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/animation = SubResource( 9 )
 blend_times = [  ]
 
 
