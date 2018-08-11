@@ -841,6 +841,7 @@ func _ready():
 	get_node("Credits/Text").append_bbcode("[url=http://www.gabrielverdon.com]www.gabrielverdon.com[/url]")
 	get_node("Credits/Text").add_text(") ")
 	get_node("Credits/Text").append_bbcode("[url=http://www.AncientBeast.com]www.AncientBeast.com[/url]\n")
+	get_node("Credits/Text").add_text(" - p0ss\n")
 	get_node("Credits/Text").add_text(" - Viktor Hahn\n\n")
 	get_node("Credits/Text").add_text(tr("MUSIC")+":\n - Viktor Hahn\n\n")
 	get_node("Credits/Text").add_text(tr("SOUNDS")+":\n - Iwan 'qubodup' Gabovitch (")

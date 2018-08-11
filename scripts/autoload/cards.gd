@@ -330,7 +330,7 @@ const data = {
 		"on_attacked":"freeze-2",
 		"tags":[],
 		"animation":"",
-		"image":preload("res://images/cards/back.png")
+		"image":preload("res://images/cards/hailstorm.jpg")
 	},
 	
 	# neutral creatures
@@ -388,7 +388,7 @@ const data = {
 		"on_play":"draw-3",
 		"tags":[],
 		"animation":"sparks",
-		"image":preload("res://images/cards/back.png")
+		"image":preload("res://images/cards/fractal_metal_structure.jpg")
 	},
 	"equalize":{
 		"type":"spell",
@@ -411,7 +411,7 @@ const data = {
 		"target":"creature",
 		"tags":[],
 		"animation":"neutralize",
-		"image":preload("res://images/cards/spell_neutral.jpg")
+		"image":preload("res://images/cards/inversion_creature.jpg")
 	},
 	"dissolving_acid":{
 		"type":"spell",
@@ -444,7 +444,7 @@ const data = {
 		"on_play":"destroy_all_lands",
 		"tags":["area"],
 		"animation":"neutralize",
-		"image":preload("res://images/cards/back.png")
+		"image":preload("res://images/cards/air_creature.jpg")
 	},
 	"flash_flood":{
 		"type":"spell",
@@ -490,7 +490,7 @@ const data = {
 		"on_new_turn":"destroy_player_turn",
 		"tags":["area"],
 		"animation":"",
-		"image":preload("res://images/cards/spell_neutral.jpg")
+		"image":preload("res://images/cards/inversion_creature.jpg")
 	},
 	"thermal_shield":{
 		"type":"land",
