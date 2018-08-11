@@ -343,7 +343,7 @@ const data = {
 		"on_attacked":"kill_level-3",
 		"tags":["neutral","elemental"],
 		"animation":"wind_blast",
-		"image":preload("res://images/cards/back.png")
+		"image":preload("res://images/cards/air_creature.jpg")
 	},
 	"lightning_elemental":{
 		"type":"creature",
@@ -354,7 +354,7 @@ const data = {
 		"on_attacked":"kill_level-5",
 		"tags":["neutral","elemental"],
 		"animation":"wind_blast",
-		"image":preload("res://images/cards/back.png")
+		"image":preload("res://images/cards/lightning_creature.jpg")
 	},
 	"shadow_elemental":{
 		"type":"creature",

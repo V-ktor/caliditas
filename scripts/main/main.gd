@@ -230,6 +230,15 @@ func find_empty_position(player):
 	
 	return p
 
+func get_index(card):
+	var dict = {}
+	for p in range(2):
+		for i in range(field[p].size()):
+			if (field[p][i]==card):
+				dict["index"] = i
+				dict["player"] = p
+	return dict
+
 func get_player_temperature(player):
 	var temp = temperature[player]
 	for card in field[player]:
@@ -648,16 +657,8 @@ func attack(attacker,target,counter=false):
 #	var counterattack = !counter && abs(target.temperature)>=abs(attacker.temperature) && sign(attacker.temperature)!=sign(target.temperature)
 	var counterattack = !counter && can_attack(target,attacker)
 	if (multiplayer && server):
-		var a = {}
-		var t = {}
-		for p in range(2):
-			for i in range(field[p].size()):
-				if (field[p][i]==attacker):
-					a["index"] = i
-					a["player"] = p
-				if (field[p][i]==target):
-					t["index"] = i
-					t["player"] = p
+		var a = get_index(attacker)
+		var t = get_index(target)
 		if (a.size()>0 && t.size()>0):
 			rpc("_attack",a,t,counter)
 	var pos_a = attacker.node.get_global_position()
@@ -1015,6 +1016,18 @@ func can_attack(attacker,target):
 func is_targeted(target):
 	return target in attack_list.values()
 
+func _set_attack(attacker,target):
+	if (multiplayer):
+		var a = get_index(attacker)
+		var t = get_index(target)
+		rpc("remote_set_attack",a,t)
+	set_attack(attacker,target)
+
+remote func remote_set_attack(a,t):
+	var attacker = field[(a["player"]+1)%2][a["index"]]
+	var target = field[(t["player"]+1)%2][t["index"]]
+	set_attack(attacker,target)
+
 func set_attack(attacker,target):
 	if (!(attacker in field[attacker.owner]) || !(target in field[target.owner]) || !can_attack(attacker,target) || is_targeted(target)):
 		return
@@ -1027,6 +1040,16 @@ func set_attack(attacker,target):
 	ai.set_global_position(target.node.get_global_position())
 	ai.show()
 	add_child(ai)
+
+func _clear_attack(attacker):
+	if (multiplayer):
+		var a = get_index(attacker)
+		rpc("remote_clear_attack",a)
+	set_attack(attacker)
+
+remote func remote_clear_attack(a):
+	var attacker = field[(a["player"]+1)%2][a["index"]]
+	clear_attack(attacker)
 
 func clear_attack(attacker):
 	if (attacker.arrow!=null):
