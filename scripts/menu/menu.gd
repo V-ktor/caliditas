@@ -815,7 +815,7 @@ func _ready():
 	for s in ["HELP_INTRO","HELP_1","HELP_2","HELP_3","HELP_4","HELP_5"]:
 		var array = tr(s).split("_")
 		for st in array:
-			if (st=="creature"):
+			if (st=="creature" || st=="creatures"):
 				get_node("Info/Text").push_color(Cards.COLOR_CREATURE)
 			elif (st=="spell"):
 				get_node("Info/Text").push_color(Cards.COLOR_SPELL)
