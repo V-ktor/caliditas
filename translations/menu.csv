@@ -3,6 +3,7 @@ CONTINUE,Continue
 TUTORIAL,Tutorial
 SKIRMISH,Skirmish
 PLAYER_VS_PLAYER,Player vs player
+SINGLEPLAYER,Singleplayer
 MULTIPLAYER,Multiplayer
 DECK,Deck
 DECKS,Decks
@@ -61,7 +62,7 @@ HELP_2,"If the enemy has no creatures on the battle field to protect him you dea
 HELP_3,"Your _creatures_ can attack right after you end your turn. Select a target to attack for each of your creatures before ending your turn! Note that the attacker is destroyed as well if both fighting creatures are equally strong. If there are no creatures left after your attack phase you may deal damage to your opponent, but only up to 10 points per turn. Both players start with 20 _health_."
 HELP_4,"If a player is hurt he draws an additional card on his next turn. Otherwise the player draws one card at the start of his turn. It is also possible to draw an additional card each turn, but this will reduce your max mana by one point."
 HELP_5,"Cards require _mana_ in order to be played. Each player starts with 3 mana points and gets one more point for each turn passed."
-HELP_6,"Left mouse button to select cards, right mouse button for zoom."
+HELP_6,"Left mouse button to select cards, right mouse button to enlarge cards."
 CREDITS,Credits
 ENGINE,Engine
 PROGRAMMING,Programming

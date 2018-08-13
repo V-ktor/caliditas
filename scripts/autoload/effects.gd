@@ -2,26 +2,26 @@ extends Node
 
 # modify temperature #
 
-func inc_temp(card,target,ammount):
-	target.temperature += ammount
+func inc_temp(card,target,amount):
+	target.temperature += amount
 	target.update()
 
-func dec_temp(card,target,ammount):
-	target.temperature -= ammount
+func dec_temp(card,target,amount):
+	target.temperature -= amount
 	target.update()
 
-func neutralize_temp(card,target,ammount):
+func neutralize_temp(card,target,amount):
 	if (target.temperature>0):
-		target.temperature -= ammount
+		target.temperature -= amount
 	elif (target.temperature<0):
-		target.temperature += ammount
+		target.temperature += amount
 	target.update()
 
-func amplify_temp(card,target,ammount):
+func amplify_temp(card,target,amount):
 	if (target.temperature>0):
-		target.temperature += ammount
+		target.temperature += amount
 	elif (target.temperature<0):
-		target.temperature -= ammount
+		target.temperature -= amount
 	target.update()
 
 func invert_temp(card,target):
@@ -38,86 +38,86 @@ func invert_enemy_temp(card,target):
 		card.temperature *= -1
 		card.update()
 
-func inc_ally_temp(card,target,ammount):
+func inc_ally_temp(card,target,amount):
 	for c in Main.field[card.owner]:
-		c.temperature += ammount
+		c.temperature += amount
 		c.update()
 
-func dec_ally_temp(card,target,ammount):
+func dec_ally_temp(card,target,amount):
 	for c in Main.field[card.owner]:
-			c.temperature -= ammount
+			c.temperature -= amount
 			c.update()
 
-func ice_armor(card,target,ammount):
+func ice_armor(card,target,amount):
 	if (Main.player==card.owner):
-		target.temperature += ammount
+		target.temperature += amount
 	else:
-		target.temperature -= ammount
+		target.temperature -= amount
 	target.update()
 
-func fire_armor(card,target,ammount):
+func fire_armor(card,target,amount):
 	if (Main.player==target.owner):
-		target.temperature -= ammount
+		target.temperature -= amount
 	else:
-		target.temperature += ammount
+		target.temperature += amount
 	target.update()
 
-func ice_aura(card,target,ammount):
+func ice_aura(card,target,amount):
 	for c in Main.field[card.owner]:
 		if ("ice" in Cards.data[c.ID]["tags"]):
 			if (Main.player==c.owner):
-				c.temperature += ammount
+				c.temperature += amount
 			else:
-				c.temperature -= ammount
+				c.temperature -= amount
 			c.update()
 
-func fire_aura(card,target,ammount):
+func fire_aura(card,target,amount):
 	for c in Main.field[card.owner]:
 		if ("fire" in Cards.data[c.ID]["tags"]):
 			if (Main.player==c.owner):
-				c.temperature += ammount
+				c.temperature += amount
 			else:
-				c.temperature -= ammount
+				c.temperature -= amount
 			c.update()
 
-func global_diffusion(card,target,ammount):
+func global_diffusion(card,target,amount):
 	var global_temp = (Main.get_player_temperature(Main.PLAYER1)+Main.get_player_temperature(Main.PLAYER2))/2
-	target.temperature += ammount*sign(global_temp-target.temperature)
+	target.temperature += amount*sign(global_temp-target.temperature)
 
-func global_diffusion_all(card,target,ammount):
+func global_diffusion_all(card,target,amount):
 	var global_temp = (Main.get_player_temperature(Main.PLAYER1)+Main.get_player_temperature(Main.PLAYER2))/2
 	for c in Main.field[Main.PLAYER1]+Main.field[Main.PLAYER2]:
 		if (c.type=="creature"):
-			c.temperature += ammount*sign(global_temp-c.temperature)
+			c.temperature += amount*sign(global_temp-c.temperature)
 
-func inc_player_temp(card,target,ammount):
-	Main.temperature[card.owner] += ammount
+func inc_player_temp(card,target,amount):
+	Main.temperature[card.owner] += amount
 
-func dec_player_temp(card,target,ammount):
-	Main.temperature[card.owner] -= ammount
+func dec_player_temp(card,target,amount):
+	Main.temperature[card.owner] -= amount
 
 # destroy cards #
 
-func kill_cold(card,target,ammount):
-	if (target.temperature<0 && -target.temperature<=ammount):
+func kill_cold(card,target,amount):
+	if (target.temperature<0 && -target.temperature<=amount):
 		target.destroy()
 
-func kill_hot(card,target,ammount):
-	if (target.temperature>0 && target.temperature<=ammount):
+func kill_hot(card,target,amount):
+	if (target.temperature>0 && target.temperature<=amount):
 		target.destroy()
 
-func kill_level(card,target,ammount,attacked=null):
-	if (target.level<=ammount):
+func kill_level(card,target,amount,attacked=null):
+	if (target.level<=amount):
 		target.destroy()
 
-func kill_all_hot(card,target,ammount):
+func kill_all_hot(card,target,amount):
 	for c in Main.field[Main.PLAYER1]+Main.field[Main.PLAYER2]:
-		if (c.type=="creature" && c.temperature>0 && c.temperature<=ammount):
+		if (c.type=="creature" && c.temperature>0 && c.temperature<=amount):
 			c.destroy()
 
-func kill_all_cold(card,target,ammount):
+func kill_all_cold(card,target,amount):
 	for c in Main.field[Main.PLAYER1]+Main.field[Main.PLAYER2]:
-		if (c.type=="creature" && c.temperature<0 && -c.temperature<=ammount):
+		if (c.type=="creature" && c.temperature<0 && -c.temperature<=amount):
 			c.destroy()
 
 func explosion(card,target):
@@ -148,34 +148,34 @@ func destroy_all_lands(card,target):
 		if (c.type=="land"):
 			c.destroy()
 
-func melt(card,target):
+func melt(card,target,amount):
 	if (Main.player!=card.owner):
 		return
-	card.temperature += 1
+	card.temperature += amount
 	card.update()
 	if (card.temperature>=0):
 		card.destroy()
 
-func melt_target(card,target):
+func melt_target(card,target,amount):
 	if (Main.player!=card.owner):
 		return
-	target.temperature += 1
+	target.temperature += amount
 	target.update()
 	if (target.temperature>=0):
 		target.destroy()
 
-func anneal(card,target):
+func anneal(card,target,amount):
 	if (Main.player!=card.owner):
 		return
-	card.temperature -= 1
+	card.temperature -= amount
 	card.update()
 	if (card.temperature<=0):
 		card.destroy()
 
-func anneal_target(card,target):
+func anneal_target(card,target,amount):
 	if (Main.player!=card.owner):
 		return
-	target.temperature -= 1
+	target.temperature -= amount
 	target.update()
 	if (target.temperature<=0):
 		target.destroy()
@@ -199,12 +199,12 @@ func move_to_hand(card,target):
 
 # mana #
 
-func inc_mana(card,target,ammount):
-	Main.mana_max[card.owner] += ammount
+func inc_mana(card,target,amount):
+	Main.mana_max[card.owner] += amount
 	Main.update_stats()
 
-func dec_mana(card,target,ammount):
-	Main.mana_max[card.owner] -= ammount
+func dec_mana(card,target,amount):
+	Main.mana_max[card.owner] -= amount
 	Main.update_stats()
 
 # equip spell cards #
@@ -236,30 +236,30 @@ func equip_all_ally_ice(card,target,type):
 
 # direct damage #
 
-func damage_enemy(card,target,ammount):
+func damage_enemy(card,target,amount):
 	var enemy = (Main.player+1)%2
 	if (card.owner==Main.player):
-		Main.health[enemy] -= ammount
+		Main.health[enemy] -= amount
 		Main.update_stats()
 
-func damage_player(card,target,ammount):
+func damage_player(card,target,amount):
 	if (card.owner==Main.player):
-		Main.health[Main.player] -= ammount
+		Main.health[Main.player] -= amount
 		Main.update_stats()
 
-func health_shield(card,ammount):
+func health_shield(card,amount):
 	var enemy = (Main.player+1)%2
 	if (card.owner==enemy):
-		Main.health[card.owner] += ammount
+		Main.health[card.owner] += amount
 
 # special #
 
-func draw(card,target,ammount):
+func draw(card,target,amount):
 	var timer = Timer.new()
 	timer.set_one_shot(true)
 	add_child(timer)
 	Main.get_node("SoundShuffle").play()
-	for i in range(ammount):
+	for i in range(amount):
 		Main._draw_card(card.owner)
 		timer.set_wait_time(0.2)
 		timer.start()
@@ -270,10 +270,10 @@ func draw(card,target,ammount):
 	Main.sort_hand(card.owner)
 	timer.queue_free()
 
-func spawn(card,target,ammount,type=""):
+func spawn(card,target,amount,type=""):
 	if (type==""):
 		return
-	for i in range(ammount):
+	for i in range(amount):
 		Main.create_creature(type,card.owner,card.node.pos)
 
 func assemble(card,target):

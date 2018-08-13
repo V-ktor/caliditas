@@ -1370,7 +1370,7 @@ tracks/16/keys = {
 "values": [ false, false ]
 }
 
-[node name="Card" type="Sprite"]
+[node name="Card" type="Sprite" index="0"]
 
 scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 1 )

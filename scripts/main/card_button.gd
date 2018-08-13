@@ -11,6 +11,7 @@ func get_drag_data(position):
 		Main.hint_valid_cards("attack",get_parent().card)
 	else:
 		Main.hint_valid_cards(s,get_parent().card)
+		get_parent().zoom()
 	Main.get_node("Arrow").show()
 	return get_parent().card
 
@@ -27,3 +28,5 @@ func drop_data(position,data):
 		else:
 			Main.clear_attack(data)
 			Main.deselect(false)
+	else:
+		Main.deselect(false)

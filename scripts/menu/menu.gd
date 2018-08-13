@@ -249,6 +249,7 @@ func _show_deck(t=false):
 	get_node("Deck/Header/Name").set_text(deck_name)
 	get_node("Deck").popup_centered()
 	get_node("Deck/Decks").hide()
+	get_node("Singleplayer").hide()
 
 func _show_decks():
 	var file = File.new()
@@ -294,6 +295,7 @@ func _show_shop():
 	get_node("Shop/VBoxContainer/Gold/Label").set_text(tr("GOLD")+": "+str(gold))
 	get_node("Acquired").hide()
 	get_node("Shop").popup_centered()
+	get_node("Singleplayer").hide()
 
 func _show_options():
 	var idx = 0
@@ -321,6 +323,7 @@ func _show_options():
 	if (_name!="" && _name!=tr("PLAYER")):
 		get_node("Options/ScrollContainer/VBoxContainer/Name/Name").set_text(_name)
 	get_node("Options").popup_centered()
+	get_node("Singleplayer").hide()
 
 func add_card(ID):
 	var type = Cards.data.keys()[ID]
@@ -708,7 +711,11 @@ func _resize():
 
 func _input(event):
 	if (event.is_action_pressed("ui_cancel")):
-		if (get_node("Panel").is_visible()):
+		if (get_node("Info").is_visible()):
+			get_node("Info").hide()
+		elif (get_node("Singleplayer").is_visible()):
+			get_node("Singleplayer").hide()
+		elif (get_node("Panel").is_visible()):
 			if (active):
 				hide()
 			else:
@@ -731,6 +738,7 @@ func _ready():
 	get_node("Panel/VBoxContainer/Button1").connect("pressed",self,"_skirmish")
 	get_node("Panel/VBoxContainer/Button7").connect("pressed",self,"_local")
 	get_node("Panel/VBoxContainer/Button9").connect("pressed",self,"_tutorial")
+	get_node("Panel/VBoxContainer/Button12").connect("pressed",get_node("Singleplayer"),"show")
 	get_node("Panel/VBoxContainer/Button10").connect("pressed",get_node("Lobby"),"popup_centered")
 	get_node("Panel/VBoxContainer/Button2").connect("pressed",self,"_show_deck")
 	get_node("Panel/VBoxContainer/Button11").connect("pressed",self,"_show_shop")
@@ -776,6 +784,10 @@ func _ready():
 	get_node("Quit/ButtonClose").set_size(Vector2(48,48))
 	get_node("GameOver/ButtonClose").set_position(Vector2(28,-48))
 	get_node("GameOver/ButtonClose").set_size(Vector2(48,48))
+	get_node("Singleplayer/VBoxContainer/Button1").connect("pressed",self,"_tutorial")
+	get_node("Singleplayer/VBoxContainer/Button2").connect("pressed",self,"_skirmish")
+	get_node("Singleplayer/VBoxContainer/Button3").connect("pressed",self,"_local")
+	get_node("Singleplayer/VBoxContainer/Button4").connect("pressed",get_node("Singleplayer"),"hide")
 	
 	# Set up card pack buttons.
 	for grade in range(3):

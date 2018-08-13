@@ -324,8 +324,33 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button9" type="Button" parent="Panel/VBoxContainer" index="1"]
+[node name="Button12" type="Button" parent="Panel/VBoxContainer" index="1"]
 
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 192.0
+margin_bottom = 58.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "SINGLEPLAYER"
+flat = false
+align = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Button9" type="Button" parent="Panel/VBoxContainer" index="2"]
+
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -348,15 +373,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="Button1" type="Button" parent="Panel/VBoxContainer" index="2"]
+[node name="Button1" type="Button" parent="Panel/VBoxContainer" index="3"]
 
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 49.0
 margin_right = 192.0
-margin_bottom = 94.0
+margin_bottom = 51.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -373,15 +398,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button7" type="Button" parent="Panel/VBoxContainer" index="3"]
+[node name="Button7" type="Button" parent="Panel/VBoxContainer" index="4"]
 
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 98.0
 margin_right = 192.0
-margin_bottom = 143.0
+margin_bottom = 58.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -398,15 +423,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button10" type="Button" parent="Panel/VBoxContainer" index="4"]
+[node name="Button10" type="Button" parent="Panel/VBoxContainer" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 147.0
+margin_top = 62.0
 margin_right = 192.0
-margin_bottom = 192.0
+margin_bottom = 120.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -423,15 +448,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button2" type="Button" parent="Panel/VBoxContainer" index="5"]
+[node name="Button2" type="Button" parent="Panel/VBoxContainer" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 196.0
+margin_top = 124.0
 margin_right = 192.0
-margin_bottom = 241.0
+margin_bottom = 182.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -448,15 +473,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button11" type="Button" parent="Panel/VBoxContainer" index="6"]
+[node name="Button11" type="Button" parent="Panel/VBoxContainer" index="7"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 245.0
+margin_top = 186.0
 margin_right = 192.0
-margin_bottom = 290.0
+margin_bottom = 244.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -473,15 +498,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button6" type="Button" parent="Panel/VBoxContainer" index="7"]
+[node name="Button6" type="Button" parent="Panel/VBoxContainer" index="8"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 294.0
+margin_top = 248.0
 margin_right = 192.0
-margin_bottom = 339.0
+margin_bottom = 306.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -498,15 +523,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button3" type="Button" parent="Panel/VBoxContainer" index="8"]
+[node name="Button3" type="Button" parent="Panel/VBoxContainer" index="9"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 343.0
+margin_top = 310.0
 margin_right = 192.0
-margin_bottom = 388.0
+margin_bottom = 368.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -523,15 +548,15 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button8" type="Button" parent="Panel/VBoxContainer" index="9"]
+[node name="Button8" type="Button" parent="Panel/VBoxContainer" index="10"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 392.0
+margin_top = 372.0
 margin_right = 192.0
-margin_bottom = 437.0
+margin_bottom = 430.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -548,13 +573,13 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Button4" type="Button" parent="Panel/VBoxContainer" index="10"]
+[node name="Button4" type="Button" parent="Panel/VBoxContainer" index="11"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 441.0
+margin_top = 434.0
 margin_right = 192.0
 margin_bottom = 492.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -573,7 +598,145 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Deck" type="WindowDialog" parent="." index="1"]
+[node name="Singleplayer" type="Panel" parent="." index="1"]
+
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = -125.0
+margin_right = 200.0
+margin_bottom = 125.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme = ExtResource( 2 )
+_sections_unfolded = [ "Anchor", "Dialog", "Margin", "Rect", "Theme" ]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Singleplayer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="Button1" type="Button" parent="Singleplayer/VBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 392.0
+margin_bottom = 57.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "TUTORIAL"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Button2" type="Button" parent="Singleplayer/VBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 61.0
+margin_right = 392.0
+margin_bottom = 118.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "SKIRMISH"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Button3" type="Button" parent="Singleplayer/VBoxContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 122.0
+margin_right = 392.0
+margin_bottom = 179.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "PLAYER_VS_PLAYER"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Button4" type="Button" parent="Singleplayer/VBoxContainer" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 183.0
+margin_right = 392.0
+margin_bottom = 242.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "BACK"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Deck" type="WindowDialog" parent="." index="2"]
 
 editor/display_folded = true
 visible = false
@@ -1191,7 +1354,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 1 )
 blend_times = [  ]
 
-[node name="Shop" type="WindowDialog" parent="." index="2"]
+[node name="Shop" type="WindowDialog" parent="." index="3"]
 
 editor/display_folded = true
 visible = false
@@ -2341,7 +2504,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 2 )
 blend_times = [  ]
 
-[node name="Acquired" type="WindowDialog" parent="." index="3"]
+[node name="Acquired" type="WindowDialog" parent="." index="4"]
 
 editor/display_folded = true
 visible = false
@@ -2539,7 +2702,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 6 )
 blend_times = [  ]
 
-[node name="Options" type="WindowDialog" parent="." index="4"]
+[node name="Options" type="WindowDialog" parent="." index="5"]
 
 editor/display_folded = true
 visible = false
@@ -3388,7 +3551,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 7 )
 blend_times = [  ]
 
-[node name="Lobby" type="WindowDialog" parent="." index="5"]
+[node name="Lobby" type="WindowDialog" parent="." index="6"]
 
 editor/display_folded = true
 visible = false
@@ -3764,7 +3927,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 8 )
 blend_times = [  ]
 
-[node name="Info" type="Panel" parent="." index="6"]
+[node name="Info" type="Panel" parent="." index="7"]
 
 visible = false
 anchor_left = 0.5
@@ -3840,7 +4003,7 @@ selection_enabled = false
 override_selected_font_color = false
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Credits" type="WindowDialog" parent="." index="7"]
+[node name="Credits" type="WindowDialog" parent="." index="8"]
 
 editor/display_folded = true
 visible = false
@@ -3946,7 +4109,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 9 )
 blend_times = [  ]
 
-[node name="GameOver" type="AcceptDialog" parent="." index="8"]
+[node name="GameOver" type="AcceptDialog" parent="." index="9"]
 
 visible = false
 anchor_left = 0.5
@@ -4021,7 +4184,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Quit" type="ConfirmationDialog" parent="." index="9"]
+[node name="Quit" type="ConfirmationDialog" parent="." index="10"]
 
 visible = false
 anchor_left = 0.5
@@ -4073,7 +4236,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
-[node name="SoundCard" type="AudioStreamPlayer" parent="." index="10"]
+[node name="SoundCard" type="AudioStreamPlayer" parent="." index="11"]
 
 stream = ExtResource( 6 )
 volume_db = 0.0
@@ -4082,7 +4245,7 @@ autoplay = false
 mix_target = 0
 bus = "Master"
 
-[node name="SoundShuffle" type="AudioStreamPlayer" parent="." index="11"]
+[node name="SoundShuffle" type="AudioStreamPlayer" parent="." index="12"]
 
 stream = ExtResource( 7 )
 volume_db = 0.0

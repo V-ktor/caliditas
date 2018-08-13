@@ -348,12 +348,14 @@ func play_card(card,player,target=null):
 		card.node.get_node("Tween").remove_all()
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p1,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		p2 = Vector2(225*card.pos,200*(1-2*player))
+		card.node.get_node("TweenScale").interpolate_property(card.node,"scale",card.node.get_scale(),Vector2(0.15,0.15),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",p1,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
 		card.node.get_node("Tween").start()
 	elif (card.type=="spell" && Cards.data[card.ID].has("on_play")):
 		var p = Vector2(card.node.get_global_position().x,0.5*card.node.get_global_position().y)
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		card.node.get_node("Tween").start()
+		card.node.zoom()
 		call_deferred("use_effect",card,"on_play",player,target)
 		yield(self,"effect_used")
 		if (state==null || !state["used"]):
@@ -378,6 +380,7 @@ func play_card(card,player,target=null):
 			target.equiped.push_back(card)
 			target.update()
 			card.node.get_node("Tween").remove_all()
+			card.node.get_node("TweenScale").interpolate_property(card.node,"scale",card.node.get_scale(),Vector2(0.15,0.15),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 			if (card.node.get_global_position()==p):
 				card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 				card.node.get_node("Tween").interpolate_property(card.node,"global_position",pos,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
@@ -768,6 +771,8 @@ func sort_hand(player):
 	var ID = 0
 	var offset = min(200,(OS.get_window_size().x-100)/max(hand[player].size(),1))
 	for card in hand[player]:
+		if (card.in_game):
+			continue
 		var pos = Vector2((275+ID*offset/zoom-OS.get_window_size().x/2.0)*(1-2*player),OS.get_window_size().y/2.0*(1-2*player))*zoom
 		card.node.get_node("Tween").remove_all()
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
@@ -849,6 +854,7 @@ func select(card,type):
 
 func deselect(emit=true):
 	if (selected_card!=null):
+		selected_card.node.get_node("TweenScale").interpolate_property(selected_card.node,"scale",selected_card.node.get_scale(),Vector2(0.15,0.15),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		selected_card.node.get_node("Animation").queue("deselect")
 	selected_card = null
 #	select = "hand"
@@ -1093,7 +1099,10 @@ func _resize():
 func _input(event):
 	if (event is InputEventMouseButton && event.button_index==1 && !event.pressed):
 		yield(get_tree(),"idle_frame")
-		hint_valid_cards("hand")
+		for card in hand[PLAYER1]+hand[PLAYER2]:
+			if (abs(card.node.get_scale().x)>0.151 || card.node.get_scale().y>0.151):
+				card.node.unzoom()
+		hint_valid_cards("hand_creature")
 
 func _ready():
 	timer = Timer.new()

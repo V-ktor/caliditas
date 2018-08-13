@@ -12,7 +12,7 @@ fractal_metal_structure.jpg:
 Copyright: p0ss
 License: CC-BY-SA 3.0
 
-acid_blast.jpg, air_creature.jpg, blaze.jpg, cleanse.jpg, explosion.jpg, fire_ball.jpg, fire_blade.jpg, fire_creature.jpg, flash_flood.jpg, hailstorm.jpg, ice_creature.jpg, ice_shield.jpg, ice_spell.jpg, inversion_creature.jpg, lightning_creature.jpg, magic_sword.jpg, shadow_creature.jpg, spell_neutral.jpg, thermal_shield.jpg, wisp_fire.jpg, wisp_ice.jpg:
+acid_blast.jpg, air_creature.jpg, blaze.jpg, cleanse.jpg, explosion.jpg, fire_ball.jpg, fire_blade.jpg, fire_creature.jpg, flash_flood.jpg, hailstorm.jpg, ice_creature.jpg, ice_shield.jpg, ice_spell.jpg, inversion_creature.jpg, large_ice_creature.jpg, lightning_creature.jpg, magic_sword.jpg, shadow_creature.jpg, spell_neutral.jpg, thermal_shield.jpg, wisp_fire.jpg, wisp_ice.jpg:
 Copyright: Viktor Hahn
 License: CC-BY-SA 3.0
 

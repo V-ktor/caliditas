@@ -124,9 +124,9 @@ const data = {
 		"type":"spell",
 		"level":3,
 		"rarity":2,
-		"rules":["fire_attack_all_anneal"],
+		"rules":["fire_attack_all_anneal-1"],
 		"on_play":"",
-		"on_new_turn":"anneal_target",
+		"on_new_turn":"anneal_target-1",
 		"can_target_all":true,
 		"target":"creature-ally-fire",
 		"tags":["fire","curse","equipment"],
@@ -251,11 +251,11 @@ const data = {
 		"temperature":-7,
 		"level":6,
 		"rarity":0,
-		"rules":["melt"],
-		"on_new_turn":"melt",
+		"rules":["melt-2"],
+		"on_new_turn":"melt-2",
 		"tags":["ice","golem"],
 		"animation":"spike_blast",
-		"image":preload("res://images/cards/ice_creature.jpg")
+		"image":preload("res://images/cards/large_ice_creature.jpg")
 	},
 	
 	# ice spells
@@ -302,7 +302,7 @@ const data = {
 		"rarity":0,
 		"rules":["no_attack_temp"],
 		"on_play":"",
-		"on_new_turn":"melt",
+		"on_new_turn":"melt-1",
 		"no_attack":true,
 		"target":"creature",
 		"tags":["ice","curse"],
