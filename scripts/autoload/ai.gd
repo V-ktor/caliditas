@@ -88,7 +88,7 @@ func get_spell():
 	var c
 	var t
 	for card in Main.hand[player]:
-		if (card.type!="spell" || card.level>Main.mana[player]):
+		if ((card.type!="spell" && card.type!="land") || card.level>Main.mana[player]):
 			continue
 		
 		var value = 0.5*Main.mana[player]-card.level/2.0
