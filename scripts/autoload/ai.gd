@@ -47,7 +47,7 @@ func has_indestructable_creature(player):
 	if (get_num_creatures(player)==0):
 		return false
 	for c in Main.field[player]:
-		if (c=="creature" && can_be_destroyed(c)):
+		if (c.type=="creature" && can_be_destroyed(c)):
 			return false
 	return true
 
@@ -55,13 +55,13 @@ func has_indestructable_creature(player):
 # determine card usefullness #
 func get_creature():
 	# Chose a creature card to play.
-	var score = 0
+	var score = 2*get_num_creatures(player)-5
 	var c
 	for card in Main.hand[player]:
 		if (card.type!="creature" || card.level>Main.mana[player]):
 			continue
 		
-		var value = abs(card.temperature)-card.level/2.0
+		var value = 5+abs(card.temperature)-card.level/2.0
 		# Multiply the value with 0.5 if more enemies can destroy this card than it can destroy
 		# or multiply with 1.5 if the other way round.
 		# Do not consider equally strong cards.
@@ -313,15 +313,16 @@ func get_spell():
 				for ally in Main.field[player]:
 					var v = value-abs(ally.temperature)-0.5*ally.level
 					var balance = -0.75
+					var limit = abs(ally.temperature)
 					for t in Main.field[player]:
-						if (t.type=="creature" && abs(t.temperature)<abs(ally.temperature)):
+						if (t.type=="creature" && abs(t.temperature)<limit):
 							balance -= 1
 					for t in Main.field[enemy]:
-						if (t.type=="creature" && abs(t.temperature)<abs(ally.temperature)):
+						if (t.type=="creature" && abs(t.temperature)<limit):
 							balance += 1
 							v += 0.25*abs(t.temperature)*sqrt(abs(t.temperature))
-					v *= min(0.5*balance,2.0)
-					if (v>score):
+					v *= clamp(0.5*balance,0.0,2.0)
+					if (v>0 && v>score):
 						c = card
 						t = ally
 						score = v

@@ -1,5 +1,6 @@
 extends Node
 
+# balanced deck
 const DEFAULT = {
 	"fire_elemental":3,"greater_fire_elemental":2,"burning_wisp":1,
 	"lava_elemental":2,"fire_avatar":2,
@@ -9,6 +10,31 @@ const DEFAULT = {
 	"chill":2,"equalize":2,"hailstorm":1,"flash_flood":2,
 	"wind_elemental":1,"lightning_elemental":1,
 	"draw":2,"inversion":2
+}
+# focus on strong fire creatures, temperature inversion and damage cards
+const FIRE = {
+	"fire_elemental":3,"greater_fire_elemental":2,
+	"burning_wisp":2,"explosive_wisp":1,
+	"lava_elemental":2,"lava_golem":2,"fire_avatar":2,
+	"blaze":2,"spectral_blade":3,
+	"explosion":2,"vulcano":1,
+	"freezing_wisp":1,"ice_avatar":2,"giant_ice_golem":2,
+	"equalize":2,"flash_flood":2,
+	"lightning_elemental":2,
+	"draw":2,"inversion":3,
+	"mass_inversion":2
+}
+# focus on ice creatures, defense and direct player damage
+const ICE = {
+	"fire_elemental":2,"greater_fire_elemental":1,"lava_golem":2,
+	"explosion":2,
+	"water_elemental":2,"greater_water_elemental":2,"freezing_wisp":2,
+	"ice_avatar":2,"ice_shard_defender":2,"giant_ice_golem":2,
+	"chill":1,"ice_armor":2,"equalize":2,"flash_flood":2,
+	"ice_wall":1,"freeze":2,"snow_storm":1,
+	"wind_elemental":1,"lightning_elemental":1,"shadow_elemental":1,
+	"draw":1,"inversion":2,"cleanse":1,
+	"hurricane":1,"mass_inversion":1,"thermal_shield":1
 }
 const INVENTORY_DEFAULT = {
 	"fire_elemental":3,"greater_fire_elemental":2,"burning_wisp":2,
@@ -54,9 +80,15 @@ var tut_scene = preload("res://scenes/main/tutorial.tscn")
 
 func _skirmish():
 	# Start a match vs the AI.
+	var rnd = randf()
 	Main.reset()
 	Main.deck[0] = get_deck()
-	Main.deck[1] = get_deck(DEFAULT)
+	if (rnd<0.25):
+		Main.deck[1] = get_deck(FIRE)
+	elif (rnd<0.5):
+		Main.deck[1] = get_deck(ICE)
+	else:
+		Main.deck[1] = get_deck(DEFAULT)
 	Main.player_name[0] = _name
 	Main.player_name[1] = tr("AI_SKIRMISH")
 	Main.ai = true

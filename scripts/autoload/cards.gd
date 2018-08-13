@@ -486,7 +486,7 @@ const data = {
 		"rarity":2,
 		"rules":["invert_ally_temp"],
 		"on_play":"invert_ally_temp",
-		"on_removed":"invert_temp-ally",
+		"on_removed":"invert_ally_temp",
 		"on_new_turn":"destroy_player_turn",
 		"tags":["area"],
 		"animation":"",

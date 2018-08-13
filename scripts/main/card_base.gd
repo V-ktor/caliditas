@@ -12,6 +12,7 @@ func zoom():
 			get_node("Animation").play("fade_out")
 		return
 	
+	get_node("TweenScale").remove_all()
 	get_node("TweenScale").interpolate_property(self,"scale",get_scale(),Vector2(0.3*sign(get_scale().x),0.3),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	if (pos!=null):
 		get_node("TweenScale").interpolate_property(self,"global_position",get_global_position(),Vector2(pos.x,0.6*pos.y),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
@@ -23,6 +24,7 @@ func unzoom():
 	if (type=="dead"):
 		if (get_node("Animation").get_current_animation()!="fade_out"):
 			get_node("Animation").play("fade_out")
+	get_node("TweenScale").remove_all()
 	get_node("TweenScale").interpolate_property(self,"scale",get_scale(),Vector2(0.15*sign(get_scale().x),0.15),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	if (pos!=null):
 		get_node("TweenScale").interpolate_property(self,"global_position",get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
