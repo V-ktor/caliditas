@@ -107,7 +107,7 @@ tracks/0/keys = {
 "values": [ 1.0, 0.0 ]
 }
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 
@@ -430,6 +430,7 @@ bus = "Sound"
 
 visible = false
 modulate = Color( 1, 0, 0, 1 )
+self_modulate = Color( 1, 1, 1, 0.752941 )
 light_mask = 0
 material = SubResource( 7 )
 position = Vector2( 256, 256 )
@@ -462,6 +463,7 @@ blend_times = [  ]
 
 visible = false
 modulate = Color( 1, 0, 0, 1 )
+self_modulate = Color( 1, 1, 1, 0.752941 )
 light_mask = 0
 material = SubResource( 7 )
 position = Vector2( 256, 256 )

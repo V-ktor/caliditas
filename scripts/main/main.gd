@@ -355,7 +355,7 @@ func play_card(card,player,target=null):
 		var p = Vector2(card.node.get_global_position().x,0.5*card.node.get_global_position().y)
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		card.node.get_node("Tween").start()
-		card.node.zoom()
+#		card.node.zoom()
 		call_deferred("use_effect",card,"on_play",player,target)
 		yield(self,"effect_used")
 		if (state==null || !state["used"]):
@@ -655,10 +655,10 @@ remote func _attack(a,t,no_counter=false):
 	attack(attacker,target,no_counter)
 
 func attack(attacker,target,counter=false):
-	if (!can_attack(attacker,target)):
+	if (!can_attack(attacker,target,counter)):
 		return
 #	var counterattack = !counter && abs(target.temperature)>=abs(attacker.temperature) && sign(attacker.temperature)!=sign(target.temperature)
-	var counterattack = !counter && can_attack(target,attacker)
+	var counterattack = !counter && can_attack(target,attacker,true)
 	if (multiplayer && server):
 		var a = get_index(attacker)
 		var t = get_index(target)
@@ -769,11 +769,11 @@ func sort_hand(player):
 		return
 	
 	var ID = 0
-	var offset = min(200,(OS.get_window_size().x-100)/max(hand[player].size(),1))
+	var offset = min(210/zoom,(OS.get_window_size().x-250)/max(hand[player].size(),1))
 	for card in hand[player]:
 		if (card.in_game):
 			continue
-		var pos = Vector2((275+ID*offset/zoom-OS.get_window_size().x/2.0)*(1-2*player),OS.get_window_size().y/2.0*(1-2*player))*zoom
+		var pos = Vector2((275+ID*offset-OS.get_window_size().x/2.0)*(1-2*player),OS.get_window_size().y/2.0*(1-2*player))*zoom
 		card.node.get_node("Tween").remove_all()
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		card.node.get_node("Tween").start()
@@ -1007,13 +1007,13 @@ sync func attack_phase_end():
 	else:
 		next_turn(draw)
 
-func can_attack(attacker,target):
-	if (attacker.type!="creature" || target.type!="creature" || attacker.owner==target.owner || Cards.data[attacker.ID].has("no_attack") && Cards.data[attacker.ID]["no_attack"]):
+func can_attack(attacker,target,counter=false):
+	if (attacker.type!="creature" || target.type!="creature" || attacker.owner==target.owner || (!counter && Cards.data[attacker.ID].has("no_attack") && Cards.data[attacker.ID]["no_attack"])):
 		return false
 	var can_target_all = Cards.data[attacker.ID].has("can_target_all") && Cards.data[attacker.ID]["can_target_all"]
 	if (!can_target_all):
 		for eq in attacker.equiped:
-			if (Cards.data[eq.ID].has("no_attack") && Cards.data[eq.ID]["no_attack"]):
+			if (!counter && Cards.data[eq.ID].has("no_attack") && Cards.data[eq.ID]["no_attack"]):
 				return false
 			if (Cards.data[eq.ID].has("can_target_all") && Cards.data[eq.ID]["can_target_all"]):
 				can_target_all = true
