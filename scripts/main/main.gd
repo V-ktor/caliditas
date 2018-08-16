@@ -960,7 +960,7 @@ remote func attack_phase():
 		return
 	
 	var enemy = (player+1)%2
-	for card in field[player]:
+	for card in []+field[player]:
 		if (!attack_list.has(card)):
 			continue
 		attack(card,attack_list[card])

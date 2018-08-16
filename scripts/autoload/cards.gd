@@ -221,7 +221,7 @@ const data = {
 		"no_attack":true,
 		"tags":["ice","golem"],
 		"animation":"ice_blast",
-		"image":preload("res://images/cards/ice_creature.jpg")
+		"image":preload("res://images/cards/ice_shielder.jpg")
 	},
 	"ice_avatar":{
 		"type":"creature",
@@ -244,7 +244,7 @@ const data = {
 		"no_attack":true,
 		"tags":["ice","golem"],
 		"animation":"spike_blast",
-		"image":preload("res://images/cards/ice_creature.jpg")
+		"image":preload("res://images/cards/ice_shielder.jpg")
 	},
 	"giant_ice_golem":{
 		"type":"creature",
