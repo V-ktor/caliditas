@@ -1,5 +1,7 @@
 extends Node
 
+const VERSION = "v0.3"
+
 # balanced deck
 const DEFAULT = {
 	"fire_elemental":3,"greater_fire_elemental":2,"burning_wisp":1,
@@ -764,6 +766,7 @@ func _ready():
 	set_process_input(true)
 	load_config()
 	load_inventory()
+	get_node("Version").set_text(VERSION)
 	
 	# Connect buttons.
 	get_node("Panel/VBoxContainer/Button5").connect("pressed",self,"hide")
