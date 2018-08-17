@@ -76,6 +76,7 @@ var music_volume
 var sound
 var sound_volume
 var locale
+var animations
 
 var tut_scene = preload("res://scenes/main/tutorial.tscn")
 
@@ -346,9 +347,14 @@ func _show_options():
 			idx = i
 			break
 	
-	get_node("Options/ScrollContainer/VBoxContainer/Fullscreen").set_pressed(fullscreen)
-	get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxX").set_value(screen_size.x)
-	get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxY").set_value(screen_size.y)
+	get_node("Options/ScrollContainer/VBoxContainer/Animations").set_pressed(animations)
+	if (OS.has_feature("mobile")):
+		get_node("Options/ScrollContainer/VBoxContainer/Fullscreen").hide()
+		get_node("Options/ScrollContainer/VBoxContainer/WindowSize").hide()
+	else:
+		get_node("Options/ScrollContainer/VBoxContainer/Fullscreen").set_pressed(fullscreen)
+		get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxX").set_value(screen_size.x)
+		get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxY").set_value(screen_size.y)
 	get_node("Options/ScrollContainer/VBoxContainer/Audio/Music").set_pressed(music)
 	get_node("Options/ScrollContainer/VBoxContainer/Volume/SpinBoxM").set_value(music_volume)
 	get_node("Options/ScrollContainer/VBoxContainer/Audio/Sound").set_pressed(sound)
@@ -555,6 +561,7 @@ func save_inventory():
 
 func save_config():
 	var file = ConfigFile.new()
+	file.set_value("video","animations",animations)
 	file.set_value("video","fullscreen",fullscreen)
 	file.set_value("video","maximized",OS.is_window_maximized())
 	file.set_value("video","screenw",screen_size.x)
@@ -576,6 +583,7 @@ func load_config():
 		if !(default_locale in LOCALES):
 			default_locale = "en"
 	file.load("user://config.cfg")
+	animations = file.get_value("video","animations",true)
 	fullscreen = file.get_value("video","fullscreen",false)
 	maximized = file.get_value("video","maximized",true)
 	screen_size = Vector2(file.get_value("video","screenw",OS.get_screen_size().x),file.get_value("video","screenh",OS.get_screen_size().y))
@@ -608,6 +616,9 @@ func _options_apply():
 	if (_name==""):
 		_name = tr("PLAYER")
 	save_config()
+
+func _set_animations(enabled):
+	animations = enabled
 
 func _set_fullscreen(enabled):
 	fullscreen = enabled
@@ -802,6 +813,7 @@ func _ready():
 	get_node("Options/HBoxContainer/Button1").connect("pressed",self,"_options_accept")
 	get_node("Options/HBoxContainer/Button2").connect("pressed",self,"_options_apply")
 	get_node("Options/HBoxContainer/Button3").connect("pressed",get_node("Options"),"hide")
+	get_node("Options/ScrollContainer/VBoxContainer/Animations").connect("toggled",self,"_set_animations")
 	get_node("Options/ScrollContainer/VBoxContainer/Fullscreen").connect("toggled",self,"_set_fullscreen")
 	get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxX").connect("value_changed",self,"_set_screenw")
 	get_node("Options/ScrollContainer/VBoxContainer/WindowSize/SpinBoxY").connect("value_changed",self,"_set_screenh")
@@ -908,3 +920,6 @@ func _ready():
 	get_node("Credits/Text").add_text(" - p0ss\n - Bart K.\n - artisticdude\n - Blender Foundation\n - artisticdude\n - HaelDB\n - Ylmir\n - Aleks41\n\n")
 	get_node("Credits/Text").add_text(tr("FONT")+":\n - Jonas Hecksher")
 	get_node("Credits/Text").connect("meta_clicked",OS,"shell_open")
+	
+	yield(get_tree(),"idle_frame")
+	get_node("Deck").hide()

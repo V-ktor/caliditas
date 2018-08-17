@@ -30,6 +30,7 @@ var using_card = false
 var ai = true
 var multiplayer = false
 var server = true
+var animations = true
 
 var text_temp = preload("res://scenes/main/text_temp.tscn")
 
@@ -168,6 +169,8 @@ func reset():
 	ai = false
 	multiplayer = false
 	server = true
+	if (has_node("/root/Menu")):
+		animations = get_node("/root/Menu").animations
 	select = "none"
 	UI.get_node("Player1/VBoxContainer/Health/Bar").set_max(health[PLAYER1])
 	UI.get_node("Player2/VBoxContainer/Health/Bar").set_max(health[PLAYER2])
@@ -388,14 +391,14 @@ func play_card(card,player,target=null):
 				card.node.get_node("Tween").interpolate_property(card.node,"global_position",p,pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
 				card.node.get_node("Tween").interpolate_property(card.node,"global_position",pos,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.5)
 			card.node.get_node("Tween").start()
-			if (Cards.data[card.ID].has("animation")):
+			if (Cards.data[card.ID].has("animation") && animations):
 				var pi = load("res://scenes/animations/"+Cards.data[card.ID]["animation"]+".tscn").instance()
 				target.node.add_child(pi)
 				pi.look_at(card.node.get_global_position())
 				pi.rotate(PI)
 		else:
 			card.node.type = "dead"
-			if (Cards.data[card.ID].has("animation")):
+			if (Cards.data[card.ID].has("animation") && animations):
 				if (state.has("target") && state["target"]!=null):
 					var pi
 					target = state["target"]
@@ -685,7 +688,7 @@ func attack(attacker,target,counter=false):
 		for land in field[attacker.owner]:
 			if (land.type=="land" && Cards.data[land.ID].has("on_attack")):
 				apply_effect(land,"on_attack",target,attacker)
-	if (Cards.data[attacker.ID].has("animation")):
+	if (Cards.data[attacker.ID].has("animation") && animations):
 		var pi = load("res://scenes/animations/"+Cards.data[attacker.ID]["animation"]+".tscn").instance()
 		pi.set_global_position(attacker.node.get_global_position())
 		pi.scale *= 0.15
@@ -1011,12 +1014,11 @@ func can_attack(attacker,target,counter=false):
 	if (attacker.type!="creature" || target.type!="creature" || attacker.owner==target.owner || (!counter && Cards.data[attacker.ID].has("no_attack") && Cards.data[attacker.ID]["no_attack"])):
 		return false
 	var can_target_all = Cards.data[attacker.ID].has("can_target_all") && Cards.data[attacker.ID]["can_target_all"]
-	if (!can_target_all):
-		for eq in attacker.equiped:
-			if (!counter && Cards.data[eq.ID].has("no_attack") && Cards.data[eq.ID]["no_attack"]):
-				return false
-			if (Cards.data[eq.ID].has("can_target_all") && Cards.data[eq.ID]["can_target_all"]):
-				can_target_all = true
+	for eq in attacker.equiped:
+		if (!counter && Cards.data[eq.ID].has("no_attack") && Cards.data[eq.ID]["no_attack"]):
+			return false
+		if (Cards.data[eq.ID].has("can_target_all") && Cards.data[eq.ID]["can_target_all"]):
+			can_target_all = true
 	return abs(target.temperature)<=abs(attacker.temperature) && (can_target_all || sign(target.temperature)!=sign(attacker.temperature))
 
 func is_targeted(target):
