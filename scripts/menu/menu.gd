@@ -737,6 +737,19 @@ func _display_status():
 	dots = (dots+1)%4
 
 
+func go_back():
+	if (get_node("Info").is_visible()):
+		get_node("Info").hide()
+	elif (get_node("Singleplayer").is_visible()):
+		get_node("Singleplayer").hide()
+	elif (get_node("Panel").is_visible()):
+		if (active):
+			hide()
+		else:
+			quit()
+	else:
+		show()
+
 func _resize():
 	get_node("Deck").popup_centered(OS.get_window_size()-Vector2(50,90))
 	yield(get_tree(),"idle_frame")
@@ -745,20 +758,17 @@ func _resize():
 
 func _input(event):
 	if (event.is_action_pressed("ui_cancel")):
-		if (get_node("Info").is_visible()):
-			get_node("Info").hide()
-		elif (get_node("Singleplayer").is_visible()):
-			get_node("Singleplayer").hide()
-		elif (get_node("Panel").is_visible()):
-			if (active):
-				hide()
-			else:
-				quit()
-		else:
-			show()
+		go_back()
 	if (event is InputEventMouseButton):
 		if (event.button_index==1 && !event.pressed):
 			Main.get_node("Arrow").hide()
+
+func _notification(what):
+	match what:
+		MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+			quit()
+		MainLoop.NOTIFICATION_WM_GO_BACK_REQUEST:
+			go_back()
 
 func _ready():
 	randomize()

@@ -94,7 +94,10 @@ func _ready():
 	timer.set_wait_time(4.0)
 	timer.start()
 	yield(timer,"timeout")
-	text.add_text(tr("TUTORIAL_ZOOM")+"\n")
+	if (OS.has_feature("mobile")):
+		text.add_text(tr("TUTORIAL_ZOOM_TOUCH")+"\n")
+	else:
+		text.add_text(tr("TUTORIAL_ZOOM")+"\n")
 	button.set_disabled(false)
 	yield(self,"forward")
 	# Allow player to play cards.
@@ -153,7 +156,10 @@ func _next_turn(player):
 		timer.set_wait_time(1.0)
 		timer.start()
 		yield(timer,"timeout")
-		text.add_text(tr("TUTORIAL_CREATURES4")+"\n")
+		if (OS.has_feature("mobile")):
+			text.add_text(tr("TUTORIAL_CREATURES4_TOUCH")+"\n")
+		else:
+			text.add_text(tr("TUTORIAL_CREATURES4")+"\n")
 		button.set_disabled(false)
 		yield(self,"forward")
 		button.set_disabled(true)
@@ -180,7 +186,10 @@ func _next_turn(player):
 		timer.set_wait_time(1.0)
 		timer.start()
 		yield(timer,"timeout")
-		text.add_text(tr("TUTORIAL_SPELLS2")+"\n")
+		if (OS.has_feature("mobile")):
+			text.add_text(tr("TUTORIAL_SPELLS2_TOUCH")+"\n")
+		else:
+			text.add_text(tr("TUTORIAL_SPELLS2")+"\n")
 		timer.set_wait_time(2.0)
 		timer.start()
 		yield(timer,"timeout")
