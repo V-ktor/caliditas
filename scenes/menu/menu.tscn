@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scripts/menu/menu.gd" type="Script" id=1]
 [ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=2]
@@ -9,43 +9,103 @@
 [ext_resource path="res://sounds/draw.wav" type="AudioStream" id=7]
 [ext_resource path="res://sounds/shuffle.wav" type="AudioStream" id=8]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="StyleBoxFlat" id=1]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+bg_color = Color( 0, 0, 0, 1 )
+draw_center = true
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color( 0.8, 0.8, 0.8, 1 )
+border_blend = false
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+corner_detail = 8
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+shadow_color = Color( 0, 0, 0, 0.6 )
+shadow_size = 0
+anti_aliasing = true
+anti_aliasing_size = 1
+
+[sub_resource type="Animation" id=12]
+
+resource_name = "fade_in"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, true ]
+}
+
+[sub_resource type="Animation" id=13]
+
+resource_name = "fade_out"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="DynamicFont" id=2]
 
 size = 16
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 2 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Font/fallback", "Settings" ]
-
-[sub_resource type="Animation" id=2]
-
-length = 10.0
-loop = true
-step = 1.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("Gear01:rotation_degrees")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 10 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 0.0, 360.0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Gear02:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 10 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 375.0, 15.0 ]
-}
 
 [sub_resource type="Animation" id=3]
 
@@ -77,63 +137,7 @@ tracks/1/keys = {
 "values": [ 375.0, 15.0 ]
 }
 
-[sub_resource type="Shader" id=4]
-
-code = "shader_type canvas_item;
-
-uniform sampler2D mask;
-uniform int frames = 8;
-uniform float alpha = 1.0;
-uniform int frame : hint_range(0,7);
-
-void fragment()
-{
-	vec2 uv = UV*vec2(1.0/float(frames),1.0)+vec2(float(frame)/float(frames),0.0);
-	COLOR = texture(TEXTURE,UV);
-	COLOR.a *= clamp(texture(mask,uv).g*alpha,0.0,1.0);
-}"
-
-[sub_resource type="ShaderMaterial" id=5]
-
-render_priority = 0
-shader = SubResource( 4 )
-shader_param/frames = null
-shader_param/alpha = 100.0
-shader_param/frame = 0
-shader_param/mask = ExtResource( 5 )
-_sections_unfolded = [ "shader_param" ]
-
-[sub_resource type="Animation" id=6]
-
-length = 1.5
-loop = false
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:material:shader_param/frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1, 1.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ 0, 0, 7 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:material:shader_param/alpha")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 1, 1.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ 100.0, 100.0, 0.0 ]
-}
-
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=4]
 
 length = 10.0
 loop = true
@@ -161,6 +165,62 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ 375.0, 15.0 ]
+}
+
+[sub_resource type="Shader" id=5]
+
+code = "shader_type canvas_item;
+
+uniform sampler2D mask;
+uniform int frames = 8;
+uniform float alpha = 1.0;
+uniform int frame : hint_range(0,7);
+
+void fragment()
+{
+	vec2 uv = UV*vec2(1.0/float(frames),1.0)+vec2(float(frame)/float(frames),0.0);
+	COLOR = texture(TEXTURE,UV);
+	COLOR.a *= clamp(texture(mask,uv).g*alpha,0.0,1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+
+render_priority = 0
+shader = SubResource( 5 )
+shader_param/frames = null
+shader_param/alpha = 100.0
+shader_param/frame = 0
+shader_param/mask = ExtResource( 5 )
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="Animation" id=7]
+
+length = 1.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0, 0, 7 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material:shader_param/alpha")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 100.0, 100.0, 0.0 ]
 }
 
 [sub_resource type="Animation" id=8]
@@ -253,6 +313,36 @@ tracks/1/keys = {
 "values": [ 375.0, 15.0 ]
 }
 
+[sub_resource type="Animation" id=11]
+
+length = 10.0
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Gear01:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 10 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Gear02:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 10 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 375.0, 15.0 ]
+}
+
 [node name="Menu" type="CanvasLayer" index="0"]
 
 layer = 110
@@ -263,7 +353,34 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Version" type="Label" parent="." index="0"]
+[node name="Background" type="Panel" parent="." index="0"]
+
+light_mask = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/panel = SubResource( 1 )
+_sections_unfolded = [ "Visibility", "custom_styles" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Background" index="0"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/fade_in = SubResource( 12 )
+anims/fade_out = SubResource( 13 )
+blend_times = [  ]
+
+[node name="Version" type="Label" parent="." index="1"]
 
 anchor_left = 1.0
 anchor_top = 1.0
@@ -277,7 +394,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "v0.3"
 align = 2
 valign = 2
@@ -288,7 +405,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Mouse", "custom_fonts" ]
 
-[node name="Panel" type="Panel" parent="." index="1"]
+[node name="Panel" type="Panel" parent="." index="2"]
 
 anchor_left = 1.0
 anchor_top = 0.5
@@ -627,7 +744,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Singleplayer" type="Panel" parent="." index="2"]
+[node name="Singleplayer" type="Panel" parent="." index="3"]
 
 visible = false
 anchor_left = 0.5
@@ -765,7 +882,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="Deck" type="WindowDialog" parent="." index="3"]
+[node name="Deck" type="WindowDialog" parent="." index="4"]
 
 editor/display_folded = true
 visible = false
@@ -1380,10 +1497,10 @@ autoplay = "rotate_gears"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/rotate_gears = SubResource( 2 )
+anims/rotate_gears = SubResource( 3 )
 blend_times = [  ]
 
-[node name="Shop" type="WindowDialog" parent="." index="4"]
+[node name="Shop" type="WindowDialog" parent="." index="5"]
 
 editor/display_folded = true
 visible = false
@@ -2530,10 +2647,10 @@ autoplay = "rotate_gears"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/rotate_gears = SubResource( 3 )
+anims/rotate_gears = SubResource( 4 )
 blend_times = [  ]
 
-[node name="Acquired" type="WindowDialog" parent="." index="5"]
+[node name="Acquired" type="WindowDialog" parent="." index="6"]
 
 editor/display_folded = true
 visible = false
@@ -2603,7 +2720,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect", "Scroll" ]
 
 [node name="Stack" type="TextureRect" parent="Acquired" index="3"]
 
-material = SubResource( 5 )
+material = SubResource( 6 )
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -2630,7 +2747,7 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/fade_out = SubResource( 6 )
+anims/fade_out = SubResource( 7 )
 blend_times = [  ]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Acquired" index="4"]
@@ -2728,10 +2845,10 @@ autoplay = "rotate_gears"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/rotate_gears = SubResource( 7 )
+anims/rotate_gears = SubResource( 8 )
 blend_times = [  ]
 
-[node name="Options" type="WindowDialog" parent="." index="6"]
+[node name="Options" type="WindowDialog" parent="." index="7"]
 
 editor/display_folded = true
 visible = false
@@ -3602,10 +3719,10 @@ autoplay = "rotate_gears"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/rotate_gears = SubResource( 8 )
+anims/rotate_gears = SubResource( 9 )
 blend_times = [  ]
 
-[node name="Lobby" type="WindowDialog" parent="." index="7"]
+[node name="Lobby" type="WindowDialog" parent="." index="8"]
 
 editor/display_folded = true
 visible = false
@@ -3978,10 +4095,10 @@ autoplay = "rotate_gears"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/rotate_gears = SubResource( 9 )
+anims/rotate_gears = SubResource( 10 )
 blend_times = [  ]
 
-[node name="Info" type="Panel" parent="." index="8"]
+[node name="Info" type="Panel" parent="." index="9"]
 
 visible = false
 anchor_left = 0.5
@@ -4057,7 +4174,7 @@ selection_enabled = false
 override_selected_font_color = false
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Credits" type="WindowDialog" parent="." index="9"]
+[node name="Credits" type="WindowDialog" parent="." index="10"]
 
 editor/display_folded = true
 visible = false
@@ -4160,10 +4277,10 @@ autoplay = "rotate_gears"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/rotate_gears = SubResource( 10 )
+anims/rotate_gears = SubResource( 11 )
 blend_times = [  ]
 
-[node name="GameOver" type="AcceptDialog" parent="." index="10"]
+[node name="GameOver" type="AcceptDialog" parent="." index="11"]
 
 visible = false
 anchor_left = 0.5
@@ -4238,7 +4355,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Quit" type="ConfirmationDialog" parent="." index="11"]
+[node name="Quit" type="ConfirmationDialog" parent="." index="12"]
 
 visible = false
 anchor_left = 0.5
@@ -4290,7 +4407,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
-[node name="SoundCard" type="AudioStreamPlayer" parent="." index="12"]
+[node name="SoundCard" type="AudioStreamPlayer" parent="." index="13"]
 
 stream = ExtResource( 7 )
 volume_db = 0.0
@@ -4299,7 +4416,7 @@ autoplay = false
 mix_target = 0
 bus = "Master"
 
-[node name="SoundShuffle" type="AudioStreamPlayer" parent="." index="13"]
+[node name="SoundShuffle" type="AudioStreamPlayer" parent="." index="14"]
 
 stream = ExtResource( 8 )
 volume_db = 0.0

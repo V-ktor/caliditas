@@ -207,9 +207,11 @@ func hide():
 	for c in get_children():
 		if (c.has_method("hide")):
 			c.hide()
+	get_node("Background/AnimationPlayer").queue("fade_out")
 
 func show():
 	get_node("Panel").show()
+	get_node("Background/AnimationPlayer").queue("fade_in")
 
 func quit():
 	if (get_node("Quit").is_visible()):
