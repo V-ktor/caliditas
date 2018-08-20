@@ -12,8 +12,10 @@ config_version=3
 
 config/name="Caliditas"
 run/main_scene="res://scenes/menu/menu.tscn"
+boot_splash/image="res://images/background/splash.png"
 config/icon="res://icon.png"
 config/quit_on_go_back=false
+boot_splash/main_loop_type=""
 
 [autoload]
 

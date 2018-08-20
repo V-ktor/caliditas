@@ -904,7 +904,7 @@ func _ready():
 	# Set up credit text.
 	get_node("Credits/Text").push_color(Color(0.0,0.0,0.0))
 	get_node("Credits/Text").add_text(tr("ENGINE")+":\n Godot (")
-	get_node("Credits/Text").append_bbcode("[url=https://godotengine.org/]godotengine.org/[/url]")
+	get_node("Credits/Text").append_bbcode("[url=https://godotengine.org]godotengine.org[/url]")
 	get_node("Credits/Text").add_text(")\n\n"+tr("PROGRAMMING")+":\n - Viktor Hahn\n\n")
 	get_node("Credits/Text").add_text(tr("GRAPHICS")+":\n - Justin Nichol\n - Katarzyna Zalecka (")
 	get_node("Credits/Text").append_bbcode("[url=http://kasia88.deviantart.com]kasia88.deviantart.com[/url]")
