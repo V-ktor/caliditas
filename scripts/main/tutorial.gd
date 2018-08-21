@@ -91,20 +91,22 @@ func _ready():
 	timer.start()
 	yield(timer,"timeout")
 	text.add_text(tr("TUTORIAL_ATTRIBUTES4")+"\n")
-	timer.set_wait_time(4.0)
-	timer.start()
-	yield(timer,"timeout")
-	if (OS.has_feature("mobile")):
-		text.add_text(tr("TUTORIAL_ZOOM_TOUCH")+"\n")
-	else:
-		text.add_text(tr("TUTORIAL_ZOOM")+"\n")
 	button.set_disabled(false)
 	yield(self,"forward")
-	# Allow player to play cards.
-	Main.player = Main.PLAYER1
+	button.set_disabled(true)
+	if (OS.has_feature("mobile")):
+		text.add_text(tr("TUTORIAL_ZOOM1_TOUCH")+"\n")
+	else:
+		text.add_text(tr("TUTORIAL_ZOOM1")+"\n")
+	timer.set_wait_time(2.0)
+	timer.start()
+	yield(timer,"timeout")
 	if (card!=null):
 		card.node.unzoom()
-	button.set_disabled(true)
+	text.add_text(tr("TUTORIAL_ZOOM2")+"\n")
+	yield(Main,"card_enlarged")
+	# Allow player to play cards.
+	Main.player = Main.PLAYER1
 	hide_text()
 	text.add_text(tr("TUTORIAL_FIRST_TURN")+"\n")
 	Main.connect("card_played",self,"_card_played",[],CONNECT_ONESHOT)

@@ -38,6 +38,7 @@ signal card_played(player,card,target)
 signal turn_started(player)
 signal target_selected(target)
 signal effect_used()
+signal card_enlarged(card)
 
 
 class Card:

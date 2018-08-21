@@ -15,6 +15,7 @@ func zoom():
 	get_node("TweenScale").start()
 	set_z_index(10)
 	get_node("SoundTap").play()
+	Main.emit_signal("card_enlarged",card)
 
 func unzoom():
 	timer.stop()
