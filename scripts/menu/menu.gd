@@ -241,7 +241,7 @@ func quit():
 
 func _show_deck(t=false):
 	var num_cards
-	var show_all = get_node("Deck/Header/CheckBox").is_pressed() || true
+	var show_all = get_node("Deck/Header/CheckBox").is_pressed()
 	if (_deck==null):
 		_deck = deck.duplicate()
 	num_cards = get_num_cards(_deck)
@@ -250,10 +250,10 @@ func _show_deck(t=false):
 			continue
 		var bi
 		var type = Cards.data.keys()[i]
-		var ammount = 0
-		var max_ammount = 0
+		var amount = 0
+		var max_amount = 0
 		if (inventory.has(type)):
-			max_ammount = min(MAX_MULT,inventory[type])
+			max_amount = min(MAX_MULT,inventory[type])
 		if (!has_node("Deck/ScrollContainer/GridContainer/Card"+str(i))):
 			var ni = Cards.create_card(type)
 			bi = get_node("Deck/Card").duplicate()
@@ -267,20 +267,22 @@ func _show_deck(t=false):
 		else:
 			bi = get_node("Deck/ScrollContainer/GridContainer/Card"+str(i))
 		if (_deck.has(type)):
-			ammount = _deck[type]
-			bi.get_node("ButtonAdd").set_disabled(ammount>=max_ammount || num_cards>=MAX_CARDS)
+			amount = _deck[type]
+			bi.get_node("ButtonAdd").set_disabled(amount>=max_amount || num_cards>=MAX_CARDS)
 			bi.get_node("ButtonSub").set_disabled(false)
 		else:
-			bi.get_node("ButtonAdd").set_disabled(max_ammount==0 || num_cards>=MAX_CARDS)
+			bi.get_node("ButtonAdd").set_disabled(max_amount==0 || num_cards>=MAX_CARDS)
 			bi.get_node("ButtonSub").set_disabled(true)
 		if (inventory.has(type)):
-			bi.get_node("Label").set_text(str(ammount)+" / "+str(max_ammount)+" ("+str(inventory[type])+")")
+			bi.get_node("Label").set_text(str(amount)+" / "+str(max_amount)+" ("+str(inventory[type])+")")
 		else:
-			bi.get_node("Label").set_text(str(ammount)+" / "+str(max_ammount))
-		if (show_all || max_ammount>0):
+			bi.get_node("Label").set_text(str(amount)+" / "+str(max_amount))
+		if (show_all || max_amount>0):
 			bi.show()
+			bi.raise()
 		else:
 			bi.hide()
+			bi.queue_free()
 	
 	get_node("Deck/Header/Label").set_text(tr("CARDS")+": "+str(get_num_cards(_deck))+" / "+str(MAX_CARDS))
 	get_node("Deck/Header/Name").set_text(deck_name)
