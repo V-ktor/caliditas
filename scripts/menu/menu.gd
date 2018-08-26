@@ -204,14 +204,20 @@ func game_over(victory,error=""):
 
 
 func hide():
+	if (get_node("Background").is_visible()):
+		get_node("Background/AnimationPlayer").queue("fade_out")
+	if (get_node("Black").is_visible()):
+		get_node("Black/AnimationPlayer").queue("fade_out")
 	for c in get_children():
 		if (c.has_method("hide")):
 			c.hide()
-	get_node("Background/AnimationPlayer").queue("fade_out")
 
 func show():
 	get_node("Panel").show()
-	get_node("Background/AnimationPlayer").queue("fade_in")
+	if (active):
+		get_node("Black/AnimationPlayer").queue("fade_in")
+	else:
+		get_node("Background/AnimationPlayer").queue("fade_in")
 
 func quit():
 	if (get_node("Quit").is_visible()):

@@ -949,7 +949,7 @@ func next_turn(draw=1):
 		return
 	
 	UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonE").set_disabled(false)
-	UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonD").set_disabled(false)
+	UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonD").set_disabled(hand[player].size()==0)
 	UI.get_node("Player"+str(enemy+1)+"/VBoxContainer/ButtonE").set_disabled(true)
 	UI.get_node("Player"+str(enemy+1)+"/VBoxContainer/ButtonD").set_disabled(true)
 	if (!ai && !multiplayer):

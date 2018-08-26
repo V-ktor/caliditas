@@ -1,21 +1,23 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://scripts/menu/menu.gd" type="Script" id=1]
-[ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://default_theme.tres" type="Theme" id=3]
-[ext_resource path="res://images/gui/gears.png" type="Texture" id=4]
-[ext_resource path="res://images/cards/card_mask.png" type="Texture" id=5]
-[ext_resource path="res://images/cards/back.png" type="Texture" id=6]
-[ext_resource path="res://sounds/draw.wav" type="AudioStream" id=7]
-[ext_resource path="res://sounds/shuffle.wav" type="AudioStream" id=8]
+[ext_resource path="res://images/background/ice.jpg" type="Texture" id=2]
+[ext_resource path="res://images/background/fire.png" type="Texture" id=3]
+[ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://default_theme.tres" type="Theme" id=5]
+[ext_resource path="res://images/gui/gears.png" type="Texture" id=6]
+[ext_resource path="res://images/cards/card_mask.png" type="Texture" id=7]
+[ext_resource path="res://images/cards/back.png" type="Texture" id=8]
+[ext_resource path="res://sounds/draw.wav" type="AudioStream" id=9]
+[ext_resource path="res://sounds/shuffle.wav" type="AudioStream" id=10]
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=16]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 0.0313726, 0.0313726, 0.0313726, 0.501961 )
 draw_center = true
 border_width_left = 0
 border_width_top = 0
@@ -36,6 +38,85 @@ shadow_color = Color( 0, 0, 0, 0.6 )
 shadow_size = 0
 anti_aliasing = true
 anti_aliasing_size = 1
+
+[sub_resource type="Animation" id=17]
+
+resource_name = "fade_in"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, true ]
+}
+
+[sub_resource type="Animation" id=18]
+
+resource_name = "fade_out"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Shader" id=15]
+
+code = "shader_type canvas_item;
+
+void fragment()
+{
+	float offset = 0.0739*TIME;
+	vec2 uv = UV*vec2(0.9+0.1*sin(0.51*TIME+1.07*(-UV.x+UV.y)),0.8+0.1*cos(0.37*TIME+0.971*UV.x));
+	COLOR = 0.5*texture(TEXTURE,uv+vec2(offset,0))+0.5*texture(TEXTURE,uv-vec2(offset,0));
+	COLOR.a *= uv.y;
+}"
+
+[sub_resource type="ShaderMaterial" id=14]
+
+render_priority = 0
+shader = SubResource( 15 )
 
 [sub_resource type="Animation" id=2]
 
@@ -104,7 +185,7 @@ tracks/1/keys = {
 size = 16
 use_mipmaps = false
 use_filter = false
-font_data = ExtResource( 2 )
+font_data = ExtResource( 4 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Font/fallback", "Settings" ]
 
 [sub_resource type="Animation" id=5]
@@ -190,7 +271,7 @@ shader = SubResource( 7 )
 shader_param/frames = null
 shader_param/alpha = 100.0
 shader_param/frame = 0
-shader_param/mask = ExtResource( 5 )
+shader_param/mask = ExtResource( 7 )
 _sections_unfolded = [ "shader_param" ]
 
 [sub_resource type="Animation" id=9]
@@ -353,7 +434,33 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Background" type="Panel" parent="." index="0"]
+[node name="Black" type="Panel" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/panel = SubResource( 16 )
+_sections_unfolded = [ "Mouse", "custom_styles" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Black" index="0"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/fade_in = SubResource( 17 )
+anims/fade_out = SubResource( 18 )
+blend_times = [  ]
+
+[node name="Background" type="TextureRect" parent="." index="1"]
 
 light_mask = 0
 anchor_left = 0.0
@@ -366,10 +473,30 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/panel = SubResource( 1 )
-_sections_unfolded = [ "Visibility", "custom_styles" ]
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 7
+_sections_unfolded = [ "Anchor", "Margin", "Mouse", "Visibility", "custom_styles" ]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Background" index="0"]
+[node name="Fire" type="TextureRect" parent="Background" index="0"]
+
+material = SubResource( 14 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 7
+_sections_unfolded = [ "Anchor", "Margin", "Material" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Background" index="1"]
 
 root_node = NodePath("..")
 autoplay = ""
@@ -380,7 +507,7 @@ anims/fade_in = SubResource( 2 )
 anims/fade_out = SubResource( 3 )
 blend_times = [  ]
 
-[node name="Version" type="Label" parent="." index="1"]
+[node name="Version" type="Label" parent="." index="2"]
 
 anchor_left = 1.0
 anchor_top = 1.0
@@ -406,7 +533,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Mouse", "custom_fonts" ]
 
-[node name="Panel" type="Panel" parent="." index="2"]
+[node name="Panel" type="Panel" parent="." index="3"]
 
 anchor_left = 1.0
 anchor_top = 0.5
@@ -422,7 +549,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 _sections_unfolded = [ "Anchor", "Margin", "Theme" ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel" index="0"]
@@ -745,7 +872,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Singleplayer" type="Panel" parent="." index="3"]
+[node name="Singleplayer" type="Panel" parent="." index="4"]
 
 visible = false
 anchor_left = 0.5
@@ -762,7 +889,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 _sections_unfolded = [ "Anchor", "Dialog", "Margin", "Rect", "Theme" ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Singleplayer" index="0"]
@@ -883,7 +1010,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="Deck" type="WindowDialog" parent="." index="4"]
+[node name="Deck" type="WindowDialog" parent="." index="5"]
 
 editor/display_folded = true
 visible = false
@@ -901,7 +1028,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 popup_exclusive = true
 window_title = "DECK"
 resizable = false
@@ -1478,7 +1605,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Mouse", "Size Flags" ]
 show_behind_parent = true
 position = Vector2( 204, -14 )
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Gear02" type="Sprite" parent="Deck" index="8"]
@@ -1487,7 +1614,7 @@ show_behind_parent = true
 position = Vector2( 118, 7 )
 rotation = 6.54498
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Deck" index="9"]
@@ -1500,7 +1627,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 5 )
 blend_times = [  ]
 
-[node name="Shop" type="WindowDialog" parent="." index="5"]
+[node name="Shop" type="WindowDialog" parent="." index="6"]
 
 editor/display_folded = true
 visible = false
@@ -1518,7 +1645,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 popup_exclusive = true
 window_title = "SHOP"
 resizable = false
@@ -2628,7 +2755,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
 show_behind_parent = true
 position = Vector2( 204, -14 )
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Gear02" type="Sprite" parent="Shop" index="4"]
@@ -2637,7 +2764,7 @@ show_behind_parent = true
 position = Vector2( 118, 7 )
 rotation = 6.54498
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Shop" index="5"]
@@ -2650,7 +2777,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 6 )
 blend_times = [  ]
 
-[node name="Acquired" type="WindowDialog" parent="." index="6"]
+[node name="Acquired" type="WindowDialog" parent="." index="7"]
 
 editor/display_folded = true
 visible = false
@@ -2668,7 +2795,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 popup_exclusive = true
 window_title = "CARDS_ACQUIRED"
 resizable = false
@@ -2735,7 +2862,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 6 )
+texture = ExtResource( 8 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Anchor", "Margin", "Material", "Rect" ]
@@ -2826,7 +2953,7 @@ _sections_unfolded = [ "Rect" ]
 show_behind_parent = true
 position = Vector2( 204, -14 )
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Gear02" type="Sprite" parent="Acquired" index="6"]
@@ -2835,7 +2962,7 @@ show_behind_parent = true
 position = Vector2( 118, 7 )
 rotation = 0.2618
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Acquired" index="7"]
@@ -2848,7 +2975,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 10 )
 blend_times = [  ]
 
-[node name="Options" type="WindowDialog" parent="." index="7"]
+[node name="Options" type="WindowDialog" parent="." index="8"]
 
 editor/display_folded = true
 visible = false
@@ -2866,7 +2993,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 popup_exclusive = true
 window_title = "OPTIONS"
 resizable = false
@@ -3700,7 +3827,7 @@ _sections_unfolded = [ "Size Flags" ]
 show_behind_parent = true
 position = Vector2( 204, -14 )
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Gear02" type="Sprite" parent="Options" index="5"]
@@ -3709,7 +3836,7 @@ show_behind_parent = true
 position = Vector2( 118, 7 )
 rotation = 0.2618
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Options" index="6"]
@@ -3722,7 +3849,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 11 )
 blend_times = [  ]
 
-[node name="Lobby" type="WindowDialog" parent="." index="8"]
+[node name="Lobby" type="WindowDialog" parent="." index="9"]
 
 editor/display_folded = true
 visible = false
@@ -3740,7 +3867,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 popup_exclusive = true
 window_title = "LOBBY"
 resizable = false
@@ -4076,7 +4203,7 @@ _sections_unfolded = [ "Rect", "Size Flags" ]
 show_behind_parent = true
 position = Vector2( 204, -14 )
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Gear02" type="Sprite" parent="Lobby" index="4"]
@@ -4085,7 +4212,7 @@ show_behind_parent = true
 position = Vector2( 118, 7 )
 rotation = 0.2618
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Lobby" index="5"]
@@ -4098,7 +4225,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 12 )
 blend_times = [  ]
 
-[node name="Info" type="Panel" parent="." index="9"]
+[node name="Info" type="Panel" parent="." index="10"]
 
 visible = false
 anchor_left = 0.5
@@ -4115,7 +4242,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 _sections_unfolded = [ "Anchor", "Dialog", "Margin", "Theme" ]
 
 [node name="ButtonClose" type="Button" parent="Info" index="0"]
@@ -4174,7 +4301,7 @@ selection_enabled = false
 override_selected_font_color = false
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Credits" type="WindowDialog" parent="." index="10"]
+[node name="Credits" type="WindowDialog" parent="." index="11"]
 
 editor/display_folded = true
 visible = false
@@ -4192,7 +4319,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 popup_exclusive = false
 window_title = "CREDITS"
 resizable = false
@@ -4258,7 +4385,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Size Flags" ]
 show_behind_parent = true
 position = Vector2( 204, -14 )
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Gear02" type="Sprite" parent="Credits" index="4"]
@@ -4267,7 +4394,7 @@ show_behind_parent = true
 position = Vector2( 118, 7 )
 rotation = 0.2618
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Credits" index="5"]
@@ -4280,7 +4407,7 @@ playback_speed = 1.0
 anims/rotate_gears = SubResource( 13 )
 blend_times = [  ]
 
-[node name="GameOver" type="AcceptDialog" parent="." index="11"]
+[node name="GameOver" type="AcceptDialog" parent="." index="12"]
 
 visible = false
 anchor_left = 0.5
@@ -4297,7 +4424,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 popup_exclusive = false
 window_title = "GAME_OVER"
 resizable = false
@@ -4355,7 +4482,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Quit" type="ConfirmationDialog" parent="." index="12"]
+[node name="Quit" type="ConfirmationDialog" parent="." index="13"]
 
 visible = false
 anchor_left = 0.5
@@ -4373,7 +4500,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 3 )
+theme = ExtResource( 5 )
 popup_exclusive = false
 window_title = "QUIT?"
 resizable = false
@@ -4407,18 +4534,18 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
-[node name="SoundCard" type="AudioStreamPlayer" parent="." index="13"]
+[node name="SoundCard" type="AudioStreamPlayer" parent="." index="14"]
 
-stream = ExtResource( 7 )
+stream = ExtResource( 9 )
 volume_db = 0.0
 pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "Master"
 
-[node name="SoundShuffle" type="AudioStreamPlayer" parent="." index="14"]
+[node name="SoundShuffle" type="AudioStreamPlayer" parent="." index="15"]
 
-stream = ExtResource( 8 )
+stream = ExtResource( 10 )
 volume_db = 0.0
 pitch_scale = 1.0
 autoplay = false
