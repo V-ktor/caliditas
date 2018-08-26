@@ -2,8 +2,6 @@ extends Button
 
 
 func get_drag_data(position):
-#	get_parent().timer.stop()
-#	get_parent().unzoom()
 	if (get_parent().type=="dead" || get_parent().type=="equiped" || get_parent().type=="preview" || get_parent().card.owner!=Main.player):
 		return
 	var s = "creature"

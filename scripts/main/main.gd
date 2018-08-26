@@ -134,7 +134,10 @@ class Card:
 			elif ("ice" in Cards.data[ID]["tags"] && !("fire" in Cards.data[ID]["tags"])):
 				alignment = "ice"
 		node.get_node("Animation").clear_queue()
-		node.get_node("AnimationPlayer").play(Main.DEATH_ANIMATIONS[alignment])
+		if (Main.animations):
+			node.get_node("AnimationPlayer").play(Main.DEATH_ANIMATIONS[alignment])
+		else:
+			node.get_node("AnimationPlayer").play("fade_out")
 		node.get_node("Tween").remove_all()
 		node.get_node("Tween").interpolate_property(node,"global_position",node.get_global_position(),Main.get_node("Graveyard"+str(owner+1)).get_global_position(),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,1.0)
 		node.get_node("Tween").start()
@@ -413,7 +416,10 @@ func play_card(card,player,target=null):
 			timer.set_wait_time(0.5)
 			timer.start()
 			yield(timer,"timeout")
-			card.node.get_node("AnimationPlayer").play("fizzle")
+			if (animations):
+				card.node.get_node("AnimationPlayer").play("fizzle")
+			else:
+				card.node.get_node("AnimationPlayer").play("fade_out")
 		graveyard[player].push_back(card)
 		card.in_game = true
 		hand[player].erase(card)

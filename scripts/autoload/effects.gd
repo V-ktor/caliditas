@@ -192,10 +192,13 @@ func move_to_hand(card,target):
 	target.temperature = Cards.data[target.ID]["temperature"]
 	target.level = Cards.data[target.ID]["level"]
 	target.update()
-	if (target.owner!=Main.player && !((Main.ai || Main.multiplayer) && target.owner==Main.PLAYER1)):
-		target.node.get_node("Animation").play("hide")
 	Main.used_positions[enemy].erase(target.pos)
 	Main.sort_hand(enemy)
+	printt(target.owner!=Main.player && target.owner!=Main.PLAYER1 && (Main.ai || Main.multiplayer))
+	if (target.owner!=Main.player && target.owner!=Main.PLAYER1 && (Main.ai || Main.multiplayer)):
+		yield(get_tree(),"idle_frame")
+		printt("test")
+		target.node.get_node("Animation").play("hide")
 
 # mana #
 
