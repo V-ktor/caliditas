@@ -144,6 +144,7 @@ class Card:
 		yield(node.get_node("Tween"),"tween_completed")
 		Main.get_node("Graveyard"+str(owner+1)+"/Sprite").show()
 		node.hide()
+		node.get_node("Button").hide()
 
 # Used for sorting arrays descending by absolute value of temperature.
 class TemperatureSorter:
