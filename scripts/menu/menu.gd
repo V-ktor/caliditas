@@ -154,7 +154,7 @@ sync func _multiplayer():
 	Main.deck[1] = player_deck[other]
 	Main.player_name[0] = player_name[1]
 	Main.player_name[1] = player_name[other]
-	Main.multiplayer = true
+	Main.is_multiplayer = true
 	Main.server = player_self==0
 	if (player_self!=0):
 		Main.turn = 0
@@ -239,6 +239,8 @@ func quit():
 		get_node("Info").hide()
 	elif (get_node("Credits").is_visible()):
 		get_node("Credits").hide()
+	elif OS.get_name()=="HTML5":
+		return
 	elif (get_node("GameOver").is_visible()):
 		get_node("GameOver").hide()
 	else:

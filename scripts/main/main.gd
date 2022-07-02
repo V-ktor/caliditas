@@ -28,7 +28,7 @@ var select = "none"
 var state
 var using_card = false
 var ai = true
-var multiplayer = false
+var is_multiplayer = false
 var server = true
 var animations = true
 
@@ -172,7 +172,7 @@ func reset():
 	player = -1
 	selected_card = null
 	ai = false
-	multiplayer = false
+	is_multiplayer = false
 	server = true
 	if (has_node("/root/Menu")):
 		animations = get_node("/root/Menu").animations
@@ -197,7 +197,7 @@ func start():
 	UI.get_node("Player1/VBoxContainer/Name").set_text(player_name[PLAYER1])
 	UI.get_node("Player2/VBoxContainer/Name").set_text(player_name[PLAYER2])
 	UI.get_node("LabelVS").set_text(player_name[PLAYER1]+" VS "+player_name[PLAYER2])
-	if (ai || multiplayer):
+	if (ai || is_multiplayer):
 		UI.get_node("Player2/VBoxContainer/ButtonC").hide()
 		UI.get_node("Player2/VBoxContainer/ButtonE").hide()
 		UI.get_node("Player2/VBoxContainer/ButtonD").hide()
@@ -228,17 +228,17 @@ func hide():
 	for card in get_node("Cards").get_children():
 		card.get_node("AnimationPlayer").play("fade_out")
 
-func find_empty_position(player):
+func find_empty_position(pl):
 	var p = 0
-	while (used_positions[player].has(p)):
+	while (used_positions[pl].has(p)):
 		p += 1
-		if (!used_positions[player].has(-p)):
+		if (!used_positions[pl].has(-p)):
 			p *= -1
 			break
 	
 	return p
 
-func get_index(card):
+func get_card_index(card):
 	var dict = {}
 	for p in range(2):
 		for i in range(field[p].size()):
@@ -338,7 +338,7 @@ func play_card(card,player,target=null):
 	
 	var c
 	print("Player "+str(player)+" plays card "+str(card.ID)+".")
-	if (multiplayer && player==PLAYER1):
+	if (is_multiplayer && player==PLAYER1):
 		for i in range(hand[player].size()):
 			if (hand[player][i]==card):
 				c = i
@@ -369,7 +369,7 @@ func play_card(card,player,target=null):
 		if (state==null || !state["used"]):
 			print("Invalid selection, break spell casting.")
 			deselect(false)
-			if ((ai || multiplayer) && player==PLAYER2):
+			if ((ai || is_multiplayer) && player==PLAYER2):
 				card.node.get_node("Animation").play("hide")
 			return
 		
@@ -434,7 +434,7 @@ func play_card(card,player,target=null):
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",p1,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
 		card.node.get_node("Tween").start()
 	
-	if (multiplayer && player==PLAYER1):
+	if (is_multiplayer && player==PLAYER1):
 		var t = {}
 		if (state!=null && state.has("_target")):
 			t = state["_target"]
@@ -572,14 +572,14 @@ func use_effect(card,effect,player,target=null):
 		if (target==null):
 			select = target_type[0]
 			if ("creature" in target_type):
-				if (multiplayer && player!=PLAYER1):
+				if (is_multiplayer && player!=PLAYER1):
 					printt("Invalid target selected.")
 					state = {"used":true}
 					emit_signal("effect_used")
 				if (player==PLAYER1):
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(false)
-				elif (player==PLAYER2 && !ai && !multiplayer):
+				elif (player==PLAYER2 && !ai && !is_multiplayer):
 					UI.get_node("Player2/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
 					UI.get_node("Player2/VBoxContainer/ButtonC").set_disabled(false)
 				print("Please select a "+select+" card.")
@@ -596,7 +596,7 @@ func use_effect(card,effect,player,target=null):
 			return
 	
 	state = {"used":false}
-	if (multiplayer && player==PLAYER1):
+	if (is_multiplayer && player==PLAYER1):
 		var t = {}
 		if (target!=null):
 			for p in range(2):
@@ -670,9 +670,9 @@ func attack(attacker,target,counter=false):
 		return
 #	var counterattack = !counter && abs(target.temperature)>=abs(attacker.temperature) && sign(attacker.temperature)!=sign(target.temperature)
 	var counterattack = !counter && can_attack(target,attacker,true)
-	if (multiplayer && server):
-		var a = get_index(attacker)
-		var t = get_index(target)
+	if (is_multiplayer && server):
+		var a = get_card_index(attacker)
+		var t = get_card_index(target)
 		if (a.size()>0 && t.size()>0):
 			rpc("_attack",a,t,counter)
 	var pos_a = attacker.node.get_global_position()
@@ -718,7 +718,7 @@ func attack(attacker,target,counter=false):
 func _draw_card(pl,ID=-1):
 	if (server):
 		ID = draw_card(pl,ID)
-		if (multiplayer):
+		if (is_multiplayer):
 			rpc("draw_card",(pl+1)%2,ID)
 
 remote func draw_card(pl,ID=-1):
@@ -747,7 +747,7 @@ remote func draw_card(pl,ID=-1):
 	deck[pl].remove(ID)
 	update_stats()
 	get_node("SoundDraw").play()
-	if (ai || multiplayer):
+	if (ai || is_multiplayer):
 		if (pl==PLAYER2):
 			node.get_node("Animation").play("hide",-1,10.0)
 	else:
@@ -758,7 +758,7 @@ remote func draw_card(pl,ID=-1):
 	return ID
 
 func _draw_extra_card():
-	if (multiplayer):
+	if (is_multiplayer):
 		rpc("draw_extra_card",player)
 	else:
 		draw_extra_card(player)
@@ -813,7 +813,7 @@ func hint_valid_cards(s=null,card=null,event="on_play"):
 		if (node.get_node("Select").is_visible()):
 			node.get_node("Animation").play("deselect")
 	if (s=="hand" || s=="hand_creature"):
-		if (player==PLAYER1 || (!ai && !multiplayer)):
+		if (player==PLAYER1 || (!ai && !is_multiplayer)):
 			for card in hand[player]:
 				if (card.level<=mana[player]):
 					card.node.get_node("Animation").queue("blink")
@@ -827,8 +827,9 @@ func hint_valid_cards(s=null,card=null,event="on_play"):
 				c.node.get_node("Animation").play("blink")
 	
 
+# warning-ignore:function_conflicts_variable
 func select(card,type):
-	if ((ai || multiplayer) && player!=PLAYER1):
+	if ((ai || is_multiplayer) && player!=PLAYER1):
 		return
 	if (type!=select && !(select=="hand_creature" && type in ["hand","creature"])):
 		deselect(false)
@@ -902,7 +903,7 @@ func end_turn():
 	UI.get_node("Player2/VBoxContainer/ButtonE").set_disabled(true)
 	UI.get_node("Player2/VBoxContainer/ButtonD").set_disabled(true)
 	UI.get_node("Player2/VBoxContainer/ButtonC").set_disabled(true)
-	if (!multiplayer || server):
+	if (!is_multiplayer || server):
 		attack_phase()
 	else:
 		rpc_id(1,"attack_phase")
@@ -939,7 +940,7 @@ func next_turn(draw=1):
 	UI.get_node("VBoxContainer/LabelT").set_text(tr("PLAYER_TURN")%player_name[player])
 	UI.get_node("VBoxContainer/LabelP").set_text(tr("PLAYING_PHASE"))
 	
-	if (!ai && !multiplayer):
+	if (!ai && !is_multiplayer):
 		for card in hand[player]:
 			card.node.get_node("Animation").play("show")
 		for card in hand[enemy]:
@@ -953,7 +954,7 @@ func next_turn(draw=1):
 	UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonD").set_disabled(hand[player].size()==0)
 	UI.get_node("Player"+str(enemy+1)+"/VBoxContainer/ButtonE").set_disabled(true)
 	UI.get_node("Player"+str(enemy+1)+"/VBoxContainer/ButtonD").set_disabled(true)
-	if (!ai && !multiplayer):
+	if (!ai && !is_multiplayer):
 		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonC").show()
 		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonE").show()
 		UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonD").show()
@@ -979,12 +980,12 @@ remote func attack_phase():
 		timer.set_wait_time(1.0)
 		timer.start()
 		yield(timer,"timeout")
-		if (multiplayer):
+		if (is_multiplayer):
 			rpc("update_stats")
 		else:
 			update_stats()
 	
-	if (multiplayer):
+	if (is_multiplayer):
 		rpc("attack_phase_end")
 	else:
 		attack_phase_end()
@@ -1033,9 +1034,9 @@ func is_targeted(target):
 	return target in attack_list.values()
 
 func _set_attack(attacker,target):
-	if (multiplayer):
-		var a = get_index(attacker)
-		var t = get_index(target)
+	if (is_multiplayer):
+		var a = get_card_index(attacker)
+		var t = get_card_index(target)
 		rpc("remote_set_attack",a,t)
 	set_attack(attacker,target)
 
@@ -1058,10 +1059,11 @@ func set_attack(attacker,target):
 	add_child(ai)
 
 func _clear_attack(attacker):
-	if (multiplayer):
-		var a = get_index(attacker)
+	if (is_multiplayer):
+		var a = get_card_index(attacker)
 		rpc("remote_clear_attack",a)
-	set_attack(attacker)
+#	set_attack(attacker)
+	attack_list[attacker] = null
 
 remote func remote_clear_attack(a):
 	var attacker = field[(a["player"]+1)%2][a["index"]]

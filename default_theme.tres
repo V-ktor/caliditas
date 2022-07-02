@@ -1,569 +1,288 @@
-[gd_resource type="Theme" load_steps=49 format=2]
+[gd_resource type="Theme" load_steps=47 format=2]
 
-[ext_resource path="res://images/gui/button_disabled.png" type="Texture" id=1]
-[ext_resource path="res://images/gui/button_focus.png" type="Texture" id=2]
-[ext_resource path="res://images/gui/button_hover.png" type="Texture" id=3]
-[ext_resource path="res://images/gui/button_normal.png" type="Texture" id=4]
-[ext_resource path="res://images/gui/button_pressed.png" type="Texture" id=5]
-[ext_resource path="res://images/gui/radio_on.png" type="Texture" id=6]
-[ext_resource path="res://images/gui/radio_off.png" type="Texture" id=7]
-[ext_resource path="res://images/gui/checkbox_off.png" type="Texture" id=8]
-[ext_resource path="res://images/gui/checkbox_on.png" type="Texture" id=9]
-[ext_resource path="res://images/gui/h_scroll_grabber.png" type="Texture" id=10]
-[ext_resource path="res://images/gui/h_scroll_grabber_hover.png" type="Texture" id=11]
-[ext_resource path="res://images/gui/h_scroll_grabber_pressed.png" type="Texture" id=12]
-[ext_resource path="res://images/gui/h_scroll_bar.png" type="Texture" id=13]
-[ext_resource path="res://images/gui/h_scroll_bar_focus.png" type="Texture" id=14]
-[ext_resource path="res://images/gui/line_edit_focus.png" type="Texture" id=15]
-[ext_resource path="res://images/gui/line_edit.png" type="Texture" id=16]
-[ext_resource path="res://images/gui/up_down_arrow.png" type="Texture" id=17]
-[ext_resource path="res://images/gui/panel01.png" type="Texture" id=18]
-[ext_resource path="res://images/gui/v_scroll_grabber.png" type="Texture" id=19]
-[ext_resource path="res://images/gui/v_scroll_grabber_hover.png" type="Texture" id=20]
-[ext_resource path="res://images/gui/v_scroll_grabber_pressed.png" type="Texture" id=21]
-[ext_resource path="res://images/gui/v_scroll_bar.png" type="Texture" id=22]
-[ext_resource path="res://images/gui/v_scroll_bar_focus.png" type="Texture" id=23]
+[ext_resource path="res://images/gui/panel01.png" type="Texture" id=1]
+[ext_resource path="res://images/gui/window.png" type="Texture" id=2]
+[ext_resource path="res://images/gui/button_normal.png" type="Texture" id=3]
+[ext_resource path="res://images/gui/button_pressed.png" type="Texture" id=4]
+[ext_resource path="res://images/gui/button_disabled.png" type="Texture" id=5]
+[ext_resource path="res://images/gui/button_hover.png" type="Texture" id=6]
+[ext_resource path="res://images/gui/button_focus.png" type="Texture" id=7]
+[ext_resource path="res://images/gui/h_scroll_grabber_hover.png" type="Texture" id=8]
+[ext_resource path="res://images/gui/h_scroll_grabber.png" type="Texture" id=9]
+[ext_resource path="res://images/gui/h_scroll_bar.png" type="Texture" id=10]
+[ext_resource path="res://images/gui/h_scroll_bar_focus.png" type="Texture" id=11]
+[ext_resource path="res://images/gui/v_scroll_bar.png" type="Texture" id=12]
+[ext_resource path="res://images/gui/v_scroll_grabber.png" type="Texture" id=13]
+[ext_resource path="res://images/gui/v_scroll_bar_focus.png" type="Texture" id=14]
+[ext_resource path="res://images/gui/v_scroll_grabber_hover.png" type="Texture" id=15]
+[ext_resource path="res://images/gui/bar_bg.png" type="Texture" id=16]
+[ext_resource path="res://images/gui/bar_progress.png" type="Texture" id=17]
+[ext_resource path="res://images/gui/checkbox_off.png" type="Texture" id=18]
+[ext_resource path="res://images/gui/radio_off.png" type="Texture" id=19]
+[ext_resource path="res://images/gui/radio_on.png" type="Texture" id=20]
+[ext_resource path="res://images/gui/checkbox_on.png" type="Texture" id=21]
+[ext_resource path="res://images/gui/line_edit.png" type="Texture" id=22]
+[ext_resource path="res://images/gui/line_edit_focus.png" type="Texture" id=23]
 [ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=24]
-[ext_resource path="res://images/gui/window.png" type="Texture" id=25]
 
-[sub_resource type="StyleBoxTexture" id=1]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 1 )
-region_rect = Rect2( 0, 0, 192, 48 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=2]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 2 )
-region_rect = Rect2( 0, 0, 192, 48 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=3]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 3 )
-region_rect = Rect2( 0, 0, 192, 48 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=4]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 192, 48 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Content Margin", "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=5]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
+[sub_resource type="StyleBoxTexture" id=27]
 texture = ExtResource( 5 )
 region_rect = Rect2( 0, 0, 192, 48 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 8.0
+margin_bottom = 8.0
 
-[sub_resource type="StyleBoxTexture" id=6]
+[sub_resource type="StyleBoxTexture" id=28]
+texture = ExtResource( 7 )
+region_rect = Rect2( 0, 0, 192, 48 )
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 8.0
+margin_bottom = 8.0
 
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 10 )
+[sub_resource type="StyleBoxTexture" id=29]
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 192, 48 )
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 8.0
+margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id=26]
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 192, 48 )
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 8.0
+margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id=30]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 192, 48 )
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 8.0
+margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id=33]
+texture = ExtResource( 9 )
 region_rect = Rect2( 0, 0, 72, 20 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 0.0
-margin_bottom = 0.0
-expand_margin_left = 18.0
-expand_margin_right = 18.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=7]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 11 )
-region_rect = Rect2( 0, 0, 72, 20 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 0.0
-margin_bottom = 0.0
-expand_margin_left = 18.0
-expand_margin_right = 18.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=8]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 12 )
-region_rect = Rect2( 0, 0, 72, 20 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 0.0
-margin_bottom = 0.0
-expand_margin_left = 18.0
-expand_margin_right = 18.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=9]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 13 )
-region_rect = Rect2( 0, 0, 154, 24 )
-margin_left = 18.0
-margin_right = 18.0
-margin_top = 3.0
-margin_bottom = 3.0
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=10]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 14 )
-region_rect = Rect2( 0, 0, 154, 26 )
-margin_left = 18.0
-margin_right = 18.0
+margin_left = 6.0
+margin_right = 6.0
 margin_top = 4.0
 margin_bottom = 4.0
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Content Margin", "Margin" ]
+expand_margin_left = 24.0
+expand_margin_right = 24.0
 
-[sub_resource type="StyleBoxTexture" id=11]
+[sub_resource type="StyleBoxTexture" id=34]
+texture = ExtResource( 8 )
+region_rect = Rect2( 0, 0, 72, 20 )
+margin_left = 6.0
+margin_right = 6.0
+margin_top = 4.0
+margin_bottom = 4.0
+expand_margin_left = 24.0
+expand_margin_right = 24.0
 
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 15 )
+[sub_resource type="StyleBoxTexture" id=35]
+texture = ExtResource( 10 )
+region_rect = Rect2( 0, 0, 154, 26 )
+margin_left = 24.0
+margin_right = 24.0
+margin_top = 8.0
+margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id=36]
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 154, 26 )
+margin_left = 24.0
+margin_right = 24.0
+margin_top = 8.0
+margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id=44]
+texture = ExtResource( 23 )
 region_rect = Rect2( 0, 0, 192, 48 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 8.0
+margin_bottom = 8.0
 
-[sub_resource type="StyleBoxTexture" id=12]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 16 )
+[sub_resource type="StyleBoxTexture" id=43]
+texture = ExtResource( 22 )
 region_rect = Rect2( 0, 0, 192, 48 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 8.0
+margin_bottom = 8.0
 
-[sub_resource type="StyleBoxTexture" id=13]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 18 )
+[sub_resource type="StyleBoxTexture" id=24]
+texture = ExtResource( 1 )
 region_rect = Rect2( 0, 0, 192, 256 )
 margin_left = 16.0
 margin_right = 16.0
 margin_top = 16.0
 margin_bottom = 16.0
-expand_margin_left = 4.0
-expand_margin_right = 4.0
-expand_margin_top = 4.0
-expand_margin_bottom = 4.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
 
-[sub_resource type="StyleBoxTexture" id=14]
+[sub_resource type="StyleBoxTexture" id=41]
+texture = ExtResource( 16 )
+region_rect = Rect2( 0, 0, 160, 24 )
+margin_left = 16.0
+margin_right = 16.0
+margin_top = 4.0
+margin_bottom = 4.0
 
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 19 )
+[sub_resource type="StyleBoxTexture" id=42]
+texture = ExtResource( 17 )
+region_rect = Rect2( 0, 0, 160, 24 )
+margin_left = 16.0
+margin_right = 16.0
+margin_top = 4.0
+margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id=37]
+texture = ExtResource( 13 )
 region_rect = Rect2( 0, 0, 22, 72 )
-margin_left = 0.0
-margin_right = 0.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 18.0
-expand_margin_bottom = 18.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=15]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 20 )
-region_rect = Rect2( 0, 0, 22, 72 )
-margin_left = 0.0
-margin_right = 0.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 18.0
-expand_margin_bottom = 18.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=16]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 21 )
-region_rect = Rect2( 0, 0, 22, 72 )
-margin_left = 0.0
-margin_right = 0.0
-margin_top = 10.0
-margin_bottom = 10.0
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 18.0
-expand_margin_bottom = 18.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=17]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 22 )
-region_rect = Rect2( 0, 0, 26, 154 )
-margin_left = 3.0
-margin_right = 3.0
-margin_top = 18.0
-margin_bottom = 18.0
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Margin" ]
-
-[sub_resource type="StyleBoxTexture" id=18]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 23 )
-region_rect = Rect2( 0, 0, 28, 154 )
 margin_left = 4.0
 margin_right = 4.0
-margin_top = 18.0
-margin_bottom = 18.0
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Margin" ]
+margin_top = 6.0
+margin_bottom = 6.0
+expand_margin_top = 24.0
+expand_margin_bottom = 24.0
 
-[sub_resource type="DynamicFont" id=19]
+[sub_resource type="StyleBoxTexture" id=39]
+texture = ExtResource( 15 )
+region_rect = Rect2( 0, 0, 22, 72 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 6.0
+margin_bottom = 6.0
+expand_margin_top = 24.0
+expand_margin_bottom = 24.0
 
-size = 32
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 24 )
-_sections_unfolded = [ "Font", "Settings" ]
-
-[sub_resource type="ImageTexture" id=20]
-
-flags = 7
-storage = 0
-lossy_quality = 0.7
-flags = 7
-size = Vector2( 0, 0 )
-
-[sub_resource type="ImageTexture" id=21]
-
-flags = 7
-storage = 0
-lossy_quality = 0.7
-flags = 7
-size = Vector2( 0, 0 )
-
-[sub_resource type="StyleBoxTexture" id=22]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 25 )
-region_rect = Rect2( 0, 0, 768, 512 )
-margin_left = 248.0
-margin_right = 70.0
-margin_top = 96.0
+[sub_resource type="StyleBoxTexture" id=38]
+texture = ExtResource( 12 )
+region_rect = Rect2( 0, 0, 26, 154 )
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 24.0
 margin_bottom = 24.0
+
+[sub_resource type="StyleBoxTexture" id=40]
+texture = ExtResource( 14 )
+region_rect = Rect2( 0, 0, 28, 154 )
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 24.0
+margin_bottom = 24.0
+
+[sub_resource type="DynamicFontData" id=31]
+font_path = "res://fonts/Play-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=32]
+size = 24
+font_data = SubResource( 31 )
+
+[sub_resource type="StyleBoxTexture" id=25]
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 768, 512 )
+margin_left = 256.0
+margin_right = 64.0
+margin_top = 96.0
+margin_bottom = 16.0
 expand_margin_left = 8.0
-expand_margin_right = 8.0
+expand_margin_right = 9.0
 expand_margin_top = 72.0
 expand_margin_bottom = 8.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-_sections_unfolded = [ "Expand Margin", "Margin" ]
 
 [sub_resource type="DynamicFont" id=23]
-
-size = 16
-use_mipmaps = false
-use_filter = false
 font_data = ExtResource( 24 )
-_sections_unfolded = [ "Extra Spacing", "Font", "Font/fallback", "Settings" ]
 
 [resource]
-
 default_font = SubResource( 23 )
-Button/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
-Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
-Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
-Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
-Button/constants/hseparation = 2
+Button/colors/font_color = Color( 1, 1, 1, 1 )
+Button/colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
+Button/colors/font_color_focus = Color( 1, 1, 1, 1 )
+Button/colors/font_color_hover = Color( 1, 1, 1, 1 )
+Button/colors/font_color_pressed = Color( 0.878431, 0.878431, 0.878431, 1 )
+Button/constants/hseparation = 0
 Button/fonts/font = null
-Button/styles/disabled = SubResource( 1 )
-Button/styles/focus = SubResource( 2 )
-Button/styles/hover = SubResource( 3 )
-Button/styles/normal = SubResource( 4 )
-Button/styles/pressed = SubResource( 5 )
-CheckBox/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
-CheckBox/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
-CheckBox/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
-CheckBox/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+Button/styles/disabled = SubResource( 27 )
+Button/styles/focus = SubResource( 28 )
+Button/styles/hover = SubResource( 29 )
+Button/styles/normal = SubResource( 26 )
+Button/styles/pressed = SubResource( 30 )
+CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_focus = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_hover = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_hover_pressed = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 CheckBox/constants/check_vadjust = 0
-CheckBox/constants/hseparation = 24
+CheckBox/constants/hseparation = 0
 CheckBox/fonts/font = null
-CheckBox/icons/checked = ExtResource( 6 )
-CheckBox/icons/radio_checked = ExtResource( 6 )
-CheckBox/icons/radio_unchecked = ExtResource( 7 )
-CheckBox/icons/unchecked = ExtResource( 7 )
+CheckBox/icons/checked = ExtResource( 21 )
+CheckBox/icons/checked_disabled = null
+CheckBox/icons/radio_checked = ExtResource( 20 )
+CheckBox/icons/radio_checked_disabled = null
+CheckBox/icons/radio_unchecked = ExtResource( 19 )
+CheckBox/icons/radio_unchecked_disabled = null
+CheckBox/icons/unchecked = ExtResource( 18 )
+CheckBox/icons/unchecked_disabled = null
 CheckBox/styles/disabled = null
 CheckBox/styles/focus = null
 CheckBox/styles/hover = null
+CheckBox/styles/hover_pressed = null
 CheckBox/styles/normal = null
 CheckBox/styles/pressed = null
-CheckButton/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
-CheckButton/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
-CheckButton/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
-CheckButton/colors/font_color_pressed = Color( 1, 1, 1, 1 )
-CheckButton/constants/check_vadjust = 0
-CheckButton/constants/hseparation = 4
-CheckButton/fonts/font = null
-CheckButton/icons/off = ExtResource( 8 )
-CheckButton/icons/on = ExtResource( 9 )
-CheckButton/styles/disabled = null
-CheckButton/styles/focus = null
-CheckButton/styles/hover = null
-CheckButton/styles/normal = null
-CheckButton/styles/pressed = null
 HScrollBar/icons/decrement = null
 HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/decrement_pressed = null
 HScrollBar/icons/increment = null
 HScrollBar/icons/increment_highlight = null
-HScrollBar/styles/grabber = SubResource( 6 )
-HScrollBar/styles/grabber_highlight = SubResource( 7 )
-HScrollBar/styles/grabber_pressed = SubResource( 8 )
-HScrollBar/styles/scroll = SubResource( 9 )
-HScrollBar/styles/scroll_focus = SubResource( 10 )
-Label/colors/font_color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
-Label/colors/font_color_shadow = Color( 1, 1, 1, 0.501961 )
-Label/constants/line_spacing = 3
-Label/constants/shadow_as_outline = 1
-Label/constants/shadow_offset_x = 1
-Label/constants/shadow_offset_y = 1
-Label/fonts/font = null
-Label/styles/normal = null
-LineEdit/colors/cursor_color = Color( 0.941176, 0.941176, 0.941176, 1 )
-LineEdit/colors/font_color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
+HScrollBar/icons/increment_pressed = null
+HScrollBar/styles/grabber = SubResource( 33 )
+HScrollBar/styles/grabber_highlight = SubResource( 34 )
+HScrollBar/styles/grabber_pressed = SubResource( 33 )
+HScrollBar/styles/scroll = SubResource( 35 )
+HScrollBar/styles/scroll_focus = SubResource( 36 )
+LineEdit/colors/clear_button_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
+LineEdit/colors/cursor_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color = Color( 0, 0, 0, 1 )
 LineEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
-LineEdit/colors/selection_color = Color( 0.490196, 0.490196, 0.490196, 1 )
-LineEdit/constants/minimum_spaces = 12
+LineEdit/colors/font_color_uneditable = Color( 0, 0, 0, 1 )
+LineEdit/colors/selection_color = Color( 0, 0, 0, 1 )
+LineEdit/constants/minimum_spaces = 0
 LineEdit/fonts/font = null
-LineEdit/styles/focus = SubResource( 11 )
-LineEdit/styles/normal = SubResource( 12 )
-LineEdit/styles/read_only = SubResource( 4 )
-OptionButton/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
-OptionButton/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
-OptionButton/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
-OptionButton/colors/font_color_pressed = Color( 1, 1, 1, 1 )
-OptionButton/constants/arrow_margin = 2
-OptionButton/constants/hseparation = 2
-OptionButton/fonts/font = null
-OptionButton/icons/arrow = ExtResource( 17 )
-OptionButton/styles/disabled = null
-OptionButton/styles/focus = null
-OptionButton/styles/hover = null
-OptionButton/styles/normal = null
-OptionButton/styles/pressed = null
-Panel/styles/panel = SubResource( 13 )
-Panel/styles/panelf = null
-Panel/styles/panelnc = null
-PopupMenu/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
-PopupMenu/colors/font_color_accel = Color( 0.7, 0.7, 0.7, 0.8 )
-PopupMenu/colors/font_color_disabled = Color( 0.4, 0.4, 0.4, 0.8 )
-PopupMenu/colors/font_color_hover = Color( 0.878431, 0.878431, 0.878431, 1 )
-PopupMenu/constants/hseparation = 4
-PopupMenu/constants/vseparation = 16
-PopupMenu/fonts/font = null
-PopupMenu/icons/checked = ExtResource( 9 )
-PopupMenu/icons/radio_checked = ExtResource( 6 )
-PopupMenu/icons/radio_unchecked = ExtResource( 7 )
-PopupMenu/icons/submenu = null
-PopupMenu/icons/unchecked = ExtResource( 8 )
-PopupMenu/styles/hover = null
-PopupMenu/styles/panel = SubResource( 13 )
-PopupMenu/styles/panel_disabled = null
-PopupMenu/styles/separator = null
-SpinBox/icons/updown = ExtResource( 17 )
-TooltipLabel/colors/font_color = Color( 1, 1, 1, 1 )
-TooltipLabel/colors/font_color_shadow = Color( 0, 0, 0, 0.1 )
-TooltipLabel/constants/shadow_offset_x = 1
-TooltipLabel/constants/shadow_offset_y = 1
-TooltipLabel/fonts/font = null
-TooltipPanel/styles/panel = SubResource( 13 )
+LineEdit/icons/clear = null
+LineEdit/styles/focus = SubResource( 44 )
+LineEdit/styles/normal = SubResource( 43 )
+LineEdit/styles/read_only = null
+Panel/styles/panel = SubResource( 24 )
+ProgressBar/colors/font_color = Color( 0, 0, 0, 1 )
+ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+ProgressBar/fonts/font = null
+ProgressBar/styles/bg = SubResource( 41 )
+ProgressBar/styles/fg = SubResource( 42 )
 VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/decrement_pressed = null
 VScrollBar/icons/increment = null
 VScrollBar/icons/increment_highlight = null
-VScrollBar/styles/grabber = SubResource( 14 )
-VScrollBar/styles/grabber_highlight = SubResource( 15 )
-VScrollBar/styles/grabber_pressed = SubResource( 16 )
-VScrollBar/styles/scroll = SubResource( 17 )
-VScrollBar/styles/scroll_focus = SubResource( 18 )
+VScrollBar/icons/increment_pressed = null
+VScrollBar/styles/grabber = SubResource( 37 )
+VScrollBar/styles/grabber_highlight = SubResource( 39 )
+VScrollBar/styles/grabber_pressed = SubResource( 37 )
+VScrollBar/styles/scroll = SubResource( 38 )
+VScrollBar/styles/scroll_focus = SubResource( 40 )
 WindowDialog/colors/title_color = Color( 1, 1, 1, 1 )
-WindowDialog/constants/close_h_ofs = 18
-WindowDialog/constants/close_v_ofs = 18
-WindowDialog/constants/scaleborder_size = 8
+WindowDialog/constants/close_h_ofs = -512
+WindowDialog/constants/close_v_ofs = -512
+WindowDialog/constants/scaleborder_size = 0
 WindowDialog/constants/title_height = 72
-WindowDialog/fonts/title_font = SubResource( 19 )
-WindowDialog/icons/close = SubResource( 20 )
-WindowDialog/icons/close_highlight = SubResource( 21 )
-WindowDialog/styles/panel = SubResource( 22 )
-_sections_unfolded = [ "Button/styles", "CheckBox", "CheckBox/constants", "CheckBox/icons", "CheckButton/icons", "Dialogs", "Dialogs/constants", "HScrollBar/styles", "Label/colors", "Label/constants", "LineEdit/colors", "LineEdit/styles", "OptionButton/icons", "Panel/styles", "PopupMenu/constants", "PopupMenu/icons", "PopupMenu/styles", "SpinBox/icons", "TooltipLabel/colors", "TooltipPanel/styles", "VScrollBar/styles", "WindowDialog/colors", "WindowDialog/constants", "WindowDialog/fonts", "WindowDialog/icons", "WindowDialog/styles" ]
-
+WindowDialog/fonts/title_font = SubResource( 32 )
+WindowDialog/icons/close = null
+WindowDialog/icons/close_highlight = null
+WindowDialog/styles/panel = SubResource( 25 )

@@ -314,13 +314,13 @@ func get_spell():
 					var v = value-abs(ally.temperature)-0.5*ally.level
 					var balance = -0.75
 					var limit = abs(ally.temperature)
-					for t in Main.field[player]:
-						if (t.type=="creature" && abs(t.temperature)<limit):
+					for t2 in Main.field[player]:
+						if (t2.type=="creature" && abs(t2.temperature)<limit):
 							balance -= 1
-					for t in Main.field[enemy]:
-						if (t.type=="creature" && abs(t.temperature)<limit):
+					for t2 in Main.field[enemy]:
+						if (t2.type=="creature" && abs(t2.temperature)<limit):
 							balance += 1
-							v += 0.25*abs(t.temperature)*sqrt(abs(t.temperature))
+							v += 0.25*abs(t2.temperature)*sqrt(abs(t2.temperature))
 					v *= clamp(0.5*balance,0.0,2.0)
 					if (v>0 && v>score):
 						c = card
