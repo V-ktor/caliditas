@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=47 format=2]
+[gd_resource type="Theme" load_steps=49 format=2]
 
 [ext_resource path="res://images/gui/panel01.png" type="Texture" id=1]
 [ext_resource path="res://images/gui/window.png" type="Texture" id=2]
@@ -24,6 +24,7 @@
 [ext_resource path="res://images/gui/line_edit.png" type="Texture" id=22]
 [ext_resource path="res://images/gui/line_edit_focus.png" type="Texture" id=23]
 [ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=24]
+[ext_resource path="res://images/gui/up_down_arrow.png" type="Texture" id=25]
 
 [sub_resource type="StyleBoxTexture" id=27]
 texture = ExtResource( 5 )
@@ -100,6 +101,13 @@ margin_left = 24.0
 margin_right = 24.0
 margin_top = 8.0
 margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id=45]
+bg_color = Color( 0.486275, 0.345098, 0.105882, 1 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id=44]
 texture = ExtResource( 23 )
@@ -247,6 +255,8 @@ HScrollBar/styles/grabber_highlight = SubResource( 34 )
 HScrollBar/styles/grabber_pressed = SubResource( 33 )
 HScrollBar/styles/scroll = SubResource( 35 )
 HScrollBar/styles/scroll_focus = SubResource( 36 )
+HSeparator/constants/separation = 0
+HSeparator/styles/separator = SubResource( 45 )
 LineEdit/colors/clear_button_color = Color( 0, 0, 0, 1 )
 LineEdit/colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
 LineEdit/colors/cursor_color = Color( 0, 0, 0, 1 )
@@ -266,6 +276,8 @@ ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
 ProgressBar/fonts/font = null
 ProgressBar/styles/bg = SubResource( 41 )
 ProgressBar/styles/fg = SubResource( 42 )
+SpinBox/icons/updown = ExtResource( 25 )
+Tree/icons/updown = ExtResource( 25 )
 VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
 VScrollBar/icons/decrement_pressed = null
@@ -277,9 +289,11 @@ VScrollBar/styles/grabber_highlight = SubResource( 39 )
 VScrollBar/styles/grabber_pressed = SubResource( 37 )
 VScrollBar/styles/scroll = SubResource( 38 )
 VScrollBar/styles/scroll_focus = SubResource( 40 )
+VSeparator/constants/separation = 0
+VSeparator/styles/separator = SubResource( 45 )
 WindowDialog/colors/title_color = Color( 1, 1, 1, 1 )
 WindowDialog/constants/close_h_ofs = -512
-WindowDialog/constants/close_v_ofs = -512
+WindowDialog/constants/close_v_ofs = 512
 WindowDialog/constants/scaleborder_size = 0
 WindowDialog/constants/title_height = 72
 WindowDialog/fonts/title_font = SubResource( 32 )

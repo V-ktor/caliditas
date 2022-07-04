@@ -1,8 +1,7 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://scripts/menu/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/background/ice.jpg" type="Texture" id=2]
-[ext_resource path="res://images/background/fire.png" type="Texture" id=3]
 [ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://default_theme.tres" type="Theme" id=5]
 [ext_resource path="res://images/gui/gears.png" type="Texture" id=6]
@@ -74,16 +73,38 @@ tracks/1/keys = {
 [sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
 
+uniform vec4 dark_color : hint_color = vec4(1.0,0.0,0.0,1.0);
+uniform vec4 bright_color : hint_color = vec4(0.9,0.9,0.3,1.0);
+
+
+vec4 calc_color(float value)
+{
+	return mix(bright_color, dark_color, value);
+}
+
 void fragment()
 {
-	float offset = 0.0739*TIME;
-	vec2 uv = UV*vec2(0.9+0.1*sin(0.51*TIME+1.07*(-UV.x+UV.y)),0.8+0.1*cos(0.37*TIME+0.971*UV.x));
-	COLOR = 0.5*texture(TEXTURE,uv+vec2(offset,0))+0.5*texture(TEXTURE,uv-vec2(offset,0));
-	COLOR.a *= uv.y;
+	float offset = 0.0739/2.0*TIME;
+	float v = texture(TEXTURE,UV).g;
+	vec2 uv = UV*vec2(2.0*(0.9+0.1*sin(0.51*TIME+1.07*(-UV.x+UV.y))),0.8+0.1*cos(0.37*TIME+0.971*UV.x))+0.003*(1.0+0.5*sin(0.3*TIME))*vec2(cos((v+0.09)*TIME),sin((v+0.07)*TIME));
+	uv.x = 1.0-abs(1.0-fract(0.5*uv.x)/0.5);
+//	COLOR = 0.5*texture(TEXTURE,uv+vec2(offset,0))+0.5*texture(TEXTURE,uv-vec2(offset,0));
+	COLOR = 0.5*calc_color(texture(TEXTURE,uv+vec2(offset,0)).g*(1.0-uv.y))+0.5*calc_color(texture(TEXTURE,uv-vec2(offset,0)).g*(1.0-uv.y));
+	COLOR.a *= 0.6*(0.75+0.25*v)*length(COLOR.rgb)*length(COLOR.rgb)*max(UV.y-0.125, 0.0);
 }"
 
 [sub_resource type="ShaderMaterial" id=5]
 shader = SubResource( 4 )
+shader_param/dark_color = Color( 1, 0, 0, 1 )
+shader_param/bright_color = Color( 0.9, 0.9, 0.3, 1 )
+
+[sub_resource type="OpenSimplexNoise" id=23]
+lacunarity = 3.0
+
+[sub_resource type="NoiseTexture" id=24]
+width = 2048
+height = 256
+noise = SubResource( 23 )
 
 [sub_resource type="Animation" id=6]
 length = 0.5
@@ -400,9 +421,10 @@ stretch_mode = 7
 
 [node name="Fire" type="TextureRect" parent="Background"]
 material = SubResource( 5 )
+anchor_top = 0.7
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 3 )
+texture = SubResource( 24 )
 expand = true
 stretch_mode = 7
 
@@ -631,6 +653,7 @@ margin_right = 228.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 128, 0 )
 size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "CARDS: 0 / 40"
 align = 1
 valign = 1
@@ -880,6 +903,7 @@ margin_left = 100.0
 margin_right = 143.0
 margin_bottom = 19.0
 size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "GOLD"
 
 [node name="Grade1" type="HBoxContainer" parent="Shop/VBoxContainer"]
@@ -1553,6 +1577,7 @@ size_flags_horizontal = 3
 [node name="LabelP" type="Label" parent="Options/ScrollContainer/VBoxContainer"]
 margin_right = 970.0
 margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "PLAYER"
 align = 1
 valign = 1
@@ -1567,6 +1592,7 @@ margin_right = 44.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 32, 0 )
 size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Name"
 align = 1
 valign = 1
@@ -1590,6 +1616,7 @@ size_flags_horizontal = 3
 margin_top = 82.0
 margin_right = 970.0
 margin_bottom = 101.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "VIDEO"
 align = 1
 valign = 1
@@ -1617,13 +1644,14 @@ margin_right = 32.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 32, 0 )
 size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "X"
 align = 1
 valign = 1
 
 [node name="SpinBoxX" type="SpinBox" parent="Options/ScrollContainer/VBoxContainer/WindowSize"]
 margin_left = 36.0
-margin_right = 479.0
+margin_right = 481.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1633,23 +1661,24 @@ value = 1024.0
 suffix = "px"
 
 [node name="VSeparator" type="VSeparator" parent="Options/ScrollContainer/VBoxContainer/WindowSize"]
-margin_left = 483.0
-margin_right = 487.0
+margin_left = 485.0
+margin_right = 485.0
 margin_bottom = 35.0
 size_flags_vertical = 3
 
 [node name="LabelY" type="Label" parent="Options/ScrollContainer/VBoxContainer/WindowSize"]
-margin_left = 491.0
-margin_right = 523.0
+margin_left = 489.0
+margin_right = 521.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 32, 0 )
 size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Y"
 align = 1
 valign = 1
 
 [node name="SpinBoxY" type="SpinBox" parent="Options/ScrollContainer/VBoxContainer/WindowSize"]
-margin_left = 527.0
+margin_left = 525.0
 margin_right = 970.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
@@ -1670,6 +1699,7 @@ size_flags_horizontal = 3
 margin_top = 268.0
 margin_right = 970.0
 margin_bottom = 287.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "AUDIO"
 align = 1
 valign = 1
@@ -1705,13 +1735,14 @@ margin_right = 126.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 32, 0 )
 size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "MUSIC_VOLUME"
 align = 1
 valign = 1
 
 [node name="SpinBoxM" type="SpinBox" parent="Options/ScrollContainer/VBoxContainer/Volume"]
 margin_left = 130.0
-margin_right = 476.0
+margin_right = 478.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1719,23 +1750,24 @@ value = 100.0
 suffix = "px"
 
 [node name="VSeparator" type="VSeparator" parent="Options/ScrollContainer/VBoxContainer/Volume"]
-margin_left = 480.0
-margin_right = 484.0
+margin_left = 482.0
+margin_right = 482.0
 margin_bottom = 35.0
 size_flags_vertical = 3
 
 [node name="LabelS" type="Label" parent="Options/ScrollContainer/VBoxContainer/Volume"]
-margin_left = 488.0
-margin_right = 620.0
+margin_left = 486.0
+margin_right = 618.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 32, 0 )
 size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "SOUND_VOLUME"
 align = 1
 valign = 1
 
 [node name="SpinBoxS" type="SpinBox" parent="Options/ScrollContainer/VBoxContainer/Volume"]
-margin_left = 624.0
+margin_left = 622.0
 margin_right = 970.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
@@ -1754,6 +1786,7 @@ size_flags_horizontal = 3
 margin_top = 402.0
 margin_right = 970.0
 margin_bottom = 421.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "LANGUAGE"
 align = 1
 valign = 1
@@ -1767,6 +1800,7 @@ margin_bottom = 460.0
 margin_top = 8.0
 margin_right = 86.0
 margin_bottom = 27.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "LANGUAGE"
 align = 1
 valign = 1
@@ -1874,6 +1908,7 @@ margin_left = 100.0
 margin_right = 163.0
 margin_bottom = 35.0
 size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "ADRESS"
 align = 1
 valign = 1
@@ -1897,6 +1932,7 @@ margin_left = 551.0
 margin_right = 594.0
 margin_bottom = 35.0
 size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "PORT"
 align = 1
 valign = 1
@@ -2067,10 +2103,10 @@ theme = ExtResource( 5 )
 window_title = "GAME_OVER"
 
 [node name="ButtonClose" type="Button" parent="GameOver"]
-margin_left = 4.0
-margin_top = -64.0
-margin_right = 31.0
-margin_bottom = -29.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 592.0
+margin_bottom = 99.0
 custom_styles/hover = SubResource( 18 )
 custom_styles/pressed = SubResource( 19 )
 custom_styles/focus = SubResource( 20 )
@@ -2087,6 +2123,7 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = -8.0
 margin_bottom = -51.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "YOU_LOST"
 align = 1
 valign = 1
@@ -2104,10 +2141,10 @@ theme = ExtResource( 5 )
 window_title = "QUIT?"
 
 [node name="ButtonClose" type="Button" parent="Quit"]
-margin_left = 4.0
-margin_top = -64.0
-margin_right = 23.0
-margin_bottom = -45.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 492.0
+margin_bottom = 49.0
 custom_styles/hover = SubResource( 18 )
 custom_styles/pressed = SubResource( 19 )
 custom_styles/focus = SubResource( 20 )

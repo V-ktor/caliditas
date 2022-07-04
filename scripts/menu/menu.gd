@@ -239,11 +239,10 @@ func quit():
 		get_node("Info").hide()
 	elif (get_node("Credits").is_visible()):
 		get_node("Credits").hide()
-	elif OS.get_name()=="HTML5":
-		return
 	elif (get_node("GameOver").is_visible()):
 		get_node("GameOver").hide()
-	else:
+	elif OS.get_name()!="HTML5":
+		# Show the quit dialog only in non html versions.
 		yield(get_tree(),"idle_frame")
 		get_node("Quit").popup_centered()
 
@@ -891,7 +890,6 @@ func _ready():
 		get_node("Panel/VBoxContainer/Button4").hide()
 	
 	# Set up info text.
-#	get_node("Info/Text").push_align(RichTextLabel.ALIGN_FILL)		# extreme stretching with half-filled lines
 	get_node("Info/Text").push_color(Color(0.0,0.0,0.0))
 	for s in ["HELP_INTRO","HELP_1","HELP_2","HELP_3","HELP_4","HELP_5"]:
 		var array = tr(s).split("_")
