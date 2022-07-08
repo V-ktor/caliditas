@@ -1,50 +1,33 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://images/particles/wind_blast.png" type="Texture" id=1]
 [ext_resource path="res://images/particles/wind.png" type="Texture" id=2]
 [ext_resource path="res://sounds/Wind_effects_5.wav" type="AudioStream" id=3]
+[ext_resource path="res://images/particles/distortion01.png" type="Texture" id=4]
 
 [sub_resource type="CanvasItemMaterial" id=1]
-
-render_priority = 0
 blend_mode = 1
-light_mode = 0
 
 [sub_resource type="Gradient" id=2]
-
 offsets = PoolRealArray( 0, 0.0710059, 0.792899, 1 )
 colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 
 [sub_resource type="GradientTexture" id=3]
-
-flags = 4
 gradient = SubResource( 2 )
-width = 2048
 
 [sub_resource type="Curve" id=4]
-
 min_value = 0.99
 max_value = 3.0
-bake_resolution = 100
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 3 ), 3.81347, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=5]
-
-flags = 4
-width = 2048
 curve = SubResource( 4 )
 
 [sub_resource type="ParticlesMaterial" id=6]
-
-render_priority = 0
-trail_divisor = 1
 emission_shape = 1
 emission_sphere_radius = 16.0
-flag_align_y = false
-flag_rotate_y = false
 flag_disable_z = true
 spread = 180.0
-flatness = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 192.0
 initial_velocity_random = 0.5
@@ -52,34 +35,89 @@ angular_velocity = 270.0
 angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-linear_accel = 0.0
-linear_accel_random = 0.0
 radial_accel = -100.0
 radial_accel_random = 0.5
 tangential_accel = 100.0
 tangential_accel_random = 0.75
 damping = 75.0
-damping_random = 0.0
+angle = 360.0
+angle_random = 1.0
+scale = 0.13
+scale_random = 0.1
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+
+const float offset = 0.02;
+
+void fragment()
+{
+	vec4 color = texture(TEXTURE, UV);
+	vec2 uv = SCREEN_UV + offset*(0.5+color.a)*NORMAL.xy;
+	COLOR = texture(SCREEN_TEXTURE, uv);
+	COLOR.a *= color.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 13 )
+
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0, 0.0993789, 0.42236, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+
+[sub_resource type="Curve" id=10]
+min_value = 0.5
+max_value = 1.5
+_data = [ Vector2( 0, 1 ), 0.0, 4.3461, 0, 0, Vector2( 1, 1 ), -0.601136, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=12]
+emission_shape = 1
+emission_sphere_radius = 64.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 256.0
+initial_velocity_random = 0.5
+angular_velocity = 360.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = -256.0
+damping = 128.0
+damping_random = 0.25
 angle = 360.0
 angle_random = 1.0
 scale = 0.25
-scale_random = 0.2
-scale_curve = SubResource( 5 )
-color_ramp = SubResource( 3 )
-hue_variation = 0.0
-hue_variation_random = 0.0
-anim_speed = 0.0
-anim_speed_random = 0.0
-anim_offset = 0.0
-anim_offset_random = 0.0
-anim_loop = false
-_sections_unfolded = [ "Angle", "Angular Velocity", "Color", "Damping", "Emission Shape", "Initial Velocity", "Radial Accel", "Scale", "Spread", "Tangential Accel" ]
+scale_random = 0.25
+scale_curve = SubResource( 11 )
+color_ramp = SubResource( 9 )
+
+[sub_resource type="Animation" id=15]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Wind/Particles:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=7]
-
 length = 3.5
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sound:playing")
 tracks/0/interp = 1
@@ -142,63 +180,62 @@ tracks/4/keys = {
 "method": "queue_free"
 } ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("Wind/Particles:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
 
-[node name="WindBlast" type="Node2D" index="0"]
-
+[node name="WindBlast" type="Node2D"]
 z_index = 1
-_sections_unfolded = [ "Z Index" ]
 
-[node name="Wind" type="Sprite" parent="." index="0"]
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+scale = Vector2( 1, 1 )
+copy_mode = 2
+rect = Rect2( -1024, -1024, 5120, 2048 )
 
+[node name="Wind" type="Sprite" parent="."]
 self_modulate = Color( 1, 1, 1, 0 )
 material = SubResource( 1 )
 position = Vector2( 3072, 0 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 1 )
 offset = Vector2( -128, 0 )
-_sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
-[node name="Wind" type="Particles2D" parent="Wind" index="0"]
-
+[node name="Wind" type="Particles2D" parent="Wind"]
 modulate = Color( 1, 1, 1, 0.25098 )
 scale = Vector2( 0.666667, 0.666667 )
 emitting = false
 amount = 256
 lifetime = 4.0
-one_shot = false
-preprocess = 0.0
 speed_scale = 1.5
-explosiveness = 0.0
-randomness = 0.0
-fixed_fps = 0
-fract_delta = true
-visibility_rect = Rect2( -100, -100, 200, 200 )
 local_coords = false
-draw_order = 0
 process_material = SubResource( 6 )
 texture = ExtResource( 2 )
-normal_map = null
-h_frames = 1
-v_frames = 1
-_sections_unfolded = [ "Drawing", "Process Material", "Textures", "Time", "Transform", "Visibility", "Z Index" ]
 
-[node name="Sound" type="AudioStreamPlayer" parent="." index="1"]
+[node name="Particles" type="Particles2D" parent="Wind"]
+material = SubResource( 14 )
+emitting = false
+amount = 256
+lifetime = 2.0
+visibility_rect = Rect2( -800, -400, 1200, 800 )
+local_coords = false
+process_material = SubResource( 12 )
+texture = ExtResource( 4 )
+normal_map = ExtResource( 4 )
 
+[node name="Sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
-volume_db = 0.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
 bus = "Sound"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
-
-root_node = NodePath("..")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "animation"
-playback_process_mode = 1
-playback_default_blend_time = 0.0
-playback_speed = 1.0
+anims/RESET = SubResource( 15 )
 anims/animation = SubResource( 7 )
-blend_times = [  ]
-
-

@@ -1,19 +1,210 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://images/particles/ice_blast.png" type="Texture" id=1]
 [ext_resource path="res://sounds/qubodup-ccbysa3-elementalSpell-opengameart1.wav" type="AudioStream" id=2]
+[ext_resource path="res://scenes/animations/randomize_noise_seed.gd" type="Script" id=3]
 
-[sub_resource type="CanvasItemMaterial" id=1]
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
 
-render_priority = 0
-blend_mode = 1
-light_mode = 0
+uniform vec4 bright_color : hint_color = vec4(1.0);
+uniform vec4 dark_color : hint_color = vec4(0.5,0.7,1.0,1.0);
+
+void fragment()
+{
+	vec2 uv = 2.0*UV-1.0;
+	float r = max(abs(uv.x+uv.y), abs(uv.y-uv.x));
+	float v = texture(TEXTURE, UV).g;
+	COLOR = mix(bright_color, dark_color, r*r);
+	COLOR.a *= clamp(10.0*(1.0-r-0.3+0.3*v), 0.0, 1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/bright_color = Color( 1, 1, 1, 1 )
+shader_param/dark_color = Color( 0.5, 0.7, 1, 1 )
+
+[sub_resource type="OpenSimplexNoise" id=3]
+period = 48.0
+lacunarity = 2.25
+
+[sub_resource type="NoiseTexture" id=4]
+width = 128
+height = 128
+noise = SubResource( 3 )
+
+[sub_resource type="Shader" id=15]
+code = "shader_type canvas_item;
+
+uniform vec4 color : hint_color = vec4(0.8, 0.9, 1.0, 1.0);
+
+void fragment()
+{
+	vec2 uv = 2.0*UV-vec2(1.0);
+	vec2 uv_t = 0.1*uv+vec2(COLOR.r, COLOR.g);
+	float r2 = uv.x*uv.x + uv.y*uv.y;
+	float alpha = clamp(10.0*((1.0-1.25*texture(TEXTURE, uv_t).g)*(1.0-1.0*r2)*sqrt(COLOR.a)), 0.0, 1.0);
+	
+	COLOR = color;
+	COLOR.a = alpha;
+}"
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = SubResource( 15 )
+shader_param/color = Color( 0.8, 0.9, 1, 1 )
+
+[sub_resource type="Gradient" id=12]
+offsets = PoolRealArray( 0, 0.111801, 0.57764, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=16]
+gradient = SubResource( 12 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+lifetime_randomness = 1.0
+emission_shape = 1
+emission_sphere_radius = 16.0
+flag_disable_z = true
+spread = 15.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 128.0
+angular_velocity = 2.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 512.0
+angle = 360.0
+angle_random = 1.0
+scale = 0.01
+scale_random = 0.01
+color_ramp = SubResource( 16 )
+hue_variation = 1.0
+hue_variation_random = 1.0
+
+[sub_resource type="OpenSimplexNoise" id=17]
+octaves = 2
+period = 16.0
+persistence = 0.333
+lacunarity = 1.75
+
+[sub_resource type="NoiseTexture" id=8]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource( 17 )
+
+[sub_resource type="Animation" id=14]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Ice1:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Ice1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Ice1/Smoke:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Ice2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -128, -256 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Ice2:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Ice2/Smoke:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Ice3:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -192, 288 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Ice3:self_modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Ice3/Smoke:emitting")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=2]
-
 length = 3.0
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sound:playing")
 tracks/0/interp = 1
@@ -26,37 +217,13 @@ tracks/0/keys = {
 "update": 2,
 "values": [ true ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("IceBall:modulate")
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1, 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("IceBall:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 3072, 0 ) ]
-}
-tracks/3/type = "method"
-tracks/3/path = NodePath(".")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
 "times": PoolRealArray( 3 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -64,38 +231,185 @@ tracks/3/keys = {
 "method": "queue_free"
 } ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Ice1:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Ice1:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 3200, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Ice1/Smoke:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Ice2:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.05, 0.45 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -128, -256 ), Vector2( -128, -256 ), Vector2( 3072, -256 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Ice2:self_modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.05, 0.15, 0.35, 0.45 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Ice2/Smoke:emitting")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.15, 0.45 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Ice3:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.1, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -192, 288 ), Vector2( -192, 288 ), Vector2( 3008, 288 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Ice3:self_modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Ice3/Smoke:emitting")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 0.1, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
 
-[node name="IceBlast" type="Node2D" index="0"]
-
+[node name="IceBlast" type="Node2D"]
 z_index = 1
-_sections_unfolded = [ "Z Index" ]
 
-[node name="IceBall" type="Sprite" parent="." index="0"]
+[node name="Ice1" type="Sprite" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 6 )
+scale = Vector2( 6, 1 )
+texture = SubResource( 4 )
+script = ExtResource( 3 )
 
-modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 1 )
-scale = Vector2( 3, 3 )
-texture = ExtResource( 1 )
-offset = Vector2( -128, 0 )
-_sections_unfolded = [ "Transform", "Visibility" ]
+[node name="Smoke" type="Particles2D" parent="Ice1"]
+self_modulate = Color( 1, 1, 1, 0.12549 )
+material = SubResource( 11 )
+position = Vector2( 16, 0 )
+emitting = false
+amount = 384
+lifetime = 0.75
+randomness = 1.0
+visibility_rect = Rect2( -1000, -1000, 2000, 2000 )
+local_coords = false
+process_material = SubResource( 9 )
+texture = SubResource( 8 )
 
-[node name="Sound" type="AudioStreamPlayer" parent="." index="1"]
+[node name="Ice2" type="Sprite" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 6 )
+position = Vector2( -128, -256 )
+scale = Vector2( 6, 1 )
+texture = SubResource( 4 )
+script = ExtResource( 3 )
 
+[node name="Smoke" type="Particles2D" parent="Ice2"]
+self_modulate = Color( 1, 1, 1, 0.12549 )
+material = SubResource( 11 )
+position = Vector2( 16, 0 )
+emitting = false
+amount = 384
+lifetime = 0.75
+randomness = 1.0
+visibility_rect = Rect2( -1000, -1000, 2000, 2000 )
+local_coords = false
+process_material = SubResource( 9 )
+texture = SubResource( 8 )
+
+[node name="Ice3" type="Sprite" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 6 )
+position = Vector2( -192, 288 )
+scale = Vector2( 6, 1 )
+texture = SubResource( 4 )
+script = ExtResource( 3 )
+
+[node name="Smoke" type="Particles2D" parent="Ice3"]
+self_modulate = Color( 1, 1, 1, 0.12549 )
+material = SubResource( 11 )
+position = Vector2( 16, 0 )
+emitting = false
+amount = 384
+lifetime = 0.75
+randomness = 1.0
+visibility_rect = Rect2( -1000, -1000, 2000, 2000 )
+local_coords = false
+process_material = SubResource( 9 )
+texture = SubResource( 8 )
+
+[node name="Sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )
-volume_db = 0.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
 bus = "Sound"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
-
-root_node = NodePath("..")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "animation"
-playback_process_mode = 1
-playback_default_blend_time = 0.0
-playback_speed = 1.0
+anims/RESET = SubResource( 14 )
 anims/animation = SubResource( 2 )
-blend_times = [  ]
-
-

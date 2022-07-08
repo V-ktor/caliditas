@@ -1,69 +1,57 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://images/particles/ice_blast.png" type="Texture" id=1]
 [ext_resource path="res://images/particles/blue01.png" type="Texture" id=2]
 [ext_resource path="res://sounds/water.wav" type="AudioStream" id=3]
+[ext_resource path="res://images/particles/distortion01.png" type="Texture" id=4]
 
 [sub_resource type="CanvasItemMaterial" id=1]
-
-render_priority = 0
 blend_mode = 1
-light_mode = 0
 
-[sub_resource type="CanvasItemMaterial" id=3]
+[sub_resource type="Shader" id=26]
+code = "shader_type canvas_item;
 
-render_priority = 0
-blend_mode = 1
-light_mode = 0
+const float offset = 0.02;
+
+void fragment()
+{
+	vec4 color = texture(TEXTURE, UV);
+	vec2 uv = SCREEN_UV + offset*(0.5+color.a)*NORMAL.xy;
+	color.a *= COLOR.a*(0.25+0.75*min(4.0*length(color.rgb), 1.0));
+	COLOR = mix(color, min(0.25*color+texture(SCREEN_TEXTURE, uv), 1.0), min(2.0*color.a, 1.0));
+}
+"
+
+[sub_resource type="ShaderMaterial" id=27]
+shader = SubResource( 26 )
 
 [sub_resource type="Gradient" id=11]
-
 offsets = PoolRealArray( 0, 0.16568, 0.337278, 1 )
 colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 
 [sub_resource type="GradientTexture" id=12]
-
-flags = 4
 gradient = SubResource( 11 )
-width = 2048
 
 [sub_resource type="Curve" id=6]
-
 min_value = -1024.0
 max_value = 256.0
-bake_resolution = 100
 _data = [ Vector2( 0, 256 ), 0.0, 0.0, 0, 0, Vector2( 1, -1024 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=7]
-
-flags = 4
-width = 2048
 curve = SubResource( 6 )
 
 [sub_resource type="Curve" id=8]
-
 min_value = 0.5
-max_value = 1.0
-bake_resolution = 100
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.5 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0.935795 ), 0.0, 1.06154, 0, 0, Vector2( 1, 0.5 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=9]
-
-flags = 4
-width = 2048
 curve = SubResource( 8 )
 
 [sub_resource type="ParticlesMaterial" id=10]
-
-render_priority = 0
-trail_divisor = 1
 emission_shape = 1
 emission_sphere_radius = 32.0
-flag_align_y = false
-flag_rotate_y = false
 flag_disable_z = true
 spread = 180.0
-flatness = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 256.0
 initial_velocity_random = 0.5
@@ -71,35 +59,19 @@ angular_velocity = -240.0
 angular_velocity_random = 1.0
 orbit_velocity = 0.3
 orbit_velocity_random = 0.0
-linear_accel = 0.0
-linear_accel_random = 0.0
 radial_accel = -100.0
-radial_accel_random = 0.0
 radial_accel_curve = SubResource( 7 )
 tangential_accel = 100.0
-tangential_accel_random = 0.0
 damping = 100.0
 damping_random = 0.25
 angle = 360.0
 angle_random = 1.0
-scale = 1.0
 scale_random = 0.5
 scale_curve = SubResource( 9 )
 color_ramp = SubResource( 12 )
-hue_variation = 0.0
-hue_variation_random = 0.0
-anim_speed = 0.0
-anim_speed_random = 0.0
-anim_offset = 0.0
-anim_offset_random = 0.0
-anim_loop = false
-_sections_unfolded = [ "Angle", "Angular Velocity", "Color", "Damping", "Emission Shape", "Initial Velocity", "Orbit Velocity", "Radial Accel", "Scale", "Tangential Accel" ]
 
 [sub_resource type="Animation" id=2]
-
 length = 3.0
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sound:playing")
 tracks/0/interp = 1
@@ -175,64 +147,40 @@ tracks/5/keys = {
 } ]
 }
 
-[node name="WaterBlast" type="Node2D" index="0"]
-
+[node name="WaterBlast" type="Node2D"]
 z_index = 1
-_sections_unfolded = [ "Transform", "Z Index" ]
 
-[node name="WaterBall" type="Sprite" parent="." index="0"]
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+position = Vector2( 2304, 0 )
+copy_mode = 2
+rect = Rect2( -1024, -1024, 2048, 2048 )
 
+[node name="WaterBall" type="Sprite" parent="."]
 self_modulate = Color( 1, 1, 1, 0 )
 material = SubResource( 1 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 1 )
 offset = Vector2( -128, 0 )
-_sections_unfolded = [ "Transform", "Visibility" ]
 
-[node name="Particles" type="Particles2D" parent="WaterBall" index="0"]
-
-modulate = Color( 1, 1, 1, 0.501961 )
-self_modulate = Color( 1, 1, 1, 0.501961 )
+[node name="Particles" type="Particles2D" parent="WaterBall"]
+self_modulate = Color( 1, 1, 1, 0.498039 )
 light_mask = 0
-material = SubResource( 3 )
-position = Vector2( -256, 0 )
+material = SubResource( 27 )
 emitting = false
 amount = 128
-lifetime = 1.5
-one_shot = false
-preprocess = 0.0
-speed_scale = 1.5
+lifetime = 2.0
 explosiveness = 0.25
 randomness = 0.25
-fixed_fps = 0
-fract_delta = true
-visibility_rect = Rect2( -100, -100, 200, 200 )
+visibility_rect = Rect2( -400, -400, 800, 800 )
 local_coords = false
-draw_order = 0
 process_material = SubResource( 10 )
 texture = ExtResource( 2 )
-normal_map = null
-h_frames = 1
-v_frames = 1
-_sections_unfolded = [ "Drawing", "Material", "Process Material", "Textures", "Time", "Transform", "Visibility" ]
+normal_map = ExtResource( 4 )
 
-[node name="Sound" type="AudioStreamPlayer" parent="." index="1"]
-
+[node name="Sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
-volume_db = 0.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
 bus = "Sound"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
-
-root_node = NodePath("..")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "animation"
-playback_process_mode = 1
-playback_default_blend_time = 0.0
-playback_speed = 1.0
 anims/animation = SubResource( 2 )
-blend_times = [  ]
-
-

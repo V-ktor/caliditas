@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fire.png-0d4957cc35d0a6aa4382f74f00c4dfa4.stex"
+path="res://.import/distortion01.png-207846f526fde144a016bcc83cefee4e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/background/fire.png"
-dest_files=[ "res://.import/fire.png-0d4957cc35d0a6aa4382f74f00c4dfa4.stex" ]
+source_file="res://images/particles/distortion01.png"
+dest_files=[ "res://.import/distortion01.png-207846f526fde144a016bcc83cefee4e.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=2
+flags/repeat=0
 flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
