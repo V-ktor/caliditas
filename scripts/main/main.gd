@@ -38,6 +38,7 @@ signal card_played(player,card,target)
 signal turn_started(player)
 signal target_selected(target)
 signal effect_used()
+# warning-ignore:unused_signal
 signal card_enlarged(card)
 
 
@@ -93,11 +94,11 @@ class Card:
 		for i in range(equiped.size()):
 			var card = equiped[i]
 			var offset = min(75,200/equiped.size())
-			var pos = node.get_global_position()+Vector2(0,offset*(i+1))*(1-2*owner)
+			var p = node.get_global_position()+Vector2(0,offset*(i+1))*(1-2*owner)
 			card.node._z = -i-1
 			card.node.set_z_index(-i-1)
-			card.node.pos = pos
-			card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+			card.node.pos = p
+			card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 			card.node.get_node("Tween").start()
 	
 	func remove_equipment():
@@ -207,7 +208,7 @@ func start():
 	UI.get_node("Player1/Animation").play("show")
 	UI.get_node("Player2/Animation").play("show")
 	timer.set_wait_time(0.2)
-	for i in range(START_CARDS):
+	for _i in range(START_CARDS):
 		_draw_card(PLAYER1)
 		_draw_card(PLAYER2)
 		timer.start()
@@ -228,6 +229,9 @@ func hide():
 	for card in get_node("Cards").get_children():
 		card.get_node("AnimationPlayer").play("fade_out")
 
+func get_enemy_ID(pl):
+	return (pl+1)%2
+
 func find_empty_position(pl):
 	var p = 0
 	while (used_positions[pl].has(p)):
@@ -247,13 +251,13 @@ func get_card_index(card):
 				dict["player"] = p
 	return dict
 
-func get_player_temperature(player):
-	var temp = temperature[player]
-	for card in field[player]:
+func get_player_temperature(pl):
+	var temp = temperature[pl]
+	for card in field[pl]:
 		temp += card.temperature
 	return temp
 
-func ai_turn(player):
+func ai_turn(pl):
 	# Start the AI.
 	var action = AI.get_creature()
 	var counter = 0
@@ -266,7 +270,7 @@ func ai_turn(player):
 		timer.set_wait_time(0.5)
 		timer.start()
 		yield(timer,"timeout")
-		play_card(action["card"],player,action["target"])
+		play_card(action["card"],pl,action["target"])
 		counter += 1
 		if (counter>20):
 			break
@@ -276,15 +280,15 @@ func ai_turn(player):
 			timer.start()
 			yield(timer,"timeout")
 	
-	ai_set_attack(player)
+	ai_set_attack(pl)
 	timer.set_wait_time(1.0)
 	timer.start()
 	yield(timer,"timeout")
 	end_turn()
 
-func ai_set_attack(player):
-	var enemy = (player+1)%2
-	var list = []+field[player]
+func ai_set_attack(pl):
+	var enemy = get_enemy_ID(pl)
+	var list = []+field[pl]
 	# Check if a creature or one of it's equiped cards has the no_attack special.
 	for i in range(list.size()-1,-1,-1):
 		var card = list[i]
@@ -321,26 +325,26 @@ func ai_set_attack(player):
 # Send positions instead of classes to other players.
 remote func _play_card(c,p,t):
 	var target
-	var player = (p+1)%2
-	var card = hand[player][c]
+	var pl = get_enemy_ID(p)
+	var card = hand[pl][c]
 	if (t.has("type")):
 		if (t["type"]=="field"):
-			target = field[(t["player"]+1)%2][t["ID"]]
+			target = field[get_enemy_ID(t["player"])][t["ID"]]
 		elif (t["type"]=="equiped"):
-			target = field[(t["player"]+1)%2][t["ID"]].equiped[t["index"]]
+			target = field[get_enemy_ID(t["player"])][t["ID"]].equiped[t["index"]]
 		elif (t["type"]=="hand"):
-			target = hand[(t["player"]+1)%2][t["ID"]]
-	play_card(card,player,target)
+			target = hand[get_enemy_ID(t["player"])][t["ID"]]
+	play_card(card,pl,target)
 
-func play_card(card,player,target=null):
-	if (card.owner!=player || mana[player]<card.level || !(card in hand[player])):
+func play_card(card,pl,target=null):
+	if (card.owner!=pl || mana[pl]<card.level || !(card in hand[pl])):
 		return
 	
 	var c
-	print("Player "+str(player)+" plays card "+str(card.ID)+".")
-	if (is_multiplayer && player==PLAYER1):
-		for i in range(hand[player].size()):
-			if (hand[player][i]==card):
+	print("Player "+str(pl)+" plays card "+str(card.ID)+".")
+	if (is_multiplayer && pl==PLAYER1):
+		for i in range(hand[pl].size()):
+			if (hand[pl][i]==card):
 				c = i
 				break
 	using_card = true
@@ -352,10 +356,10 @@ func play_card(card,player,target=null):
 	if (card.type=="creature"):
 		var p2
 		var p1 = Vector2(card.node.get_global_position().x,0.5*card.node.get_global_position().y)
-		spawn_creature(card,player)
+		spawn_creature(card,pl)
 		card.node.get_node("Tween").remove_all()
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p1,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
-		p2 = Vector2(225*card.pos,200*(1-2*player))
+		p2 = Vector2(225*card.pos,200*(1-2*pl))
 		card.node.get_node("TweenScale").interpolate_property(card.node,"scale",card.node.get_scale(),Vector2(0.15,0.15),0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",p1,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
 		card.node.get_node("Tween").start()
@@ -364,12 +368,12 @@ func play_card(card,player,target=null):
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		card.node.get_node("Tween").start()
 #		card.node.zoom()
-		call_deferred("use_effect",card,"on_play",player,target)
+		call_deferred("use_effect",card,"on_play",pl,target)
 		yield(self,"effect_used")
 		if (state==null || !state["used"]):
 			print("Invalid selection, break spell casting.")
 			deselect(false)
-			if ((ai || is_multiplayer) && player==PLAYER2):
+			if ((ai || is_multiplayer) && pl==PLAYER2):
 				card.node.get_node("Animation").play("hide")
 			return
 		
@@ -378,7 +382,7 @@ func play_card(card,player,target=null):
 			var offset
 			var p2
 			target = state["target"]
-			pos = target.node.get_global_position()+Vector2(0,(100*(target.equiped.size()+3)-225*int(player==PLAYER2))*(1-2*target.owner))
+			pos = target.node.get_global_position()+Vector2(0,(100*(target.equiped.size()+3)-225*int(pl==PLAYER2))*(1-2*target.owner))
 			offset = min(75,200/(target.equiped.size()+1))
 			p2 = target.node.get_global_position()+Vector2(0,offset*(target.equiped.size()+1))*(1-2*target.owner)
 			card.node._z = -target.equiped.size()-1
@@ -421,39 +425,40 @@ func play_card(card,player,target=null):
 				card.node.get_node("AnimationPlayer").play("fizzle")
 			else:
 				card.node.get_node("AnimationPlayer").play("fade_out")
-		graveyard[player].push_back(card)
+		graveyard[pl].push_back(card)
 		card.in_game = true
-		hand[player].erase(card)
+		hand[pl].erase(card)
 	elif (card.type=="land"):
 		var p2
 		var p1 = Vector2(card.node.get_global_position().x,0.5*card.node.get_global_position().y)
-		spawn_creature(card,player,"land")
+		spawn_creature(card,pl,"land")
 		card.node.get_node("Tween").remove_all()
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),p1,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
-		p2 = Vector2(225*card.pos,200*(1-2*player))
+		p2 = Vector2(225*card.pos,200*(1-2*pl))
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",p1,p2,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.25)
 		card.node.get_node("Tween").start()
 	
-	if (is_multiplayer && player==PLAYER1):
+	if (is_multiplayer && pl==PLAYER1):
 		var t = {}
 		if (state!=null && state.has("_target")):
 			t = state["_target"]
 		if (c!=null):
-			rpc("_play_card",c,player,t)
+			rpc("_play_card",c,pl,t)
 	using_card = false
-	mana[player] -= card.level
+	mana[pl] -= card.level
 	deselect(false)
 	update_stats()
-	sort_hand(player)
+	sort_hand(pl)
 	sort_cards()
-	emit_signal("card_played",player,card,target)
+	emit_signal("card_played",pl,card,target)
 
-func spawn_creature(card,player,type="creature"):
-	var pID = find_empty_position(player)
-	var pos = Vector2(225*pID,200*(1-2*player))
-	used_positions[player].push_back(pID)
+func spawn_creature(card,pl,type="creature"):
+	var pID = find_empty_position(pl)
+	var pos = Vector2(225*pID,200*(1-2*pl))
+	var enemy = get_enemy_ID(pl)
+	used_positions[pl].push_back(pID)
 	card.pos = pID
-	hand[player].erase(card)
+	hand[pl].erase(card)
 	card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	card.node.get_node("Tween").start()
 	card.node._z = 0
@@ -467,35 +472,35 @@ func spawn_creature(card,player,type="creature"):
 		for c in field[p]:
 			if (Cards.data[c.ID].has("on_"+type+"_spawn")):
 				apply_effect(c,"on_"+type+"_spawn",card)
-	for c in field[player]:
+	for c in field[pl]:
 		if (Cards.data[c.ID].has("on_ally_"+type+"_spawn")):
 			apply_effect(c,"on_ally_"+type+"_spawn",card)
-	for c in field[(player+1)%2]:
+	for c in field[enemy]:
 		if (Cards.data[c.ID].has("on_enemy_"+type+"_spawn")):
 			apply_effect(c,"on_enemy_"+type+"_spawn",card)
-	field[player].push_back(card)
+	field[pl].push_back(card)
 
-func create_creature(type,player,pos):
+func create_creature(type,pl,pos):
 	var node = Cards.create_card(type)
-	var card = Card.new(type,player,node)
+	var card = Card.new(type,pl,node)
 	node.card = card
 	node.pos = pos
 	node.set_global_position(pos)
 	get_node("Cards").add_child(node)
-	spawn_creature(card,player)
+	spawn_creature(card,pl)
 
-func create_equipment_card(type,player,parent,pos):
+func create_equipment_card(type,pl,_parent,pos):
 	var node = Cards.create_card(type)
-	var card = Card.new(type,player,node)
+	var card = Card.new(type,pl,node)
 	node.card = card
 	node.pos = pos
 	node.set_global_position(pos)
 	get_node("Cards").add_child(node)
 	return card
 
-func add_equipment_card(type,player,parent,pos):
+func add_equipment_card(type,pl,parent,pos):
 	# Add a equipment card to parent. The effects are applied.
-	var card = create_equipment_card(type,player,parent,pos)
+	var card = create_equipment_card(type,pl,parent,pos)
 	var offset = min(75,200/(parent.equiped.size()+1))
 	var p2 = parent.node.get_global_position()+Vector2(0,offset*(parent.equiped.size()+1))*(1-2*parent.owner)
 	card.node._z = -parent.equiped.size()-1
@@ -509,15 +514,14 @@ func add_equipment_card(type,player,parent,pos):
 	apply_effect(card,"on_play",parent)
 	return card
 
-func can_target(card,effect,player,target):
+func can_target(card,effect,pl,target):
 	# Checks whether the target is a valid target for the cards effect or not.
 	var data = Cards.data[card.ID]
 	if (!data.has("target")):
 		return false
 	var type = data[effect]
-	var enemy = (player+1)%2
 	var target_type = data["target"].split("-")
-	if (!((target.type in target_type) || (target.node.type=="hand" && ("hand" in target_type)) || ("any" in target_type)) || (target.node.type=="hand" && !("hand" in target_type)) || (("ally" in target_type) && target.owner!=player)):
+	if (!((target.type in target_type) || (target.node.type=="hand" && ("hand" in target_type)) || ("any" in target_type)) || (target.node.type=="hand" && !("hand" in target_type)) || (("ally" in target_type) && target.owner!=pl)):
 		return false
 	if (target_type.size()>1):
 		var has_tag = true
@@ -551,35 +555,32 @@ func can_target(card,effect,player,target):
 			return false
 	elif (type=="explosion"):
 		var dmg = abs(target.temperature)
-		if (dmg==0 || target.owner!=player):
+		if (dmg==0 || target.owner!=pl):
 			return false
 	
 	return true
 
-func use_effect(card,effect,player,target=null):
+func use_effect(card,effect,pl,target=null):
 	var data = Cards.data[card.ID]
 	var type = data[effect]
 	var s = type.split("-")
-	var ammount = 0
-	var enemy = (player+1)%2
 	var target_type
 	if (s.size()>1):
 		type = s[0]
-		ammount = int(s[1])
 	
 	if (data.has("target")):
 		target_type = data["target"].split("-")
 		if (target==null):
 			select = target_type[0]
 			if ("creature" in target_type):
-				if (is_multiplayer && player!=PLAYER1):
+				if (is_multiplayer && pl!=PLAYER1):
 					printt("Invalid target selected.")
 					state = {"used":true}
 					emit_signal("effect_used")
-				if (player==PLAYER1):
+				if (pl==PLAYER1):
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
 					UI.get_node("Player1/VBoxContainer/ButtonC").set_disabled(false)
-				elif (player==PLAYER2 && !ai && !is_multiplayer):
+				elif (pl==PLAYER2 && !ai && !is_multiplayer):
 					UI.get_node("Player2/VBoxContainer/ButtonC").set_text(tr("CANCEL"))
 					UI.get_node("Player2/VBoxContainer/ButtonC").set_disabled(false)
 				print("Please select a "+select+" card.")
@@ -588,7 +589,7 @@ func use_effect(card,effect,player,target=null):
 				target = selected_card
 		
 		if (target!=null):
-			if (("ally" in target_type) && target.owner!=player):
+			if (("ally" in target_type) && target.owner!=pl):
 				target = null
 		if (target==null):
 			state = {"used":false}
@@ -596,7 +597,7 @@ func use_effect(card,effect,player,target=null):
 			return
 	
 	state = {"used":false}
-	if (is_multiplayer && player==PLAYER1):
+	if (is_multiplayer && pl==PLAYER1):
 		var t = {}
 		if (target!=null):
 			for p in range(2):
@@ -622,7 +623,7 @@ func use_effect(card,effect,player,target=null):
 			if (t.size()>0):
 				state["_target"] = t
 	
-	if (target!=null && !can_target(card,effect,player,target)):
+	if (target!=null && !can_target(card,effect,pl,target)):
 		emit_signal("effect_used")
 		return
 	
@@ -636,7 +637,7 @@ func use_effect(card,effect,player,target=null):
 func apply_effect(card,event,target=null,arg=null):
 	var args
 	var effect = Cards.data[card.ID][event]
-	var enemy = (card.owner+1)%2
+	var enemy = get_enemy_ID(card.owner)
 	var array = Array(effect.split("-"))
 	var base = array[0]
 	if (array.size()>1):
@@ -661,8 +662,8 @@ func apply_effect(card,event,target=null,arg=null):
 
 # Send positions instead of classes to other players.
 remote func _attack(a,t,no_counter=false):
-	var attacker = field[(a["player"]+1)%2][a["index"]]
-	var target = field[(t["player"]+1)%2][t["index"]]
+	var attacker = field[get_enemy_ID(a["player"])][a["index"]]
+	var target = field[get_enemy_ID(t["player"])][t["index"]]
 	attack(attacker,target,no_counter)
 
 func attack(attacker,target,counter=false):
@@ -719,7 +720,7 @@ func _draw_card(pl,ID=-1):
 	if (server):
 		ID = draw_card(pl,ID)
 		if (is_multiplayer):
-			rpc("draw_card",(pl+1)%2,ID)
+			rpc("draw_card",get_enemy_ID(pl),ID)
 
 remote func draw_card(pl,ID=-1):
 	if (deck[pl].size()==0):
@@ -763,28 +764,28 @@ func _draw_extra_card():
 	else:
 		draw_extra_card(player)
 
-sync func draw_extra_card(player):
-	if (!inc_mana[player]):
+sync func draw_extra_card(pl):
+	if (!inc_mana[pl]):
 		return
 	
-	_draw_card(player)
+	_draw_card(pl)
 	deselect()
-	inc_mana[player] = false
-	UI.get_node("Player"+str(player+1)+"/VBoxContainer/ButtonD").set_disabled(true)
+	inc_mana[pl] = false
+	UI.get_node("Player"+str(pl+1)+"/VBoxContainer/ButtonD").set_disabled(true)
 
 
-func sort_hand(player):
+func sort_hand(pl):
 	# Shift the cards in hand to their right positions with offset depending on their number.
 	# Therefore they all fit onto the screen.
-	if (player<PLAYER1):
+	if (pl<PLAYER1):
 		return
 	
 	var ID = 0
-	var offset = min(210/zoom,(OS.get_window_size().x-250)/max(hand[player].size(),1))
-	for card in hand[player]:
+	var offset = min(210/zoom,(OS.get_window_size().x-250)/max(hand[pl].size(),1))
+	for card in hand[pl]:
 		if (card.in_game):
 			continue
-		var pos = Vector2((275+ID*offset-OS.get_window_size().x/2.0)*(1-2*player),OS.get_window_size().y/2.0*(1-2*player))*zoom
+		var pos = Vector2((275+ID*offset-OS.get_window_size().x/2.0)*(1-2*pl),OS.get_window_size().y/2.0*(1-2*pl))*zoom
 		card.node.get_node("Tween").remove_all()
 		card.node.get_node("Tween").interpolate_property(card.node,"global_position",card.node.get_global_position(),pos,0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		card.node.get_node("Tween").start()
@@ -818,7 +819,7 @@ func hint_valid_cards(s=null,card=null,event="on_play"):
 				if (card.level<=mana[player]):
 					card.node.get_node("Animation").queue("blink")
 	elif (s=="attack"):
-		for t in field[(player+1)%2]:
+		for t in field[get_enemy_ID(player)]:
 			if (can_attack(card,t)):
 				t.node.get_node("Animation").play("blink")
 	elif (card!=null):
@@ -912,7 +913,7 @@ func next_turn(draw=1):
 	var enemy
 	turn += 1
 	player = turn%2
-	enemy = (player+1)%2
+	enemy = get_enemy_ID(player)
 	clear_attack_list()
 	
 	if (mana[player]==mana_max[player]):
@@ -922,7 +923,7 @@ func next_turn(draw=1):
 	inc_mana[player] = true
 	mana[player] = mana_max[player]
 	if (server):
-		for i in range(draw):
+		for _i in range(draw):
 			_draw_card(player)
 	
 	deselect()
@@ -971,7 +972,6 @@ remote func attack_phase():
 	if (!server):
 		return
 	
-	var enemy = (player+1)%2
 	for card in []+field[player]:
 		if (!attack_list.has(card)):
 			continue
@@ -991,7 +991,7 @@ remote func attack_phase():
 		attack_phase_end()
 
 sync func attack_phase_end():
-	var enemy = (player+1)%2
+	var enemy = get_enemy_ID(player)
 	var draw = 1
 	var num_enemy_creatures = 0
 	for card in field[enemy]:
@@ -1041,22 +1041,22 @@ func _set_attack(attacker,target):
 	set_attack(attacker,target)
 
 remote func remote_set_attack(a,t):
-	var attacker = field[(a["player"]+1)%2][a["index"]]
-	var target = field[(t["player"]+1)%2][t["index"]]
+	var attacker = field[get_enemy_ID(a["player"])][a["index"]]
+	var target = field[get_enemy_ID(t["player"])][t["index"]]
 	set_attack(attacker,target)
 
 func set_attack(attacker,target):
 	if (!(attacker in field[attacker.owner]) || !(target in field[target.owner]) || !can_attack(attacker,target) || is_targeted(target)):
 		return
-	var ai = get_node("ArrowAttack").duplicate()
+	var arrow = get_node("ArrowAttack").duplicate()
 	if (attack_list.has(attacker)):
 		clear_attack(attacker)
 	attack_list[attacker] = target
-	attacker.arrow = ai
-	ai.origin = attacker.node.get_global_position()
-	ai.set_global_position(target.node.get_global_position())
-	ai.show()
-	add_child(ai)
+	attacker.arrow = arrow
+	arrow.origin = attacker.node.get_global_position()
+	arrow.set_global_position(target.node.get_global_position())
+	arrow.show()
+	add_child(arrow)
 
 func _clear_attack(attacker):
 	if (is_multiplayer):
@@ -1066,11 +1066,11 @@ func _clear_attack(attacker):
 	attack_list[attacker] = null
 
 remote func remote_clear_attack(a):
-	var attacker = field[(a["player"]+1)%2][a["index"]]
+	var attacker = field[get_enemy_ID(a["player"])][a["index"]]
 	clear_attack(attacker)
 
 func clear_attack(attacker):
-	if (attacker.arrow!=null):
+	if (attacker.arrow!=null && is_instance_valid(attacker.arrow)):
 		attacker.arrow.queue_free()
 	attack_list.erase(attacker)
 
@@ -1098,7 +1098,7 @@ sync func update_stats():
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Bar").get_material().set_shader_param("hot",max(temp/10.0,0.0))
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Temp/Top").get_material().set_shader_param("cold",max(-temp/10.0,0.0))
 		UI.get_node("Player"+str(p+1)+"/VBoxContainer/Deck").set_text(tr("DECK")+": "+str(deck[p].size()))
-	Music.temperature = get_player_temperature(player)+0.5*get_player_temperature((player+1)%2)
+	Music.temperature = get_player_temperature(player)+0.5*get_player_temperature(get_enemy_ID(player))
 
 
 func _resize():

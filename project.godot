@@ -26,6 +26,10 @@ AI="*res://scripts/autoload/ai.gd"
 Music="*res://scenes/autoload/music.tscn"
 Effects="*res://scripts/autoload/effects.gd"
 
+[debug]
+
+gdscript/warnings/return_value_discarded=false
+
 [importer_defaults]
 
 ogg_vorbis={
