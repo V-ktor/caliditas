@@ -24,7 +24,7 @@ func get_num_creatures(p):
 	return num
 
 func can_be_destroyed(target):
-	var p = target.owner
+#	var p = target.owner
 	var e = (target.owner+1)%2
 	for t in Main.field[e]:
 		if (t.type!="creature"):
@@ -34,7 +34,7 @@ func can_be_destroyed(target):
 	return false
 
 func can_destroy(target):
-	var p = target.owner
+#	var p = target.owner
 	var e = (target.owner+1)%2
 	for t in Main.field[e]:
 		if (t.type!="creature"):
@@ -43,10 +43,10 @@ func can_destroy(target):
 			return true
 	return false
 
-func has_indestructable_creature(player):
-	if (get_num_creatures(player)==0):
+func has_indestructable_creature(pl):
+	if (get_num_creatures(pl)==0):
 		return false
-	for c in Main.field[player]:
+	for c in Main.field[pl]:
 		if (c.type=="creature" && can_be_destroyed(c)):
 			return false
 	return true
@@ -107,375 +107,380 @@ func get_spell():
 		for i in range(base_rules.size()):
 			var e = base_rules[i]
 			var a = ammount[i]
-			if (e=="inc_temp"):
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature<=0):
-						continue
-					
-					var v = value+ally.temperature+2*a
-					if (v>score):
-						c = card
-						t = ally
-						score = v
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || tg.temperature>=0):
-						continue
-					
-					var v = value-tg.temperature+2*a
-					if (v>score):
-						c = card
-						t = tg
-						score = v
-			elif (e=="dec_temp"):
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature>=0):
-						continue
-					var v = value-ally.temperature+2*a
-					if (v>score):
-						c = card
-						t = ally
-						score = v
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || tg.temperature<=0):
-						continue
-					var v = value+tg.temperature+2*a
-					if (v>score):
-						c = card
-						t = tg
-						score = v
-			elif (e=="neutralize_temp"):
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || tg.temperature==0):
-						continue
-					var v = value+abs(tg.temperature)+2*a
-					if (v>score):
-						c = card
-						t = tg
-						score = v
-			elif (e=="amplify_temp"):
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature==0):
-						continue
-					var v = value+abs(ally.temperature)+2*a
-					if (v>score):
-						c = card
-						t = ally
-						score = v
-			elif (e=="inc_ally_temp"):
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature<=0):
-						continue
-					var v = max(value+ally.temperature+2*a,1)
-					if (v>score):
-						c = card
-						t = ally
-						score = v
-			elif (e=="dec_ally_temp"):
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature>=0):
-						continue
-					var v = max(value-ally.temperature+2*a,1)
-					if (v>score):
-						c = card
-						t = ally
-						score = v
-			elif (e=="ice_armor"):
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature>=0):
-						continue
-					var v = value-ally.temperature+a
-					if (v>score):
-						c = card
-						t = ally
-						score = v
-			elif (e=="fire_armor"):
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature<=0):
-						continue
-					var v = value+ally.temperature+a
-					if (v>score):
-						c = card
-						t = ally
-						score = v
-			elif (e=="global_diffusion_all"):
-				var v = value
-				var global_temp = (Main.get_player_temperature(Main.PLAYER1)+Main.get_player_temperature(Main.PLAYER2))/2
-				for ally in Main.field[player]:
-					if (ally.type!="creature"):
-						continue
-					v += abs(ally.temperature+a*sign(global_temp-ally.temperature))-abs(ally.temperature)
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature"):
-						continue
-					v += abs(tg.temperature+a*sign(global_temp-tg.temperature))-abs(tg.temperature)
-				if (v>score):
-					c = card
-					t = null
-					score = v
-			elif (e=="dec_level"):
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature"):
-						continue
-					var v = value+tg.level+a
-					if (v>score):
-						c = card
-						t = tg
-						score = v
-			elif (e=="kill_hot"):
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || tg.temperature<=0 || tg.temperature>a):
-						continue
-					
-					var v = value+2*tg.temperature
-					if (v>score):
-						c = card
-						t = tg
-						score = v
-			elif (e=="kill_cold"):
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || tg.temperature>=0 || -tg.temperature>a):
-						continue
-					
-					var v = value-2*tg.temperature
-					if (v>score):
-						c = card
-						t = tg
-						score = v
-			elif (e=="kill_all_hot"):
-				var v = value
-				var balance = 0
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature<=0 || ally.temperature>a):
-						continue
-					balance -= 1
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || tg.temperature<=0 || tg.temperature>a):
-						continue
-					balance += 1
-					v += 2*tg.temperature
-				
-				v *= min(0.5*balance,2.0)
-				if (v>score):
-					c = card
-					t = null
-					score = v
-			elif (e=="kill_all_cold"):
-				var v = value
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || tg.temperature>=0 || -tg.temperature>a):
-						continue
-					
-					v -= 2*tg.temperature
-				if (v>score):
-					c = card
-					t = null
-					score = v
-			elif (e=="move_to_hand"):
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature"):
-						continue
-					var v = value+abs(tg.temperature)+tg.level
-					if (v>score):
-						c = card
-						t = tg
-						score = v
-			elif (e=="invert_temp"):
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature==0 || can_destroy(ally)):
-						continue
-					var v = value+0.5*ally.level
-					if (v>score):
-						c = card
-						t = ally
-						score = v
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || tg.temperature==0 || can_be_destroyed(tg)):
-						continue
-					var v = value+0.5*tg.level
-					if (v>score):
-						c = card
-						t = tg
-						score = v
-			elif (e=="invert_ally_temp"):
-				var v = value
-				for ally in Main.field[player]:
-					if (ally.type!="creature" || ally.temperature==0):
-						continue
-					if (can_destroy(ally)):
-						v += 0.5*ally.level
-					else:
-						v -= 0.5*ally.level
-				if (v>score && v>value):
-					c = card
-					t = null
-					score = v
-			elif (e=="explosion"):
-				for ally in Main.field[player]:
-					var v = value-abs(ally.temperature)-0.5*ally.level
-					var balance = -0.75
-					var limit = abs(ally.temperature)
-					for t2 in Main.field[player]:
-						if (t2.type=="creature" && abs(t2.temperature)<limit):
-							balance -= 1
-					for t2 in Main.field[enemy]:
-						if (t2.type=="creature" && abs(t2.temperature)<limit):
-							balance += 1
-							v += 0.25*abs(t2.temperature)*sqrt(abs(t2.temperature))
-					v *= clamp(0.5*balance,0.0,2.0)
-					if (v>0 && v>score):
-						c = card
-						t = ally
-						score = v
-			elif (e=="draw"):
-				var v = value+max(5+Main.mana[player]-Main.hand[player].size(),1)
-				if (v>score):
-						c = card
-						t = null
-						score = v
-			elif (e=="no_attack_temp"):
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature"):
-						continue
-					var v = value+abs(tg.temperature)
-					if (v>score):
-						c = card
-						t = tg
-						score = v
-			elif (e=="ice_wall"):
-				var v = value-4+2*a
-				for ally in Main.field[player]:
-					if (ally.type=="creature" && ("ice" in Cards.data[ally.ID]["tags"])):
-						v += abs(ally.temperature)
-				if (v>score):
-					c = card
-					t = null
-					score = v
-			elif (e=="destroy_all_lands"):
-				var v = value
-				var num_lands = 0
-				for land in Main.field[player]:
-					if (land.type=="land"):
-						value -= land.level
-				for land in Main.field[enemy]:
-					if (land.type=="land"):
-						value += land.level
-						num_lands += 1
-				if (v>score && num_lands>0):
-					c = card
-					t = null
-					score = v
-			elif (e=="cleanse"):
-				for ally in Main.field[player]:
-					if (ally.type!="creature"):
-						continue
-					var v = 0
-					v += abs(Cards.data[ally.ID]["temperature"])-abs(ally.temperature)
-					v += abs(Cards.data[ally.ID]["level"])-abs(ally.level)
-					for eq in ally.equiped:
-						v += 2*(int("curse" in Cards.data[eq.ID]["tags"])-int("equipment" in Cards.data[eq.ID]["tags"]))
-					if (v>0):
-						v += value
+			match e:
+				"inc_temp":
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature<=0):
+							continue
+						
+						var v = value+ally.temperature+2*a
 						if (v>score):
 							c = card
 							t = ally
 							score = v
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature"):
-						continue
-					var v = 0
-					v += abs(tg.temperature)-abs(Cards.data[tg.ID]["temperature"])
-					v += abs(tg.level)-abs(Cards.data[tg.ID]["level"])
-					for eq in tg.equiped:
-						v += 2*(int("equipment" in Cards.data[eq.ID]["tags"])-int("curse" in Cards.data[eq.ID]["tags"]))
-					if (v>0):
-						v += value
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || tg.temperature>=0):
+							continue
+						
+						var v = value-tg.temperature+2*a
 						if (v>score):
 							c = card
 							t = tg
 							score = v
-			elif (e=="remove_equipment"):
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature"):
-						continue
-					var v = 0
-					for eq in tg.equiped:
-						v += 2*int("equipment" in Cards.data[eq.ID]["tags"])
-					if (v>0):
-						v += value
+				"dec_temp":
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature>=0):
+							continue
+						var v = value-ally.temperature+2*a
+						if (v>score):
+							c = card
+							t = ally
+							score = v
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || tg.temperature<=0):
+							continue
+						var v = value+tg.temperature+2*a
 						if (v>score):
 							c = card
 							t = tg
 							score = v
-			elif (e=="no_attack_temp" && get_num_creatures(player)>0):
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || can_be_destroyed(tg)):
-						continue
-					var v = value+abs(tg.temperature)
+				"neutralize_temp":
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || tg.temperature==0):
+							continue
+						var v = value+abs(tg.temperature)+2*a
+						if (v>score):
+							c = card
+							t = tg
+							score = v
+				"amplify_temp":
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature==0):
+							continue
+						var v = value+abs(ally.temperature)+2*a
+						if (v>score):
+							c = card
+							t = ally
+							score = v
+				"inc_ally_temp":
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature<=0):
+							continue
+						var v = max(value+ally.temperature+2*a,1)
+						if (v>score):
+							c = card
+							t = ally
+							score = v
+				"dec_ally_temp":
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature>=0):
+							continue
+						var v = max(value-ally.temperature+2*a,1)
+						if (v>score):
+							c = card
+							t = ally
+							score = v
+				"ice_armor":
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature>=0):
+							continue
+						var v = value-ally.temperature+a
+						if (v>score):
+							c = card
+							t = ally
+							score = v
+				"fire_armor":
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature<=0):
+							continue
+						var v = value+ally.temperature+a
+						if (v>score):
+							c = card
+							t = ally
+							score = v
+				"global_diffusion_all":
+					var v = value
+					var global_temp = (Main.get_player_temperature(Main.PLAYER1)+Main.get_player_temperature(Main.PLAYER2))/2
+					for ally in Main.field[player]:
+						if (ally.type!="creature"):
+							continue
+						v += abs(ally.temperature+a*sign(global_temp-ally.temperature))-abs(ally.temperature)
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature"):
+							continue
+						v += abs(tg.temperature+a*sign(global_temp-tg.temperature))-abs(tg.temperature)
 					if (v>score):
 						c = card
-						t = tg
+						t = null
 						score = v
-			elif (e=="damage_enemy"):
-				var v = value+2*a
-				if (v>score):
-					c = card
-					t = null
-					score = v
-			elif (e=="fire_attack_all_anneal" && has_indestructable_creature(enemy)):
-				for ally in Main.field[player]:
-					var v = value+1.5*abs(ally.temperature)-2*a
-					if (ally.type=="creature" && ally.temperature!=0 && v>score):
-						c = card
-						t = ally
-						score = v
-			elif (e=="heat_aura"):
-				var balance = 0
-				var v = value+4*a
-				for ally in Main.field[player]:
-					if (ally.type!="creature"):
-						continue
-					v += sign(ally.temperature)
-					if (ally.temperature>=0):
-						balance += 1
-					else:
+				"dec_level":
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature"):
+							continue
+						var v = value+tg.level+a
+						if (v>score):
+							c = card
+							t = tg
+							score = v
+				"kill_hot":
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || tg.temperature<=0 || tg.temperature>a):
+							continue
+						
+						var v = value+2*tg.temperature
+						if (v>score):
+							c = card
+							t = tg
+							score = v
+				"kill_cold":
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || tg.temperature>=0 || -tg.temperature>a):
+							continue
+						
+						var v = value-2*tg.temperature
+						if (v>score):
+							c = card
+							t = tg
+							score = v
+				"kill_all_hot":
+					var v = value
+					var balance = 0
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature<=0 || ally.temperature>a):
+							continue
 						balance -= 1
-				v *= clamp(1.0+0.25*balance,0.0,2.0)
-				if (v>score):
-					c = card
-					t = null
-					score = v
-			elif (e=="freeze"):
-				for tg in Main.field[enemy]:
-					if (tg.type!="creature" || can_be_destroyed(tg)):
-						continue
-					var v = value+abs(tg.temperature)
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || tg.temperature<=0 || tg.temperature>a):
+							continue
+						balance += 1
+						v += 2*tg.temperature
+					
+					v *= min(0.5*balance,2.0)
 					if (v>score):
 						c = card
-						t = tg
+						t = null
 						score = v
-			elif (e=="freeze_attacker"):
-				var v = value
-				for ally in Main.field[player]:
-					if (ally.type=="creature" && "ice" in Cards.data[ally.ID]["tags"]):
-						v += 2
-				if (v>score):
-					c = card
-					t = null
-					score = v
-			elif (e=="inc_mana"):
-				var v = value+2*a
-				if (v>score):
-					c = card
-					t = null
-					score = v
-			elif (e=="health_shield_temp"):
-				if (get_num_creatures(player)>0 && has_indestructable_creature(player)):
-					continue
-				var v = value+2*abs(Main.get_player_temperature(enemy))
-				if (v>score):
-					c = card
-					t = null
-					score = v
+				"kill_all_cold":
+					var v = value
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || tg.temperature>=0 || -tg.temperature>a):
+							continue
+						
+						v -= 2*tg.temperature
+					if (v>score):
+						c = card
+						t = null
+						score = v
+				"move_to_hand":
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature"):
+							continue
+						var v = value+abs(tg.temperature)+tg.level
+						if (v>score):
+							c = card
+							t = tg
+							score = v
+				"invert_temp":
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature==0 || can_destroy(ally)):
+							continue
+						var v = value+0.5*ally.level
+						if (v>score):
+							c = card
+							t = ally
+							score = v
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || tg.temperature==0 || can_be_destroyed(tg)):
+							continue
+						var v = value+0.5*tg.level
+						if (v>score):
+							c = card
+							t = tg
+							score = v
+				"invert_ally_temp":
+					var v = value
+					for ally in Main.field[player]:
+						if (ally.type!="creature" || ally.temperature==0):
+							continue
+						if (can_destroy(ally)):
+							v += 0.5*ally.level
+						else:
+							v -= 0.5*ally.level
+					if (v>score && v>value):
+						c = card
+						t = null
+						score = v
+				"explosion":
+					for ally in Main.field[player]:
+						var v = value-abs(ally.temperature)-0.5*ally.level
+						var balance = -0.75
+						var limit = abs(ally.temperature)
+						for t2 in Main.field[player]:
+							if (t2.type=="creature" && abs(t2.temperature)<limit):
+								balance -= 1
+						for t2 in Main.field[enemy]:
+							if (t2.type=="creature" && abs(t2.temperature)<limit):
+								balance += 1
+								v += 0.25*abs(t2.temperature)*sqrt(abs(t2.temperature))
+						v *= clamp(0.5*balance,0.0,2.0)
+						if (v>0 && v>score):
+							c = card
+							t = ally
+							score = v
+				"draw":
+					var v = value+max(5+Main.mana[player]-Main.hand[player].size(),1)
+					if (v>score):
+							c = card
+							t = null
+							score = v
+				"no_attack_temp":
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature"):
+							continue
+						var v = value+abs(tg.temperature)
+						if (v>score):
+							c = card
+							t = tg
+							score = v
+				"ice_wall":
+					var v = value-4+2*a
+					for ally in Main.field[player]:
+						if (ally.type=="creature" && ("ice" in Cards.data[ally.ID]["tags"])):
+							v += abs(ally.temperature)
+					if (v>score):
+						c = card
+						t = null
+						score = v
+				"destroy_all_lands":
+					var v = value
+					var num_lands = 0
+					for land in Main.field[player]:
+						if (land.type=="land"):
+							value -= land.level
+					for land in Main.field[enemy]:
+						if (land.type=="land"):
+							value += land.level
+							num_lands += 1
+					if (v>score && num_lands>0):
+						c = card
+						t = null
+						score = v
+				"cleanse":
+					for ally in Main.field[player]:
+						if (ally.type!="creature"):
+							continue
+						var v = 0
+						v += abs(Cards.data[ally.ID]["temperature"])-abs(ally.temperature)
+						v += abs(Cards.data[ally.ID]["level"])-abs(ally.level)
+						for eq in ally.equiped:
+							v += 2*(int("curse" in Cards.data[eq.ID]["tags"])-int("equipment" in Cards.data[eq.ID]["tags"]))
+						if (v>0):
+							v += value
+							if (v>score):
+								c = card
+								t = ally
+								score = v
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature"):
+							continue
+						var v = 0
+						v += abs(tg.temperature)-abs(Cards.data[tg.ID]["temperature"])
+						v += abs(tg.level)-abs(Cards.data[tg.ID]["level"])
+						for eq in tg.equiped:
+							v += 2*(int("equipment" in Cards.data[eq.ID]["tags"])-int("curse" in Cards.data[eq.ID]["tags"]))
+						if (v>0):
+							v += value
+							if (v>score):
+								c = card
+								t = tg
+								score = v
+				"remove_equipment":
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature"):
+							continue
+						var v = 0
+						for eq in tg.equiped:
+							v += 2*int("equipment" in Cards.data[eq.ID]["tags"])
+						if (v>0):
+							v += value
+							if (v>score):
+								c = card
+								t = tg
+								score = v
+				"no_attack_temp":
+					if get_num_creatures(player)<=0:
+						continue
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || can_be_destroyed(tg)):
+							continue
+						var v = value+abs(tg.temperature)
+						if (v>score):
+							c = card
+							t = tg
+							score = v
+				"damage_enemy":
+					var v = value+2*a
+					if (v>score):
+						c = card
+						t = null
+						score = v
+				"fire_attack_all_anneal":
+					if !has_indestructable_creature(enemy):
+						continue
+					for ally in Main.field[player]:
+						var v = value+1.5*abs(ally.temperature)-2*a
+						if (ally.type=="creature" && ally.temperature!=0 && v>score):
+							c = card
+							t = ally
+							score = v
+				"heat_aura":
+					var balance = 0
+					var v = value+4*a
+					for ally in Main.field[player]:
+						if (ally.type!="creature"):
+							continue
+						v += sign(ally.temperature)
+						if (ally.temperature>=0):
+							balance += 1
+						else:
+							balance -= 1
+					v *= clamp(1.0+0.25*balance,0.0,2.0)
+					if (v>score):
+						c = card
+						t = null
+						score = v
+				"freeze":
+					for tg in Main.field[enemy]:
+						if (tg.type!="creature" || can_be_destroyed(tg)):
+							continue
+						var v = value+abs(tg.temperature)
+						if (v>score):
+							c = card
+							t = tg
+							score = v
+				"freeze_attacker":
+					var v = value
+					for ally in Main.field[player]:
+						if (ally.type=="creature" && "ice" in Cards.data[ally.ID]["tags"]):
+							v += 2
+					if (v>score):
+						c = card
+						t = null
+						score = v
+				"inc_mana":
+					var v = value+2*a
+					if (v>score):
+						c = card
+						t = null
+						score = v
+				"health_shield_temp":
+					if (get_num_creatures(player)>0 && has_indestructable_creature(player)):
+						continue
+					var v = value+2*abs(Main.get_player_temperature(enemy))
+					if (v>score):
+						c = card
+						t = null
+						score = v
 			
 		
 	

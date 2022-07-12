@@ -179,19 +179,19 @@ func game_over(victory,error=""):
 	get_node("Panel/VBoxContainer/Button5").hide()
 	active = false
 	if (error=="player_dc"):
-		get_node("GameOver").set_title(tr("DISCONNECTED"))
-		get_node("GameOver/Text").set_text(tr("PLAYER_DISCONNECTED"))
+		get_node("GameOver/Control/Text2").set_text(tr("DISCONNECTED"))
+		get_node("GameOver/Control/Text").set_text(tr("PLAYER_DISCONNECTED"))
 	elif (error=="server_dc"):
-		get_node("GameOver").set_title(tr("DISCONNECTED"))
-		get_node("GameOver/Text").set_text(tr("SERVER_DISCONNECTED"))
+		get_node("GameOver/Control/Text2").set_text(tr("DISCONNECTED"))
+		get_node("GameOver/Control/Text").set_text(tr("SERVER_DISCONNECTED"))
 	elif (victory):
-		get_node("GameOver").set_title(tr("VICTORY"))
-		get_node("GameOver/Text").set_text(tr("YOU_WIN")+"\n"+tr("REWARD_GAINED")%reward)
+		get_node("GameOver/Control/Text2").set_text(tr("VICTORY"))
+		get_node("GameOver/Control/Text").set_text(tr("YOU_WIN")+"\n"+tr("REWARD_GAINED")%reward)
 		gold += reward
 	else:
 		reward = int(reward/2)
-		get_node("GameOver").set_title(tr("GAME_OVER"))
-		get_node("GameOver/Text").set_text(tr("YOU_LOST")+"\n"+tr("REWARD_GAINED")%reward)
+		get_node("GameOver/Control/Text2").set_text(tr("GAME_OVER"))
+		get_node("GameOver/Control/Text").set_text(tr("YOU_LOST")+"\n"+tr("REWARD_GAINED")%reward)
 		gold += reward
 	get_node("GameOver").popup_centered()
 	save_inventory()
@@ -846,12 +846,12 @@ func _ready():
 	get_node("Lobby/ButtonClose").connect("pressed",get_node("Lobby"),"hide")
 	get_node("Info/ButtonClose").connect("pressed",get_node("Info"),"hide")
 	get_node("Credits/ButtonClose").connect("pressed",get_node("Credits"),"hide")
-	get_node("GameOver/ButtonClose").connect("pressed",get_node("GameOver"),"hide")
-	get_node("Quit/ButtonClose").connect("pressed",get_node("Quit"),"hide")
-	get_node("Quit/ButtonClose").set_position(Vector2(28,-48))
-	get_node("Quit/ButtonClose").set_size(Vector2(48,48))
-	get_node("GameOver/ButtonClose").set_position(Vector2(28,-48))
-	get_node("GameOver/ButtonClose").set_size(Vector2(48,48))
+	get_node("GameOver/Control/ButtonClose").connect("pressed",get_node("GameOver"),"hide")
+	get_node("Quit/Control/ButtonClose").connect("pressed",get_node("Quit"),"hide")
+	get_node("Quit/Control/ButtonClose").set_position(Vector2(28,-48))
+	get_node("Quit/Control/ButtonClose").set_size(Vector2(48,48))
+	get_node("GameOver/Control/ButtonClose").set_position(Vector2(28,-48))
+	get_node("GameOver/Control/ButtonClose").set_size(Vector2(48,48))
 	get_node("Singleplayer/VBoxContainer/Button1").connect("pressed",self,"_tutorial")
 	get_node("Singleplayer/VBoxContainer/Button2").connect("pressed",self,"_skirmish")
 	get_node("Singleplayer/VBoxContainer/Button3").connect("pressed",self,"_local")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://scripts/menu/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/background/ice.jpg" type="Texture" id=2]
@@ -172,6 +172,16 @@ font_data = ExtResource( 4 )
 [sub_resource type="StyleBoxEmpty" id=21]
 
 [sub_resource type="StyleBoxEmpty" id=22]
+
+[sub_resource type="StyleBoxEmpty" id=25]
+
+[sub_resource type="StyleBoxEmpty" id=26]
+
+[sub_resource type="StyleBoxEmpty" id=27]
+
+[sub_resource type="StyleBoxEmpty" id=28]
+
+[sub_resource type="StyleBoxEmpty" id=29]
 
 [sub_resource type="Animation" id=9]
 length = 10.0
@@ -797,12 +807,16 @@ popup_exclusive = true
 window_title = "DECKS"
 
 [node name="ButtonClose" type="Button" parent="Deck/Decks"]
-margin_left = 28.0
-margin_top = -47.0
-margin_right = 76.0
-margin_bottom = 1.0
+margin_left = 10.0
+margin_top = -63.0
+margin_right = 58.0
+margin_bottom = -15.0
 rect_min_size = Vector2( 48, 48 )
-text = "X"
+custom_styles/hover = SubResource( 25 )
+custom_styles/pressed = SubResource( 26 )
+custom_styles/focus = SubResource( 27 )
+custom_styles/disabled = SubResource( 28 )
+custom_styles/normal = SubResource( 29 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Deck/Decks"]
 anchor_right = 1.0
@@ -1915,21 +1929,21 @@ valign = 1
 
 [node name="Adress" type="LineEdit" parent="Lobby/VBoxContainer/Adress"]
 margin_left = 167.0
-margin_right = 539.0
+margin_right = 541.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "127.0.0.1"
 
 [node name="VSeparator" type="VSeparator" parent="Lobby/VBoxContainer/Adress"]
-margin_left = 543.0
-margin_right = 547.0
+margin_left = 545.0
+margin_right = 545.0
 margin_bottom = 35.0
 size_flags_vertical = 3
 
 [node name="LabelP" type="Label" parent="Lobby/VBoxContainer/Adress"]
-margin_left = 551.0
-margin_right = 594.0
+margin_left = 549.0
+margin_right = 592.0
 margin_bottom = 35.0
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -1938,7 +1952,7 @@ align = 1
 valign = 1
 
 [node name="Port" type="LineEdit" parent="Lobby/VBoxContainer/Adress"]
-margin_left = 598.0
+margin_left = 596.0
 margin_right = 970.0
 margin_bottom = 35.0
 size_flags_horizontal = 3
@@ -2100,13 +2114,21 @@ margin_top = -75.0
 margin_right = 300.0
 margin_bottom = 75.0
 theme = ExtResource( 5 )
-window_title = "GAME_OVER"
+window_title = ""
 
-[node name="ButtonClose" type="Button" parent="GameOver"]
+[node name="Control" type="Control" parent="GameOver"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 592.0
-margin_bottom = 99.0
+margin_right = -8.0
+margin_bottom = -51.0
+
+[node name="ButtonClose" type="Button" parent="GameOver/Control"]
+margin_left = -2.0
+margin_top = -71.0
+margin_right = 24.0
+margin_bottom = -46.0
 custom_styles/hover = SubResource( 18 )
 custom_styles/pressed = SubResource( 19 )
 custom_styles/focus = SubResource( 20 )
@@ -2116,15 +2138,21 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Text" type="Label" parent="GameOver"]
+[node name="Text" type="Label" parent="GameOver/Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -51.0
+margin_right = -16.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "YOU_LOST"
+align = 1
+valign = 1
+
+[node name="Text2" type="Label" parent="GameOver/Control"]
+anchor_right = 1.0
+margin_top = -48.0
+margin_right = -16.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "GAME_OVER"
 align = 1
 valign = 1
 
@@ -2138,13 +2166,31 @@ margin_top = -50.0
 margin_right = 250.0
 margin_bottom = 50.0
 theme = ExtResource( 5 )
-window_title = "QUIT?"
+window_title = ""
 
-[node name="ButtonClose" type="Button" parent="Quit"]
+[node name="Control" type="Control" parent="Quit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 492.0
-margin_bottom = 49.0
+margin_right = -8.0
+margin_bottom = -51.0
+
+[node name="Text" type="Label" parent="Quit/Control"]
+anchor_right = 1.0
+margin_top = -48.0
+margin_right = -16.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "QUIT?"
+align = 1
+valign = 1
+
+[node name="ButtonClose" type="Button" parent="Quit/Control"]
+margin_left = -5.0
+margin_top = -73.0
+margin_right = 15.0
+margin_bottom = -53.0
 custom_styles/hover = SubResource( 18 )
 custom_styles/pressed = SubResource( 19 )
 custom_styles/focus = SubResource( 20 )
