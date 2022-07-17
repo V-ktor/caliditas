@@ -123,6 +123,9 @@ class Card:
 			if (Cards.data[card.ID].has("on_removed")):
 				Main.apply_effect(card,"on_removed",self)
 		remove_equipment()
+		if type=="spell":
+			for card in Main.field[owner]:
+				card.equiped.erase(self)
 		timer.set_one_shot(true)
 		timer.set_wait_time(0.5)
 		node.add_child(timer)
@@ -1024,7 +1027,7 @@ func can_attack(attacker,target,counter=false):
 		return false
 	var can_target_all = Cards.data[attacker.ID].has("can_target_all") && Cards.data[attacker.ID]["can_target_all"]
 	for eq in attacker.equiped:
-		if (!counter && Cards.data[eq.ID].has("no_attack") && Cards.data[eq.ID]["no_attack"]):
+		if (!counter && eq.in_game && Cards.data[eq.ID].has("no_attack") && Cards.data[eq.ID]["no_attack"]):
 			return false
 		if (Cards.data[eq.ID].has("can_target_all") && Cards.data[eq.ID]["can_target_all"]):
 			can_target_all = true
