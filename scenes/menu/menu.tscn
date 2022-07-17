@@ -1,7 +1,8 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://scripts/menu/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/background/ice.jpg" type="Texture" id=2]
+[ext_resource path="res://images/gui/fire.png" type="Texture" id=3]
 [ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://default_theme.tres" type="Theme" id=5]
 [ext_resource path="res://images/gui/gears.png" type="Texture" id=6]
@@ -9,6 +10,9 @@
 [ext_resource path="res://images/cards/back.png" type="Texture" id=8]
 [ext_resource path="res://sounds/draw.wav" type="AudioStream" id=9]
 [ext_resource path="res://sounds/shuffle.wav" type="AudioStream" id=10]
+[ext_resource path="res://images/gui/ice.png" type="Texture" id=11]
+[ext_resource path="res://images/gui/random.png" type="Texture" id=12]
+[ext_resource path="res://images/gui/neutral.png" type="Texture" id=13]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0313726, 0.0313726, 0.0313726, 0.501961 )
@@ -871,7 +875,6 @@ autoplay = "rotate_gears"
 anims/rotate_gears = SubResource( 9 )
 
 [node name="Shop" type="WindowDialog" parent="."]
-visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 25.0
@@ -934,6 +937,19 @@ margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade1/Button4"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
+
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade1/Button4"]
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -975,6 +991,19 @@ margin_right = 483.0
 margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade1/Button1"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
 
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade1/Button1"]
 anchor_right = 1.0
@@ -1018,6 +1047,19 @@ margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade1/Button2"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 6
+
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade1/Button2"]
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -1059,6 +1101,19 @@ margin_right = 970.0
 margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade1/Button3"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 6
 
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade1/Button3"]
 anchor_right = 1.0
@@ -1108,6 +1163,19 @@ margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade2/Button4"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
+
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade2/Button4"]
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -1149,6 +1217,19 @@ margin_right = 483.0
 margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade2/Button1"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
 
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade2/Button1"]
 anchor_right = 1.0
@@ -1192,6 +1273,19 @@ margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade2/Button2"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 6
+
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade2/Button2"]
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -1233,6 +1327,19 @@ margin_right = 970.0
 margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade2/Button3"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 6
 
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade2/Button3"]
 anchor_right = 1.0
@@ -1282,6 +1389,19 @@ margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade3/Button4"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
+
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade3/Button4"]
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -1323,6 +1443,19 @@ margin_right = 483.0
 margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade3/Button1"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
 
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade3/Button1"]
 anchor_right = 1.0
@@ -1366,6 +1499,19 @@ margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade3/Button2"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 6
+
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade3/Button2"]
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -1407,6 +1553,19 @@ margin_right = 970.0
 margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Shop/VBoxContainer/Grade3/Button3"]
+modulate = Color( 0.486275, 0.345098, 0.105882, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 6
 
 [node name="Desc" type="Label" parent="Shop/VBoxContainer/Grade3/Button3"]
 anchor_right = 1.0
